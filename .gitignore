@@ -1,2 +1,3 @@
 genetic
 *.o
+.vscode
