@@ -43,7 +43,7 @@ int main() {
     int height, width;
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    // 创建窗口对象
+    // create window object
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
@@ -56,7 +56,7 @@ int main() {
     ImGui_ImplOpenGL3_Init(glsl_version);
     ImGui::StyleColorsDark();
     bool my_tool_active = true;
-    // 绘制
+    // Drawing
     glClearColor(0.12, 0.12, 0.12, 1.0);
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -72,12 +72,13 @@ int main() {
         // glBindVertexArray(0);
         // glfwMakeContextCurrent(window);
         // glfwSwapBuffers(window);
-        // 绘制窗口
+        // Draw window
         ImGui::Begin("Tools", &my_tool_active, 0);
         ImGui::Text("Hello from another window!");
         ImGui::Text("Hello, world %d", 123);
-        if (ImGui::Button("Save我是")) {
+        if (ImGui::Button("Save中文")) {
             // do stuff
+            cout << my_tool_active << endl;
         }
         ImGui::End();
         ImGui::Render();
