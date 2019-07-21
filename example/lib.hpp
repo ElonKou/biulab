@@ -31,7 +31,7 @@
 
 #include <string>
 using namespace std;
-char* getChar(string str);
+char *getChar(string str);
 void printOk(string str);
 void printOk(int str);
 void printWaning(string str);
