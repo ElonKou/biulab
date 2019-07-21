@@ -23,9 +23,7 @@
 int move(int x, int y, int dire);
 
 /**产生０～１的伪随机数**/
-double rand_zo() {
-    return (double)rand() / (double)(RAND_MAX);
-}
+double rand_zo() { return (double)rand() / (double)(RAND_MAX); }
 
 /**初始化罗比的世界，以概率ｐ在它的世界中放置垃圾**/
 void init_world(int world[][COL], double p) {
@@ -48,8 +46,7 @@ void init_world(int world[][COL], double p) {
     //放置垃圾
     for (i = 1; i < ROW - 1; i++) {
         for (j = 1; j < COL - 1; j++) {
-            if (rand_zo() < p)
-                world[i][j] = 1;
+            if (rand_zo() < p) world[i][j] = 1;
         }
     }
 }
@@ -58,8 +55,7 @@ void init_world(int world[][COL], double p) {
 void print_world(int m[][COL]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
-        for (j = 0; j < COL; j++)
-            printf("%4d", m[i][j]);
+        for (j = 0; j < COL; j++) printf("%4d", m[i][j]);
         printf("\n");
     }
 }
@@ -180,32 +176,25 @@ int move(int x, int y, int dire) {
     int rand_num;
     switch (dire) {
         case 0:
-            if (--x == 0)
-                return 1;
+            if (--x == 0) return 1;
         case 1:
-            if (++y == (COL - 1))
-                return 1;
+            if (++y == (COL - 1)) return 1;
         case 2:
-            if (++x == (ROW - 1))
-                return 1;
+            if (++x == (ROW - 1)) return 1;
         case 3:
-            if (--y == 0)
-                return 1;
+            if (--y == 0) return 1;
     }
     return 0;
 }
 
 /**对正数四舍五入取整**/
-int m_round(double x) {
-    return (int)(x + 0.5);
-}
+int m_round(double x) { return (int)(x + 0.5); }
 
 /**生成初始解**/
 void init_solu(int solu[][SOLU_DIM]) {
     int i, j;
     for (i = 0; i < POP_SIZE; i++)
-        for (j = 0; j < SOLU_DIM; j++)
-            solu[i][j] = m_round(rand_zo() * 6);
+        for (j = 0; j < SOLU_DIM; j++) solu[i][j] = m_round(rand_zo() * 6);
 }
 
 /**适应度**/
@@ -215,8 +204,7 @@ void get_fitness(int solu[][SOLU_DIM], double fitness[]) {
     int ST[SOLU_DIM];  //每个个体对应一张策略表
 
     for (i = 0; i < POP_SIZE; i++) {
-        for (j = 0; j < SOLU_DIM; j++)
-            ST[j] = solu[i][j];
+        for (j = 0; j < SOLU_DIM; j++) ST[j] = solu[i][j];
 
         double per_sum = 0;
         /*对于每一个个体，给它CL_TIMES机会打扫,取平均成绩做为它的适应度分数,每一次的世界都不同，但是策略表相同*/
@@ -239,24 +227,20 @@ void ga_sel(int old_pop[][SOLU_DIM]) {
 
     double pr_sum = 0;
     int i, j, k;
-    for (i = 0; i < POP_SIZE; i++)
-        pr_sum += pr[i];
+    for (i = 0; i < POP_SIZE; i++) pr_sum += pr[i];
 
-    for (i = 0; i < POP_SIZE; i++)
-        pr[i] = pr[i] / pr_sum;
+    for (i = 0; i < POP_SIZE; i++) pr[i] = pr[i] / pr_sum;
 
     cum_pr[0] = pr[0];
 
-    for (i = 1; i < POP_SIZE; i++)
-        cum_pr[i] = cum_pr[i - 1] + pr[i];
+    for (i = 1; i < POP_SIZE; i++) cum_pr[i] = cum_pr[i - 1] + pr[i];
 
     //轮盘赌方法选择
     for (i = 0; i < POP_SIZE; i++) {
         double rand_n = rand_zo();
         for (j = 0; j < POP_SIZE - 1; j++) {
             if (rand_n < cum_pr[0]) {
-                for (k = 0; k < SOLU_DIM; k++)
-                    new_pop[i][k] = old_pop[0][k];
+                for (k = 0; k < SOLU_DIM; k++) new_pop[i][k] = old_pop[0][k];
                 break;
             } else if (rand_n >= cum_pr[j] && rand_n <= cum_pr[j + 1]) {
                 for (k = 0; k < SOLU_DIM; k++)
@@ -267,8 +251,7 @@ void ga_sel(int old_pop[][SOLU_DIM]) {
     }
 
     for (i = 0; i < POP_SIZE; i++)
-        for (j = 0; j < SOLU_DIM; j++)
-            old_pop[i][j] = new_pop[i][j];
+        for (j = 0; j < SOLU_DIM; j++) old_pop[i][j] = new_pop[i][j];
 }
 
 //交叉
@@ -285,8 +268,7 @@ void ga_cross(int new_pop[][SOLU_DIM]) {
         }
     }
 
-    if (count % 2 != 0)
-        count++;
+    if (count % 2 != 0) count++;
 
     //随机决定一个不为0的交叉点
     int cr_point = 0;
@@ -328,8 +310,7 @@ double max(double h[], int len) {
     double m = h[0];
     int i;
     for (i = 1; i < len; i++) {
-        if (h[i] > m)
-            m = h[i];
+        if (h[i] > m) m = h[i];
     }
     return m;
 }

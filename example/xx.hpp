@@ -1,37 +1,39 @@
 #ifndef CORE_GENETIC
 #define CORE_GENETIC
 
-#define STR_CNT 7       // 基因密码子长度
-#define MUTATE_ALL 1000 // 突变总数值
-#define MUTATE_VAL 5    // 突变率
-#define CLIP_CNT 1      // 剪切数量
-#define GENE_CLEAR -1   // 清除基因
+#define STR_CNT 7        // 基因密码子长度
+#define MUTATE_ALL 1000  // 突变总数值
+#define MUTATE_VAL 5     // 突变率
+#define CLIP_CNT 1       // 剪切数量
+#define GENE_CLEAR -1    // 清除基因
 
-#define LOOP_MAP 10    // 执行地图数量
-#define LOOP_CNT 100   // 执行步骤数量
-#define ROBBIE_CNT 200 // 代际数量(每一代数量)
-#define NAME_LEN 16    // 名字长度
-#define PARENT_CNT 2   // 双亲数量
-#define GENE_LEN 243   // 基因长度
+#define LOOP_MAP 10     // 执行地图数量
+#define LOOP_CNT 200    // 执行步骤数量
+#define ROBBIE_CNT 400  // 代际数量(每一代数量)
+#define NAME_LEN 16     // 名字长度
+#define PARENT_CNT 2    // 双亲数量
+#define GENE_LEN 243    // 基因长度
 
-#define MAP_WIDTH 16    // 地图宽度
-#define MAP_HEIGHT 16   // 地图长度
-#define RUBBISH_CNT 100 // 垃圾数量
+#define MAP_WIDTH 12    // 地图宽度
+#define MAP_HEIGHT 12   // 地图长度
+#define RUBBISH_CNT 50  // 垃圾数量
 #define EDGE 2          // 边界标志
 #define RUBBISH 1       // 物体标志
 #define EMPTY 0         // 空的标志
 
-#define LOOP_CONTROLLER 10000 // 代数
+#define LOOP_CONTROLLER 1000  // 代数
 #define PUNISHMENT_EDGE -5    // 撞墙惩罚
 #define PUNISHMENT_PICK -1    // 无效捡东西惩罚
 #define REWARD 10             //奖励
+
+#include <string>
+using namespace std;
 
 int randomInt(int range);
 float randomFloat();
 
 typedef union vec_2i {
-    struct
-    {
+    struct {
         int x;
         int y;
     };
@@ -42,17 +44,15 @@ typedef union vec_2i {
     void print();
 } vec_2i;
 
-typedef struct Strategy
-{
+typedef struct Strategy {
     int key;
     int wmove;
     int hmove;
 } Strategy;
 struct Map;
 
-class Robbie
-{
-public:
+class Robbie {
+   public:
     Robbie();
     ~Robbie();
     Robbie clone();
@@ -74,22 +74,24 @@ public:
     int pick(int action, Map &map);
     void play(Map &map);
     void playScreen(Map &map);
-    float playOne();
+    void playOne();
     void print();
     int getScore();
     int getAction(int hash);
+    void save(string fileName);
+    void load(string fileName);
     // robbie info
     int id;
     int score;
     int generation;
     int parentId[PARENT_CNT];
+    float averScore;
     vec_2i pos;
     vec_2i start;
 };
 
-class Map
-{
-public:
+class Map {
+   public:
     Map();
     ~Map();
     vec_2i size;
@@ -106,11 +108,9 @@ public:
     int doAction(vec_2i start, vec_2i offset);
 };
 
-class Controller
-{
-public:
-    struct Result
-    {
+class Controller {
+   public:
+    struct Result {
         int score;
         int robbie_id;
         int map_id;

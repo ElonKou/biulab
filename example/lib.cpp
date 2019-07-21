@@ -11,73 +11,51 @@
 
 using namespace std;
 
-char *getChar(string str)
-{
+char *getChar(string str) {
     char *dst = new char[255];
     int i = 0;
-    for (; i < str.length(); i++)
-    {
+    for (; i < str.length(); i++) {
         dst[i] = str[i];
     }
     dst[i] = '\0';
     return dst;
 }
 
-void printOk(string str)
-{
+void printOk(string str) {
     char *dst = getChar(str);
     printf("%s", dst);
     delete dst;
 }
-void printOk(int str)
-{
-    printf("%d", str);
-}
+void printOk(int str) { printf("%d", str); }
 
-void printWaning(string str)
-{
+void printWaning(string str) {
     char *dst = getChar(str);
     printf(BROWN "%s" NONE, dst);
     delete dst;
 }
-void printWaning(int str)
-{
-    printf(BROWN "%d" NONE, str);
-}
+void printWaning(int str) { printf(BROWN "%d" NONE, str); }
 
-void printSucceed(string str)
-{
+void printSucceed(string str) {
     char *dst = getChar(str);
     printf(GREEN "%s" NONE, dst);
     delete dst;
 }
 
-void printSucceed(int str)
-{
-    printf(GREEN "%d" NONE, str);
-}
+void printSucceed(int str) { printf(GREEN "%d" NONE, str); }
 
-void printError(string str)
-{
+void printError(string str) {
     char *dst = getChar(str);
     printf(RED "%s" NONE, dst);
     delete dst;
 }
-void printError(int str)
-{
-    printf(RED "%d" NONE, str);
-}
+void printError(int str) { printf(RED "%d" NONE, str); }
 
-void printSome(string str)
-{
+void printSome(string str) {
     char *dst = getChar(str);
     printf(PURPLE "%s" NONE, dst);
     delete dst;
 }
-void printSome(int str)
-{
-    printf(PURPLE "%d" NONE, str);
-}
+void printSome(int str) { printf(PURPLE "%d" NONE, str); }
 
 // printf("[%2u]" BLACK "BLACK " L_BLACK "L_BLACK\n" NONE, __LINE__);
 // printf("[%2u]" RED "RED " L_RED "L_RED\n" NONE, __LINE__);
