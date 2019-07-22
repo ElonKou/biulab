@@ -1,4 +1,4 @@
 genetic
 *.o
 .vscode
-results
+#results

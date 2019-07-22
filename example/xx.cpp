@@ -9,8 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <unistd.h>
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include "lib.hpp"
 using namespace std;
@@ -64,8 +66,8 @@ void Robbie::init() {
     randomPos();
 }
 void Robbie::randomPos() {
-    start.x = 6;
-    start.y = 6;
+    start.x = START_X;
+    start.y = START_Y;
     pos = start;
 }
 Robbie Robbie::clone() {
@@ -163,38 +165,10 @@ void Robbie::play(Map &map) {
             case WAIT:
                 break;
             case PICK:
-                result = Robbie::pick(action, map);
+                result = pick(action, map);
                 break;
             default:
-                result = Robbie::move(action, map);
-                break;
-        }
-        // std::cout << "=" << result << " ";
-        // std::cout << "=" << action << " ";
-    }
-    // std::cout << endl << score << endl;
-    // map.cleanTarget();
-}
-
-void Robbie::playScreen(Map &map) {
-    // map.print(pos);
-    for (int i = 0; i < LOOP_CNT; i++) {
-        int result = 0;
-        int hash = map.getHash(pos);
-        int action = getAction(hash);
-        // pos.print();
-        // map.print(pos);
-        while (action == RANDOM) {
-            action = randomInt(STR_CNT);
-        }
-        switch (action) {
-            case WAIT:
-                break;
-            case PICK:
-                result = Robbie::pick(action, map);
-                break;
-            default:
-                result = Robbie::move(action, map);
+                result = move(action, map);
                 break;
         }
         // std::cout << "=" << result << " ";
@@ -253,16 +227,38 @@ Map::Map() {
         for (int j = 0; j < size.x; j++) {
             map[i][j] = EMPTY;
             target[i][j] = EMPTY;
+            path[i][j] = EMPTY;
         }
     }
     for (int i = 0; i < size.y; i++) {
         map[i][0] = map[i][size.x - 1] = EDGE;
         target[i][0] = target[i][size.x - 1] = EDGE;
+        path[i][0] = path[i][size.x - 1] = -EDGE;
     }
     for (int i = 0; i < size.x; i++) {
         map[0][i] = map[size.y - 1][i] = EDGE;
         target[0][i] = target[size.y - 1][i] = EDGE;
+        path[0][i] = path[size.y - 1][i] = -EDGE;
     }
+    // extra
+    for (int i = 0; i < 10; i++) {
+        map[10][i] = EDGE;
+        target[10][i] = EDGE;
+        path[10][i] = -EDGE;
+    }
+    // extra
+    for (int i = 0; i < 10; i++) {
+        map[10-i][15] = EDGE;
+        target[10-i][15] = EDGE;
+        path[10-i][15] = -EDGE;
+    }
+    // extra
+    for (int i = 0; i < 3; i++) {
+        map[11+i][10] = EDGE;
+        target[11+i][10] = EDGE;
+        path[11+i][10] = -EDGE;
+    }
+
     for (int i = 0; i < RUBBISH_CNT;) {
         int temp_x = randomInt(size.x);
         int temp_y = randomInt(size.y);
@@ -340,7 +336,6 @@ int Map::doAction(vec_2i start, vec_2i offset) {
 void Map::print(vec_2i pos) {
     printSucceed("map:\t\t\t\t\t\ttarget:\n");
     for (int i = size.y - 1; i >= 0; i--) {
-        // for (int i = 0; i < 5; i++) {
         for (int j = 0; j < size.x; j++) {
             if (map[i][j] != 0) {
                 if (map[i][j] == EDGE) {
@@ -350,10 +345,10 @@ void Map::print(vec_2i pos) {
                 }
                 printSucceed(" ");
             } else {
-                cout << "  ";
+                printf("  ");
             }
         }
-        cout << "  ";
+        printf("  ");
         for (int j = 0; j < size.x; j++) {
             if (i == pos.y && j == pos.x) {
                 printError(target[i][j]);
@@ -366,11 +361,271 @@ void Map::print(vec_2i pos) {
                 }
                 printSucceed(" ");
             } else {
-                cout << "  ";
+                printf("  ");
             }
+        }
+        printf("\n");
+    }
+}
+
+void Map::drawFrame(PlayActions act, int *gene) {
+    int len = 0;
+    for (int i = 0; i < LOOP_CNT; i++) {
+        int x = act.positions[i].x;
+        int y = act.positions[i].y;
+        if (x != 0 && y != 0) {
+            path[y][x] = act.actions[i];
+            len++;
+        }
+    }
+    // for(int i =0 ;i < len - 4;i++){
+    //     int x = act.positions[i].x;
+    //     int y = act.positions[i].y;
+    //     if (x != 0 && y != 0) {
+    //         path[y][x] = 0;
+    //     }
+    // }
+    for (int i = size.y - 1; i >= 0; i--) {
+        for (int j = 0; j < size.x; j++) {
+            // printf("%d ", target[i][j]);
+            if (path[i][j] != 0) {
+                if (path[i][j] == -EDGE) {
+                    printSucceed("▓▓");
+                } else {
+                    int act_num = path[i][j] - 1;
+                    // strin xx = "";
+                    switch (act_num) {
+                        case UP:
+                            // xx = "⇧";
+                            printOk("⇧ ");
+                            break;
+                        case DOWN:
+                            printOk("⇓ ");
+                            break;
+                        case LEFT:
+                            printOk("⇐ ");
+                            break;
+                        case RIGHT:
+                            printOk("⇒ ");
+                            break;
+                        case WAIT:
+                            printOk("↻ ");
+                            break;
+                        case RANDOM:
+                            printOk("☯ ");
+                            break;
+                        case PICK:
+                            printOk("✾ ");
+                            break;
+                        default:
+                            break;
+                    }
+                    // printOk(path[i][j]);
+                }
+            } else {
+                // printOk("  ");
+                if (target[i][j] == RUBBISH) {
+                    // string xx = "✱ ";
+                    printError("✱ ");
+                } else {
+                    printOk("  ");
+                }
+            }
+        }
+        printf("  ");
+        int len = GENE_LEN / 3;
+        for (int j = 0; j < len; j++) {
+            int xx = i * len + j;
+            if (xx < GENE_LEN) {
+                if (xx == act.hash) {
+                    printError(gene[xx]);
+                } else {
+                    printOk(gene[xx]);
+                }
+            }
+        }
+        if (i != 0) {
+            printf("\n");
+        }
+    }
+    cout << endl;
+}
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Controller::Controller()
+    : loop_cnt(LOOP_CNT),
+      loop_controller(LOOP_CONTROLLER),
+      loop_one(LOOP_CNT),
+      map_cnt(0),
+      robbie_cnt(ROBBIE_CNT),
+      max_histyory(-1000) {
+    // init controller
+    float res[ROBBIE_CNT];
+    float res_ori[ROBBIE_CNT];
+    for (int i = 0; i < ROBBIE_CNT; i++) {
+        robbies[i] = Robbie();
+        scores[i] = 0.0;
+        scores_tf[i] = 0.0;
+    }
+}
+Controller::~Controller() {}
+
+void Controller::train() {
+    for (int k = 0; k < LOOP_CONTROLLER; k++) {
+        for (int i = 0; i < ROBBIE_CNT; i++) {
+            robbies[i].playOne();
+            scores[i] = robbies[i].averScore;
+            scores_tf[i] = robbies[i].averScore;
+            if (k < 100) {
+                if (scores_tf[i] < -500) {
+                    scores_tf[i] = -500;
+                }
+                scores_tf[i] = pow(500 + scores_tf[i], 3.0) * 0.000001;
+            } else {
+                if (scores_tf[i] < 0) {
+                    scores_tf[i] = 0;
+                } else {
+                    scores_tf[i] = scores_tf[i] * 50;
+                    // scores_tf[i] = scores_tf[i] * 50 * 1.3;
+                    // scores_tf[i] = pow(scores_tf[i], 1.3);
+                }
+            }
+        }
+
+        int top_id = showHisgram(k);
+        if (max_histyory < scores[top_id]) {
+            max_histyory = scores[top_id];
+            robbies[top_id].print();
+        }
+        robbies[top_id].compare(robbies[0]);
+
+        float all = accumulate(scores_tf, scores_tf + ROBBIE_CNT, 0.0);
+        for (int i = 0; i < ROBBIE_CNT; i++) {
+            scores_tf[i] /= all;
+            if (i != 0) {
+                scores_tf[i] = scores_tf[i] + scores_tf[i - 1];
+            }
+        }
+        cout << "========================================"
+                "========================================"
+             << endl;
+        for (int i = 0; i < ROBBIE_CNT / 2; i++) {
+            int fa = getIndex(randomFloat());
+            int mo = getIndex(randomFloat());
+            int pos = randomInt(GENE_LEN);
+            robbies_temp[i * 2] = robbies[fa].clip2(robbies[mo], pos);
+            robbies_temp[i * 2 + 1] = robbies[mo].clip2(robbies[fa], pos);
+        }
+        for (int i = 0; i < ROBBIE_CNT; i++) {
+            robbies[i] = robbies_temp[i];
+            robbies[i].mutate();
+        }
+    }
+}
+
+void Controller::print_str() {
+    std::cout << "   0  " << endl;
+    std::cout << " 3 4 2" << endl;
+    std::cout << "   1  " << endl;
+}
+
+void Controller::playScreen(Robbie &rob, Map &map) {
+    PlayActions act;
+    for (int i = 0; i < LOOP_CNT; i++) {
+        int result = 0;
+        int hash = map.getHash(rob.pos);
+        int action = rob.getAction(hash);
+        usleep(100000);
+        act.hash = hash;
+        act.actions[i] = action + 1;
+        act.positions[i] = rob.pos;
+        map.drawFrame(act, rob.genes);
+        cout << i << " : " << rob.score << endl;
+        while (action == RANDOM) {
+            action = randomInt(STR_CNT);
+        }
+        switch (action) {
+            case WAIT:
+                break;
+            case PICK:
+                result = rob.pick(action, map);
+                break;
+            default:
+                result = rob.move(action, map);
+                break;
+        }
+        // std::cout << "=" << result << " ";
+        // std::cout << "=" << action << " ";
+    }
+    // std::cout << endl << score << endl;
+    // map.cleanTarget();
+}
+
+Robbie Controller::loadRobbie(string robbie_path) {
+    Robbie rob;
+    ifstream fp;
+    fp.open(robbie_path);
+    string data;
+    string ss;
+    while (getline(fp, ss)) {
+        data += ss;
+    }
+    for (int i = 0; i < data.size(); i++) {
+        rob.genes[i] = int(data[i] - '0');
+    }
+    fp.close();
+    return rob;
+}
+Robbie Controller::saveRobbie(string robbie_path) {}
+
+int Controller::getIndex(float random_index) {
+    int i = 0;
+    while (scores_tf[i] < random_index) {
+        i++;
+    }
+    return i;
+}
+
+int Controller::showHisgram(int num) {
+    int minIndex = 0;
+    int maxIndex = 0;
+    float minData = 1000;
+    float maxData = -1000;
+    float sum = 0.0;
+    int nevCnt = 0;
+    for (int i = 0; i < ROBBIE_CNT; i++) {
+        sum += scores[i];
+        if (scores[i] > 0) {
+            nevCnt++;
+        }
+        if (scores[i] > maxData) {
+            maxIndex = i;
+            maxData = scores[i];
+        }
+        if (scores[i] < minData) {
+            minIndex = i;
+            minData = scores[i];
+        }
+    }
+    int clipCnt = 20;
+    float res = (maxData - minData) * 1.0;
+    float step = res / clipCnt;
+    int shows[clipCnt] = {0};
+    for (int i = 0; i < ROBBIE_CNT; i++) {
+        int index = int((scores[i] - minData) / step);
+        shows[index]++;
+    }
+    cout << num << "\tID:" << maxIndex << "\tCLIP_CNT:" << clipCnt
+         << "\tSTEP:" << step << "\tAVER:" << setw(5) << setprecision(5)
+         << sum / ROBBIE_CNT << "\t>=0:" << nevCnt << "\tMIN:" << minData
+         << "\tMAX:" << maxData << "\tHIS_MAX:" << max_histyory << endl;
+    for (int i = 0; i < clipCnt; i++) {
+        cout << std::left << setw(9) << minData + i * step << std::right
+             << setw(9) << minData + (i + 1) * step << ":";
+        for (int j = 0; j < shows[i]; j++) {
+            cout << "*";
         }
         cout << endl;
     }
+    return maxIndex;
 }
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Controller::Controller() {}
