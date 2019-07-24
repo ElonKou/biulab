@@ -1,8 +1,8 @@
 #ifndef CORE_GENETIC
 #define CORE_GENETIC
 
-#define START_X 19  // 起始位置
-#define START_Y 20  // 起始位置
+#define START_X 6  // 起始位置
+#define START_Y 6  // 起始位置
 
 #define STR_CNT 7        // 基因密码子长度
 #define MUTATE_ALL 1000  // 突变总数值
@@ -11,18 +11,19 @@
 #define GENE_CLEAR -1    // 清除基因
 
 #define LOOP_MAP 10     // 执行地图数量
-#define LOOP_CNT 800    // 执行步骤数量
+#define LOOP_CNT 200    // 执行步骤数量
 #define ROBBIE_CNT 200  // 代际数量(每一代数量)
 #define NAME_LEN 16     // 名字长度
 #define PARENT_CNT 2    // 双亲数量
 #define GENE_LEN 243    // 基因长度
 
-#define MAP_WIDTH 22    // 地图宽度
-#define MAP_HEIGHT 22   // 地图长度
-#define RUBBISH_CNT 200  // 垃圾数量
+#define MAP_WIDTH 12    // 地图宽度
+#define MAP_HEIGHT 12   // 地图长度
+#define RUBBISH_CNT 50  // 垃圾数量
 #define EDGE 2          // 边界标志
 #define RUBBISH 1       // 物体标志
 #define EMPTY 0         // 空的标志
+#define WALL_CNT 10     // 空的标志
 
 #define LOOP_CONTROLLER 10000  // 代数
 #define PUNISHMENT_EDGE -5     // 撞墙惩罚
@@ -126,7 +127,7 @@ class Controller {
         int robbie_id;
         int map_id;
     };
-    Controller();
+    Controller(string save_path);
     ~Controller();
     int loop_controller;
     int loop_one;
@@ -134,6 +135,7 @@ class Controller {
     int robbie_cnt;
     int map_cnt;
     float max_histyory;
+    string save_path;
     // Map map;
     Robbie robbies[ROBBIE_CNT];
     Robbie robbies_temp[ROBBIE_CNT];
@@ -145,7 +147,7 @@ class Controller {
     void print_str();
     void playScreen(Robbie &rob, Map &map);
     Robbie loadRobbie(string robbie_path);
-    Robbie saveRobbie(string robbie_path);
+    void saveRobbie(Robbie &rob, string robbie_path);
     void addRobbie();
     int showHisgram(int num);
     int getIndex(float random_index);

@@ -56,6 +56,8 @@ Robbie::Robbie() {
     str_len = STR_CNT;
     mutate_all = MUTATE_ALL;
     mutate_val = MUTATE_VAL;
+    averScore = -1000.0;
+    score = 0;
     init();
 }
 Robbie::~Robbie() {}
@@ -86,7 +88,8 @@ void Robbie::clear() {
 void Robbie::print() {
     cout << endl;
     cout << "pos:(" << pos.x << ":" << pos.y << ")\tstart:(" << start.x << ":"
-         << start.y << ")" << endl;
+         << start.y << ")"
+         << "\tscore:" << getScore() << endl;
     int next = 81;
     for (int i = 0; i < gene_len; i++) {
         if (i % next == 0 && i != 0) {
@@ -233,30 +236,51 @@ Map::Map() {
     for (int i = 0; i < size.y; i++) {
         map[i][0] = map[i][size.x - 1] = EDGE;
         target[i][0] = target[i][size.x - 1] = EDGE;
-        path[i][0] = path[i][size.x - 1] = -EDGE;
+        // path[i][0] = path[i][size.x - 1] = -EDGE;
     }
     for (int i = 0; i < size.x; i++) {
         map[0][i] = map[size.y - 1][i] = EDGE;
         target[0][i] = target[size.y - 1][i] = EDGE;
-        path[0][i] = path[size.y - 1][i] = -EDGE;
+        // path[0][i] = path[size.y - 1][i] = -EDGE;
     }
+
     // extra
-    for (int i = 0; i < 10; i++) {
-        map[10][i] = EDGE;
-        target[10][i] = EDGE;
-        path[10][i] = -EDGE;
+    // for (int i = 0; i < 10; i++) {
+    //     map[10][i] = EDGE;
+    //     target[10][i] = EDGE;
+    //     path[10][i] = -EDGE;
+    // }
+    // extra
+    // for (int i = 0; i < 10; i++) {
+    //     map[10-i][15] = EDGE;
+    //     target[10-i][15] = EDGE;
+    //     path[10-i][15] = -EDGE;
+    // }
+    // extra
+    // for (int i = 0; i < 3; i++) {
+    //     map[11+i][10] = EDGE;
+    //     target[11+i][10] = EDGE;
+    //     path[11+i][10] = -EDGE;
+    // }
+
+    // add random wall
+    for (int i = 0; i < WALL_CNT;) {
+        int temp_x = randomInt(size.x);
+        int temp_y = randomInt(size.y);
+        if (map[temp_y][temp_x] == 0) {
+            map[temp_y][temp_x] = EDGE;
+            target[temp_y][temp_x] = EDGE;
+            i++;
+        }
     }
-    // extra
-    for (int i = 0; i < 10; i++) {
-        map[10-i][15] = EDGE;
-        target[10-i][15] = EDGE;
-        path[10-i][15] = -EDGE;
-    }
-    // extra
-    for (int i = 0; i < 3; i++) {
-        map[11+i][10] = EDGE;
-        target[11+i][10] = EDGE;
-        path[11+i][10] = -EDGE;
+
+    // copy into path
+    for (int i = 0; i < size.y; i++) {
+        for (int j = 0; j < size.x; j++) {
+            if (map[i][j] == EDGE) {
+                path[i][j] = EMPTY;
+            }
+        }
     }
 
     for (int i = 0; i < RUBBISH_CNT;) {
@@ -452,13 +476,14 @@ void Map::drawFrame(PlayActions act, int *gene) {
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Controller::Controller()
+Controller::Controller(string save_path)
     : loop_cnt(LOOP_CNT),
       loop_controller(LOOP_CONTROLLER),
       loop_one(LOOP_CNT),
       map_cnt(0),
       robbie_cnt(ROBBIE_CNT),
-      max_histyory(-1000) {
+      max_histyory(-1000.0),
+      save_path(save_path) {
     // init controller
     float res[ROBBIE_CNT];
     float res_ori[ROBBIE_CNT];
@@ -476,7 +501,7 @@ void Controller::train() {
             robbies[i].playOne();
             scores[i] = robbies[i].averScore;
             scores_tf[i] = robbies[i].averScore;
-            if (k < 100) {
+            if (k < 1000) {
                 if (scores_tf[i] < -500) {
                     scores_tf[i] = -500;
                 }
@@ -496,6 +521,7 @@ void Controller::train() {
         if (max_histyory < scores[top_id]) {
             max_histyory = scores[top_id];
             robbies[top_id].print();
+            saveRobbie(robbies[top_id], save_path);
         }
         robbies[top_id].compare(robbies[0]);
 
@@ -576,7 +602,20 @@ Robbie Controller::loadRobbie(string robbie_path) {
     fp.close();
     return rob;
 }
-Robbie Controller::saveRobbie(string robbie_path) {}
+void Controller::saveRobbie(Robbie &rob, string robbie_path) {
+    int score = int(rob.averScore);
+    robbie_path += to_string(score) + ".txt";
+    ofstream fp;
+    fp.open(robbie_path);
+    for (int i = 0; i < rob.gene_len; i++) {
+        if (i % 81 == 0 && i != 0) {
+            fp << "\n";
+        }
+        fp << rob.genes[i];
+    }
+    fp.close();
+    cout << robbie_path << " saved." << endl;
+}
 
 int Controller::getIndex(float random_index) {
     int i = 0;
