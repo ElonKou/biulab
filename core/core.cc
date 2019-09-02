@@ -5,7 +5,7 @@
 // Date   :Sat 23 Feb 2019 02:53:10 PM CST
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#include "xx.hpp"
+#include "core.hh"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -14,7 +14,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include "lib.hpp"
+#include "lib.hh"
 using namespace std;
 #define random(x) (rand() % x)
 
@@ -230,7 +230,7 @@ Map::Map() {
         for (int j = 0; j < size.x; j++) {
             map[i][j] = EMPTY;
             target[i][j] = EMPTY;
-            path[i][j] = EMPTY;
+            path[i][j] = PATH_EMPTY;
         }
     }
     for (int i = 0; i < size.y; i++) {
@@ -278,7 +278,7 @@ Map::Map() {
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
             if (map[i][j] == EDGE) {
-                path[i][j] = EMPTY;
+                path[i][j] = -EDGE;
             }
         }
     }
@@ -412,11 +412,11 @@ void Map::drawFrame(PlayActions act, int *gene) {
     for (int i = size.y - 1; i >= 0; i--) {
         for (int j = 0; j < size.x; j++) {
             // printf("%d ", target[i][j]);
-            if (path[i][j] != 0) {
+            if (path[i][j] != PATH_EMPTY) {
                 if (path[i][j] == -EDGE) {
                     printSucceed("▓▓");
                 } else {
-                    int act_num = path[i][j] - 1;
+                    int act_num = path[i][j];
                     // strin xx = "";
                     switch (act_num) {
                         case UP:
@@ -456,10 +456,10 @@ void Map::drawFrame(PlayActions act, int *gene) {
                 }
             }
         }
-        printf("  ");
+        printf("   ");
         int len = GENE_LEN / 3;
         for (int j = 0; j < len; j++) {
-            int xx = i * len + j;
+            int xx = (size.y - 1 - i) * len + j;
             if (xx < GENE_LEN) {
                 if (xx == act.hash) {
                     printError(gene[xx]);
@@ -476,6 +476,23 @@ void Map::drawFrame(PlayActions act, int *gene) {
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Controller::Controller()
+    : loop_cnt(LOOP_CNT),
+      loop_controller(LOOP_CONTROLLER),
+      loop_one(LOOP_CNT),
+      map_cnt(0),
+      robbie_cnt(ROBBIE_CNT),
+      max_histyory(-1000.0),
+      save_path("") {
+    // init controller
+    float res[ROBBIE_CNT];
+    float res_ori[ROBBIE_CNT];
+    for (int i = 0; i < ROBBIE_CNT; i++) {
+        robbies[i] = Robbie();
+        scores[i] = 0.0;
+        scores_tf[i] = 0.0;
+    }
+}
 Controller::Controller(string save_path)
     : loop_cnt(LOOP_CNT),
       loop_controller(LOOP_CONTROLLER),
@@ -558,15 +575,16 @@ void Controller::print_str() {
 void Controller::playScreen(Robbie &rob, Map &map) {
     PlayActions act;
     for (int i = 0; i < LOOP_CNT; i++) {
+        print_str();
         int result = 0;
         int hash = map.getHash(rob.pos);
         int action = rob.getAction(hash);
         usleep(100000);
         act.hash = hash;
-        act.actions[i] = action + 1;
+        act.actions[i] = action;
         act.positions[i] = rob.pos;
         map.drawFrame(act, rob.genes);
-        cout << i << " : " << rob.score << endl;
+        cout << i << " : " << rob.score << "hash:" << hash << endl;
         while (action == RANDOM) {
             action = randomInt(STR_CNT);
         }
@@ -604,17 +622,19 @@ Robbie Controller::loadRobbie(string robbie_path) {
 }
 void Controller::saveRobbie(Robbie &rob, string robbie_path) {
     int score = int(rob.averScore);
-    robbie_path += to_string(score) + ".txt";
-    ofstream fp;
-    fp.open(robbie_path);
-    for (int i = 0; i < rob.gene_len; i++) {
-        if (i % 81 == 0 && i != 0) {
-            fp << "\n";
+    if(save_path != ""){
+        robbie_path += to_string(score) + ".txt";
+        ofstream fp;
+        fp.open(robbie_path);
+        for (int i = 0; i < rob.gene_len; i++) {
+            if (i % 81 == 0 && i != 0) {
+                fp << "\n";
+            }
+            fp << rob.genes[i];
         }
-        fp << rob.genes[i];
+        fp.close();
+        cout << robbie_path << " saved." << endl;
     }
-    fp.close();
-    cout << robbie_path << " saved." << endl;
 }
 
 int Controller::getIndex(float random_index) {

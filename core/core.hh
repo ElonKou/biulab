@@ -23,7 +23,8 @@
 #define EDGE 2          // 边界标志
 #define RUBBISH 1       // 物体标志
 #define EMPTY 0         // 空的标志
-#define WALL_CNT 10     // 空的标志
+#define WALL_CNT 2      // 墙壁数量
+#define PATH_EMPTY -1   // 路径空标志
 
 #define LOOP_CONTROLLER 10000  // 代数
 #define PUNISHMENT_EDGE -5     // 撞墙惩罚
@@ -127,6 +128,7 @@ class Controller {
         int robbie_id;
         int map_id;
     };
+    Controller();
     Controller(string save_path);
     ~Controller();
     int loop_controller;
