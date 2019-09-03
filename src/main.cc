@@ -19,6 +19,7 @@ static void ShowExampleMenuFile();
 static void ShowExampleAppMainMenuBar();
 
 int main() {
+    windowView view;
     // Controller con;
     // con.loop();
     // con.print();
@@ -35,20 +36,18 @@ int main() {
     // mp.print(rob.start);
     // con.playScreen(rob, mp);
 
-    GLFWwindow* window = init_window();
-    load_font();
-    set_GL(window);
-    // set_dark_theme();
-    set_new_theme();
-    // set_white_theme();
+    // GLFWwindow* window = init_window();
+    // load_font();
+    // set_GL(window);
+    // set_new_theme();
 
-    bool my_tool_active = true;
-    bool show_demo_window = true;
-    bool show_app_main_menu_bar = true;
-    bool show_overlay_bar = true;
+    // bool my_tool_active = true;
+    // bool show_demo_window = true;
+    // bool show_app_main_menu_bar = true;
+    // bool show_overlay_bar = true;
 
     // Drawing
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(view.window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwPollEvents();
 
@@ -64,15 +63,11 @@ int main() {
         //     cout << my_tool_active << endl;
         // }
         // ImGui::End();
-        if (show_demo_window) {
-            ImGui::ShowDemoWindow(&show_demo_window);
-        }
-        ShowMainMenuBar();
-        ShowOverlay(&show_overlay_bar);
+        view.drawWindow();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(view.window);
     }
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

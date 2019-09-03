@@ -7,13 +7,35 @@
 #include "../imgui/imgui_impl_opengl3.h"
 #include "../imgui/imgui_internal.h"
 
-void key_back(GLFWwindow* window, int key, int scanmode, int action, int mode) {
+windowView::windowView() {
+    window = init_window();
+    load_font();
+    set_GL(window);
+    set_new_theme();
+}
+
+windowView::~windowView() {}
+
+void windowView::drawWindow() {
+    if (show_main_menu_bar) {
+        ShowMainMenuBar();
+    }
+    if (show_demo_window) {
+        ImGui::ShowDemoWindow(&show_demo_window);
+    }
+    if (show_overlay_bar) {
+        ShowOverlay(&show_overlay_bar);
+    }
+}
+
+void windowView::key_back(GLFWwindow* window, int key, int scanmode, int action,
+                          int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
 }
 
-GLFWwindow* init_window() {
+GLFWwindow* windowView::init_window() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -37,16 +59,17 @@ GLFWwindow* init_window() {
     return window;
 }
 
-void set_GL(GLFWwindow* window) {
+void windowView::set_GL(GLFWwindow* window) {
     glClearColor(0.12, 0.12, 0.12, 1.0);
     const char* glsl_version = "#version 130";
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
-void load_font() {
+void windowView::load_font() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
+    // io.DeltaTime = 1.0f / 30.0f;
     (void)io;
     io.Fonts->AddFontFromFileTTF(
         "./fonts/YaHei.Consolas.1.12.ttf", 18.0f, NULL,
@@ -54,7 +77,7 @@ void load_font() {
     io.Fonts->Fonts[0]->DisplayOffset = ImVec2(0, -1);
 }
 
-void set_new_theme() {
+void windowView::set_new_theme() {
     ImGuiStyle* style = &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
 
@@ -128,7 +151,7 @@ void set_new_theme() {
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void set_white_theme() {
+void windowView::set_white_theme() {
     ImGuiStyle* style = &ImGui::GetStyle();
     style->WindowPadding = ImVec2(10.0f, 10.0f);
     style->WindowRounding = 5.0f;
@@ -200,7 +223,7 @@ void set_white_theme() {
         ImVec4(0.00f, 0.00f, 0.00f, 0.35f);
 }
 
-void set_dark_theme() {
+void windowView::set_dark_theme() {
     ImGuiStyle* style = &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
 
@@ -258,7 +281,7 @@ void set_dark_theme() {
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void ShowHelpMarker(const char* desc) {
+void windowView::ShowHelpMarker(const char* desc) {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
@@ -269,7 +292,7 @@ void ShowHelpMarker(const char* desc) {
     }
 }
 
-void ShowMenuFile() {
+void windowView::ShowMenuFile() {
     if (ImGui::MenuItem("New")) {
     }
     if (ImGui::MenuItem("Open", "Ctrl+O")) {
@@ -313,7 +336,7 @@ void ShowMenuFile() {
     }
 }
 
-void ShowMainMenuBar() {
+void windowView::ShowMainMenuBar() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             ShowMenuFile();
@@ -333,24 +356,24 @@ void ShowMainMenuBar() {
             }
             ImGui::EndMenu();
         }
-        if(ImGui::BeginMenu("View")){
-            if(ImGui::MenuItem("Editor")){
+        if (ImGui::BeginMenu("View")) {
+            if (ImGui::MenuItem("Editor")) {
             }
-            if(ImGui::MenuItem("Display")){
+            if (ImGui::MenuItem("Display")) {
             }
-            if(ImGui::MenuItem("Status")){
+            if (ImGui::MenuItem("Status")) {
             }
             ImGui::Separator();
-            if(ImGui::MenuItem("Version")){
+            if (ImGui::MenuItem("Version")) {
             }
             ImGui::EndMenu();
         }
-        if(ImGui::BeginMenu("Theme")){
-            if(ImGui::MenuItem("Dark theme")){
+        if (ImGui::BeginMenu("Theme")) {
+            if (ImGui::MenuItem("Dark theme")) {
             }
-            if(ImGui::MenuItem("Light theme")){
+            if (ImGui::MenuItem("Light theme")) {
             }
-            if(ImGui::MenuItem("Github theme")){
+            if (ImGui::MenuItem("Github theme")) {
             }
             ImGui::EndMenu();
         }
@@ -358,15 +381,14 @@ void ShowMainMenuBar() {
             if (ImGui::MenuItem("Simple")) {
             }
             ImGui::SameLine();
-            ShowHelpMarker(
-                "This is a simple text for help.");
+            ShowHelpMarker("This is a simple text for help.");
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
 }
 
-void ShowOverlay(bool* p_open) {
+void windowView::ShowOverlay(bool* p_open) {
     const float DISTANCE_X = 10.0f;
     const float DISTANCE_Y = 30.0f;
     static int corner = 1;
@@ -390,6 +412,7 @@ void ShowOverlay(bool* p_open) {
             "in the corner of the screen.\n"
             "(right-click to change position)");
         ImGui::Separator();
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         if (ImGui::IsMousePosValid())
             ImGui::Text("Mouse Position: (%.1f,%.1f)",
                         ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
