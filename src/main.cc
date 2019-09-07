@@ -41,28 +41,15 @@ int main() {
     // set_GL(window);
     // set_new_theme();
 
-    // bool my_tool_active = true;
-    // bool show_demo_window = true;
-    // bool show_app_main_menu_bar = true;
-    // bool show_overlay_bar = true;
 
     // Drawing
     while (!glfwWindowShouldClose(view.window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwPollEvents();
-
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        // Draw window
-        // ImGui::Begin("Tools", &my_tool_active, 0);
-        // ImGui::Text("Hello from another window!");
-        // ImGui::Text("Hello, world %d", 123);
-        // if (ImGui::Button("Save")) {
-        //     // do stuff
-        //     cout << my_tool_active << endl;
-        // }
-        // ImGui::End();
+
         view.drawWindow();
 
         ImGui::Render();
@@ -71,9 +58,6 @@ int main() {
     }
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    // glDeleteVertexArrays(1, &VAO);
-    // glDeleteBuffers(1, &VBO);
-    // glDeleteBuffers(1, &EBO);
     glfwTerminate();
     return 0;
 }

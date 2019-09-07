@@ -74,6 +74,7 @@ class Robbie {
     int genes[GENE_LEN];
     int mutate_all;
     int mutate_val;
+    
     void init();
     void randomPos();
     void clear();
@@ -85,7 +86,7 @@ class Robbie {
     int move(int action, Map &map);
     int pick(int action, Map &map);
     void play(Map &map);
-    void playOne();
+    void playOne(int cnt);
     void print();
     int getScore();
     int getAction(int hash);
@@ -132,10 +133,8 @@ class Controller {
     Controller(string save_path);
     ~Controller();
     int loop_controller;
-    int loop_one;
-    int loop_cnt;
+    int loop_map;
     int robbie_cnt;
-    int map_cnt;
     float max_histyory;
     string save_path;
     // Map map;

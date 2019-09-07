@@ -7,24 +7,38 @@
 #include "../imgui/imgui_impl_opengl3.h"
 #include "../imgui/imgui_internal.h"
 
+using namespace std;
+
+bool windowView::show_demo_window = false;
+bool windowView::show_main_menu_bar = true;
+bool windowView::show_overlay_bar = true;
+bool windowView::show_control_window = true;
+bool windowView::show_display_window = true;
+
 windowView::windowView() {
-    window = init_window();
-    load_font();
-    set_GL(window);
-    set_new_theme();
+    window = initWindow();
+    loadFont();
+    setGL(window);
+    setNewTheme();
 }
 
 windowView::~windowView() {}
 
 void windowView::drawWindow() {
     if (show_main_menu_bar) {
-        ShowMainMenuBar();
+        showMainMenuBar();
     }
     if (show_demo_window) {
         ImGui::ShowDemoWindow(&show_demo_window);
     }
     if (show_overlay_bar) {
-        ShowOverlay(&show_overlay_bar);
+        showOverlay();
+    }
+    if (show_control_window) {
+        showControlWindow();
+    }
+    if (show_display_window) {
+        showDisplayWindow();
     }
 }
 
@@ -33,9 +47,15 @@ void windowView::key_back(GLFWwindow* window, int key, int scanmode, int action,
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
+    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+        show_control_window = !show_control_window;
+    }
+    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        show_display_window = !show_display_window;
+    }
 }
 
-GLFWwindow* windowView::init_window() {
+GLFWwindow* windowView::initWindow() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -59,14 +79,14 @@ GLFWwindow* windowView::init_window() {
     return window;
 }
 
-void windowView::set_GL(GLFWwindow* window) {
+void windowView::setGL(GLFWwindow* window) {
     glClearColor(0.12, 0.12, 0.12, 1.0);
     const char* glsl_version = "#version 130";
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
-void windowView::load_font() {
+void windowView::loadFont() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     // io.DeltaTime = 1.0f / 30.0f;
@@ -77,7 +97,7 @@ void windowView::load_font() {
     io.Fonts->Fonts[0]->DisplayOffset = ImVec2(0, -1);
 }
 
-void windowView::set_new_theme() {
+void windowView::setNewTheme() {
     ImGuiStyle* style = &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
 
@@ -85,7 +105,7 @@ void windowView::set_new_theme() {
     style->WindowRounding = 6.0f;
     style->WindowBorderSize = 0.0f;
     style->WindowTitleAlign = ImVec2(0.00, 0.37);
-    style->FramePadding = ImVec2(11, 3);
+    style->FramePadding = ImVec2(5, 3);
     style->FrameRounding = 0.0f;
     style->PopupBorderSize = 0.0f;
     style->ChildBorderSize = 0.0f;
@@ -128,9 +148,9 @@ void windowView::set_new_theme() {
     colors[ImGuiCol_Header] = ImVec4(0.50f, 0.50f, 0.50f, 0.31f);
     colors[ImGuiCol_HeaderHovered] = ImVec4(0.67f, 0.67f, 0.67f, 0.80f);
     colors[ImGuiCol_HeaderActive] = ImVec4(0.63f, 0.63f, 0.64f, 1.00f);
-    colors[ImGuiCol_Separator] = ImVec4(0.43f, 0.43f, 0.43f, 0.50f);
-    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.56f, 0.56f, 0.56f, 0.78f);
-    colors[ImGuiCol_SeparatorActive] = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
+    colors[ImGuiCol_Separator] = ImVec4(0.03f, 0.03f, 0.04f, 0.50f);
+    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.03f, 0.03f, 0.04f, 0.78f);
+    colors[ImGuiCol_SeparatorActive] = ImVec4(0.04f, 0.04f, 0.05f, 1.00f);
     colors[ImGuiCol_ResizeGrip] = ImVec4(0.50f, 0.51f, 0.52f, 0.25f);
     colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.64f, 0.64f, 0.64f, 0.67f);
     colors[ImGuiCol_ResizeGripActive] = ImVec4(0.68f, 0.68f, 0.68f, 0.95f);
@@ -151,7 +171,7 @@ void windowView::set_new_theme() {
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void windowView::set_white_theme() {
+void windowView::setWhiteTheme() {
     ImGuiStyle* style = &ImGui::GetStyle();
     style->WindowPadding = ImVec2(10.0f, 10.0f);
     style->WindowRounding = 5.0f;
@@ -223,7 +243,7 @@ void windowView::set_white_theme() {
         ImVec4(0.00f, 0.00f, 0.00f, 0.35f);
 }
 
-void windowView::set_dark_theme() {
+void windowView::setDarkTheme() {
     ImGuiStyle* style = &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
 
@@ -281,7 +301,7 @@ void windowView::set_dark_theme() {
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void windowView::ShowHelpMarker(const char* desc) {
+void windowView::showHelpMarker(const char* desc) {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
@@ -292,7 +312,7 @@ void windowView::ShowHelpMarker(const char* desc) {
     }
 }
 
-void windowView::ShowMenuFile() {
+void windowView::showMenuFile() {
     if (ImGui::MenuItem("New")) {
     }
     if (ImGui::MenuItem("Open", "Ctrl+O")) {
@@ -336,10 +356,10 @@ void windowView::ShowMenuFile() {
     }
 }
 
-void windowView::ShowMainMenuBar() {
+void windowView::showMainMenuBar() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
-            ShowMenuFile();
+            showMenuFile();
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit")) {
@@ -357,11 +377,14 @@ void windowView::ShowMainMenuBar() {
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
-            if (ImGui::MenuItem("Editor")) {
+            if (ImGui::MenuItem("Control")) {
+                show_control_window = !show_control_window;
             }
             if (ImGui::MenuItem("Display")) {
+                show_display_window = !show_display_window;
             }
             if (ImGui::MenuItem("Status")) {
+                show_overlay_bar = !show_overlay_bar;
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Version")) {
@@ -381,14 +404,14 @@ void windowView::ShowMainMenuBar() {
             if (ImGui::MenuItem("Simple")) {
             }
             ImGui::SameLine();
-            ShowHelpMarker("This is a simple text for help.");
+            showHelpMarker("This is a simple text for help.");
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
 }
 
-void windowView::ShowOverlay(bool* p_open) {
+void windowView::showOverlay() {
     const float DISTANCE_X = 10.0f;
     const float DISTANCE_Y = 30.0f;
     static int corner = 1;
@@ -401,20 +424,19 @@ void windowView::ShowOverlay(bool* p_open) {
         ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     ImGui::SetNextWindowBgAlpha(0.3f);
     if (ImGui::Begin(
-            "Example: Simple overlay", p_open,
+            "Example: Simple overlay", &show_overlay_bar,
             (corner != -1 ? ImGuiWindowFlags_NoMove : 0) |
                 ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_AlwaysAutoResize |
                 ImGuiWindowFlags_NoSavedSettings |
                 ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav)) {
-        ImGui::Text(
-            "Simple overlay\n"
-            "in the corner of the screen.\n"
-            "(right-click to change position)");
+        ImGui::Text("Keymap:");
+        ImGui::Text("C : Open control panel.");
+        ImGui::Text("D : Open display panel.");
         ImGui::Separator();
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Text("Application FPS: %.1f.", ImGui::GetIO().Framerate);
         if (ImGui::IsMousePosValid())
-            ImGui::Text("Mouse Position: (%.1f,%.1f)",
+            ImGui::Text("Mouse Position: (%6.1f,%6.1f)",
                         ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
         else
             ImGui::Text("Mouse Position: <invalid>");
@@ -424,9 +446,130 @@ void windowView::ShowOverlay(bool* p_open) {
             if (ImGui::MenuItem("Top-right", NULL, corner == 1)) corner = 1;
             if (ImGui::MenuItem("Bottom-left", NULL, corner == 2)) corner = 2;
             if (ImGui::MenuItem("Bottom-right", NULL, corner == 3)) corner = 3;
-            if (p_open && ImGui::MenuItem("Close")) *p_open = false;
+            if (show_overlay_bar && ImGui::MenuItem("Close"))
+                show_overlay_bar = false;
             ImGui::EndPopup();
         }
     }
+    ImGui::End();
+}
+
+void windowView::showControlWindow() {
+    // Draw Control window
+    static int loop_controller = 10000;
+    static int loop_map = 10;
+    static int max_histyory = -1000;
+    static bool save_result = true;
+    static char save_path[256] = "~/ELONKOU/03.GENETIC/genetic/results";
+
+    static float mutate_rate = 0.005;
+    static int robbie_cnt = 200;
+
+    static int width_height[2] = {16, 16};
+    ImGui::Begin("Control", &show_control_window, 0);
+
+    ImGui::BeginGroup();
+    ImGui::BeginChild("item view",
+                      ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+    ImGui::Text("The control panel");
+    if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+        if (ImGui::BeginTabItem("Control params")) {
+            // controller data
+            ImGui::Text("Controller:");
+            ImGui::SliderInt("loop controller", &loop_controller, 1, 40000);
+            ImGui::SameLine();
+            showHelpMarker("control all loop control for all robbies.");
+
+            ImGui::SliderInt("loop map", &loop_map, 1, 200);
+            ImGui::SameLine();
+            showHelpMarker("Map count for every robbie play.");
+
+            ImGui::SliderInt("Max histyory", &max_histyory, -2000, 1000);
+            ImGui::SameLine();
+            showHelpMarker("max_histyory.");
+
+            ImGui::Checkbox("Save Gene", &save_result);
+            ImGui::InputText("Save path", save_path, IM_ARRAYSIZE(save_path));
+            ImGui::SameLine();
+            showHelpMarker("save modle.");
+            ImGui::Separator();
+
+            // Robbie data
+            ImGui::Text("Robbie");
+            ImGui::SliderFloat("mutate rate", &mutate_rate, 0.0, 0.1);
+            ImGui::SameLine();
+            showHelpMarker("Mutate rate for robbies");
+
+            ImGui::SliderInt("robbie cnt", &robbie_cnt, 1, 400);
+            ImGui::SameLine();
+            showHelpMarker("Robbies count for erery generation.");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Edit gene")) {
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Edit Map")) {
+            // Map edit
+            ImGui::SliderInt2("W&H", width_height, 8, 100);
+            ImGui::SameLine();
+            showHelpMarker("Map width and height.");
+            ImGui::Button(" + ");
+            ImGui::SameLine();
+            ImGui::Button(" - ");
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
+    ImGui::EndChild();
+    if (ImGui::Button("run")) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("stop")) {
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("step")) {
+    }
+    ImGui::EndGroup();
+
+    ImGui::End();
+}
+
+void windowView::showDisplayWindow() {
+    ImGui::SetNextWindowBgAlpha(0.3f);
+    if (ImGui::Begin("Display", &show_display_window, 0)) {
+        static int selected = 0;
+
+        // right
+        ImGui::BeginChild("DSAD", ImVec2(200, 0), true);
+        for (int i = 0; i < 10; i++) {
+            char DS[128];
+            sprintf(DS, "MyObject %d", i);
+            if (ImGui::Selectable(DS, selected == i)) selected = i;
+        }
+        ImGui::EndChild();
+        ImGui::SameLine();
+        // left
+        ImGui::BeginGroup();
+        ImGui::BeginChild("item view", ImVec2(0, 0));
+        ImGui::Separator();
+        if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
+            if (ImGui::BeginTabItem("Description")) {
+                ImGui::TextWrapped(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing ");
+                ImGui::TextWrapped(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing ");
+                ImGui::Text(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing ");
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Details")) {
+                ImGui::Text("ID: 0123456789");
+                ImGui::EndTabItem();
+            }
+            ImGui::EndTabBar();
+        }
+        ImGui::EndChild();
+        ImGui::EndGroup();
+    };
     ImGui::End();
 }

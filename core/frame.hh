@@ -14,26 +14,30 @@ class windowView {
    public:
     GLFWwindow* window;
 
-    bool show_demo_window = true;
-    bool show_main_menu_bar = true;
-    bool show_overlay_bar = true;
+    static bool show_demo_window;
+    static bool show_main_menu_bar;
+    static bool show_overlay_bar;
+    static bool show_control_window;
+    static bool show_display_window;
 
     windowView();
     ~windowView();
 
     void drawWindow();
 
-    GLFWwindow* init_window();
-    void load_font();
-    void set_GL(GLFWwindow* window);
-    void set_white_theme();
-    void set_dark_theme();
-    void set_new_theme();
+    GLFWwindow* initWindow();
+    void loadFont();
+    void setGL(GLFWwindow* window);
+    void setWhiteTheme();
+    void setDarkTheme();
+    void setNewTheme();
 
-    void ShowMenuFile();
-    void ShowMainMenuBar();
-    void ShowOverlay(bool* p_open);
-    void ShowHelpMarker(const char* desc);
+    void showMenuFile();
+    void showMainMenuBar();
+    void showControlWindow();
+    void showDisplayWindow();
+    void showOverlay();
+    void showHelpMarker(const char* desc);
 
     static void key_back(GLFWwindow* window, int key, int scanmode, int action,
                          int mode);

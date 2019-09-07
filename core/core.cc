@@ -181,15 +181,15 @@ void Robbie::play(Map &map) {
     // map.cleanTarget();
 }
 
-void Robbie::playOne() {
+void Robbie::playOne(int cnt) {
     int res = 0;
-    for (int i = 0; i < LOOP_MAP; i++) {
+    for (int i = 0; i < cnt; i++) {
         Map mp = Map();
         play(mp);
         res += getScore();
         score = 0;
     }
-    averScore = res * 1.0 / LOOP_MAP;
+    averScore = res * 1.0 / cnt;
 }
 
 int Robbie::move(int action, Map &map) {
@@ -477,10 +477,8 @@ void Map::drawFrame(PlayActions act, int *gene) {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Controller::Controller()
-    : loop_cnt(LOOP_CNT),
+    : loop_map(LOOP_MAP),
       loop_controller(LOOP_CONTROLLER),
-      loop_one(LOOP_CNT),
-      map_cnt(0),
       robbie_cnt(ROBBIE_CNT),
       max_histyory(-1000.0),
       save_path("") {
@@ -494,10 +492,8 @@ Controller::Controller()
     }
 }
 Controller::Controller(string save_path)
-    : loop_cnt(LOOP_CNT),
+    : loop_map(LOOP_MAP),
       loop_controller(LOOP_CONTROLLER),
-      loop_one(LOOP_CNT),
-      map_cnt(0),
       robbie_cnt(ROBBIE_CNT),
       max_histyory(-1000.0),
       save_path(save_path) {
@@ -513,9 +509,9 @@ Controller::Controller(string save_path)
 Controller::~Controller() {}
 
 void Controller::train() {
-    for (int k = 0; k < LOOP_CONTROLLER; k++) {
-        for (int i = 0; i < ROBBIE_CNT; i++) {
-            robbies[i].playOne();
+    for (int k = 0; k < loop_controller; k++) {
+        for (int i = 0; i < robbie_cnt; i++) {
+            robbies[i].playOne(loop_map);
             scores[i] = robbies[i].averScore;
             scores_tf[i] = robbies[i].averScore;
             if (k < 1000) {
