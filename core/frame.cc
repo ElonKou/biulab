@@ -6,6 +6,7 @@
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
 #include "../imgui/imgui_internal.h"
+#include "core.hh"
 
 using namespace std;
 
@@ -24,11 +25,21 @@ ImGuiDockNodeFlags windowView::dockspace_flags =
     ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode |
     ImGuiDockNodeFlags_NoWindowMenuButton;
 
+#define WIDTH_ 150
+#define HEIGHT_ 80
+
+static float arr[HEIGHT_][WIDTH_];
+
 windowView::windowView() {
     window = initWindow();
     loadFont();
     setGL(window);
     setNewTheme();
+    for (int i = 0; i < HEIGHT_; i++) {
+        for (int j = 0; j < WIDTH_; j++) {
+            arr[i][j] = randomFloat() * 0.2 + 0.3;
+        }
+    }
 }
 
 windowView::~windowView() {}
@@ -455,7 +466,7 @@ void windowView::showMainMenuBar() {
 
 void windowView::showOverlay() {
     ImGui::SetNextWindowBgAlpha(0.3f);
-    if (ImGui::Begin("Example: Simple overlay", &show_overlay_bar)) {
+    if (ImGui::Begin("Example: Simple overlay", &show_overlay_bar, 0)) {
         ImGui::Text("Keymap:");
         ImGui::Text("C : Open control panel.");
         ImGui::Text("D : Open display panel.");
@@ -471,19 +482,17 @@ void windowView::showOverlay() {
 }
 
 void windowView::showInspector() {
-    if (ImGui::Begin("Inspector", &show_inspector_window)) {
-        // right
+    if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
         static int selected = 0;
-        ImGui::BeginChild("DSAD", ImVec2(0, 0), true);
+        ImGui::BeginChild("DSAD", ImVec2(0, 0), 0);
         for (int i = 0; i < 10; i++) {
             char DS[128];
             sprintf(DS, "MyObject %d", i);
             if (ImGui::Selectable(DS, selected == i)) selected = i;
         }
         ImGui::EndChild();
-        ImGui::SameLine();
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void windowView::showGraph() {
@@ -524,9 +533,8 @@ void windowView::showGraph() {
             static float Sin(void*, int i) { return sinf(i * 0.1f); }
             static float Saw(void*, int i) { return (i & 1) ? 1.0f : -1.0f; }
         };
-
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void windowView::showControlWindow() {
@@ -544,7 +552,6 @@ void windowView::showControlWindow() {
     static int map_height = 16;
     ImGui::Begin("Control", &show_control_window, 0);
 
-    ImGui::BeginGroup();
     ImGui::BeginChild("item view",
                       ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
     if (ImGui::TreeNode("Controller")) {
@@ -576,9 +583,6 @@ void windowView::showControlWindow() {
         showHelpMarker("Robbies count for erery generation.");
         ImGui::TreePop();
     }
-    // if (ImGui::TreeNode("Gene")) {
-    //     ImGui::TreePop();
-    // }
     if (ImGui::TreeNode("Map")) {
         ImGui::InputInt("Width", &map_width, 1, 2);
         ImGui::InputInt("Height", &map_height, 1, 2);
@@ -595,49 +599,42 @@ void windowView::showControlWindow() {
     ImGui::SameLine();
     if (ImGui::Button("step")) {
     }
-    ImGui::EndGroup();
 
     ImGui::End();
 }
 
 void windowView::showDisplayWindow() {
-    ImGui::SetNextWindowBgAlpha(0.3f);
-    if (ImGui::Begin("Display", &show_display_window, 0)) {
-        int WIDTH_ = 26;
-        int HEIGHT_ = 36;
-        static float sc = 6.28 * 2 / WIDTH_;
-        sc += 0.001;
-        for (int i = 0; i < HEIGHT_; i++) {
-            for (int j = 0; j < WIDTH_; j++) {
-                ImGui::PushID(i);
-                float h = 0.6;
-                float s = 0.8;
-                // float h = sin((i + j) * sc);
-                // float s = cos((i + j) * sc);
-                // float s = cos(i * j * sc);
-                float v = 0.4;
-                ImGui::PushStyleColor(ImGuiCol_Button,
-                                      (ImVec4)ImColor::HSV(h, s, v));
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-                                      (ImVec4)ImColor::HSV(h, s, v + 0.1));
-                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-                                      (ImVec4)ImColor::HSV(h, s, v + 0.2));
-                ImGui::SmallButton(" ");
-                ImGui::PopStyleColor(3);
-                ImGui::PopID();
-                if (j != WIDTH_ - 1) {
-                    ImGui::SameLine();
-                }
+    // ImGui::SetNextWindowBgAlpha(0.3f);
+
+    if (ImGui::Begin("Display Panel", &show_display_window, 0)) {
+        static float bsize = 6.0f;
+        static float threshold = 0.5f;
+
+        ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
+        auto savePos = ImGui::GetCursorScreenPos();
+        auto drawList = ImGui::GetWindowDrawList();
+
+        for (int i = 0; i < HEIGHT_; ++i) {
+            for (int j = 0; j < WIDTH_; ++j) {
+                float col = arr[i][j];
+                ImVec2 p0 = {savePos.x + j * bsize, savePos.y + i * bsize};
+                ImVec2 p1 = {savePos.x + (j + 1) * bsize - 1.0f,
+                             savePos.y + (i + 1) * bsize - 1.0f};
+                drawList->AddRectFilled(
+                    p0, p1,
+                    ImGui::ColorConvertFloat4ToU32({1.0f, 1.0f, 1.0f, col}));
             }
         }
-    };
+        ImGui::EndChild();
+    }
     ImGui::End();
 }
 
 void windowView::showNodeWindow() {
     if (ImGui::Begin("Node View", &show_node_window, 0)) {
+        ImGui::BeginChild("Canvas", {0, 0}, 1, 0);
         ImGui::Text("This view display for show node connections of robbies.");
-        // ImGui::End();
+        ImGui::EndChild();
     }
     ImGui::End();
 }
