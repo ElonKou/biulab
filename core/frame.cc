@@ -9,11 +9,20 @@
 
 using namespace std;
 
+bool windowView::show_dock_sapce = true;
+bool windowView::show_main_window = true;
 bool windowView::show_demo_window = false;
 bool windowView::show_main_menu_bar = true;
 bool windowView::show_overlay_bar = true;
 bool windowView::show_control_window = true;
 bool windowView::show_display_window = true;
+bool windowView::show_graph_window = true;
+bool windowView::show_node_window = true;
+bool windowView::show_inspector_window = true;
+
+ImGuiDockNodeFlags windowView::dockspace_flags =
+    ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode |
+    ImGuiDockNodeFlags_NoWindowMenuButton;
 
 windowView::windowView() {
     window = initWindow();
@@ -25,6 +34,9 @@ windowView::windowView() {
 windowView::~windowView() {}
 
 void windowView::drawWindow() {
+    if (show_dock_sapce) {
+        showDcokSpace();
+    }
     if (show_main_menu_bar) {
         showMainMenuBar();
     }
@@ -37,8 +49,17 @@ void windowView::drawWindow() {
     if (show_control_window) {
         showControlWindow();
     }
+    if (show_node_window) {
+        showNodeWindow();
+    }
     if (show_display_window) {
         showDisplayWindow();
+    }
+    if (show_inspector_window) {
+        showInspector();
+    }
+    if (show_graph_window) {
+        showGraph();
     }
 }
 
@@ -47,12 +68,12 @@ void windowView::key_back(GLFWwindow* window, int key, int scanmode, int action,
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
-        show_control_window = !show_control_window;
-    }
-    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-        show_display_window = !show_display_window;
-    }
+    // if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+    //     show_control_window = !show_control_window;
+    // }
+    // if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+    //     show_display_window = !show_display_window;
+    // }
 }
 
 GLFWwindow* windowView::initWindow() {
@@ -89,6 +110,7 @@ void windowView::setGL(GLFWwindow* window) {
 void windowView::loadFont() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     // io.DeltaTime = 1.0f / 30.0f;
     (void)io;
     io.Fonts->AddFontFromFileTTF(
@@ -102,21 +124,21 @@ void windowView::setNewTheme() {
     ImVec4* colors = style->Colors;
 
     style->WindowPadding = ImVec2(8, 4);
-    style->WindowRounding = 6.0f;
+    style->WindowRounding = 0.0f;
     style->WindowBorderSize = 0.0f;
     style->WindowTitleAlign = ImVec2(0.00, 0.37);
     style->FramePadding = ImVec2(5, 3);
-    style->FrameRounding = 0.0f;
+    style->FrameRounding = 4.0f;
     style->PopupBorderSize = 0.0f;
     style->ChildBorderSize = 0.0f;
-    style->ChildRounding = 5.0f;
+    style->ChildRounding = 0.0f;
     style->ItemSpacing = ImVec2(8, 4);
-    style->ItemInnerSpacing = ImVec2(2, 4);
-    style->IndentSpacing = 16.0f;
+    style->ItemInnerSpacing = ImVec2(4, 4);
+    style->IndentSpacing = 24.0f;
     style->ScrollbarSize = 12.0f;
     style->ScrollbarRounding = 6.0f;
     style->GrabMinSize = 8.0f;
-    style->GrabRounding = 3.0f;
+    style->GrabRounding = 2.0f;
 
     style->DisplaySafeAreaPadding = ImVec2(0.0, 0.0);
 
@@ -164,6 +186,7 @@ void windowView::setNewTheme() {
     colors[ImGuiCol_PlotHistogram] = ImVec4(0.96f, 0.77f, 0.37f, 1.00f);
     colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.95f, 0.38f, 0.40f, 1.00f);
     colors[ImGuiCol_TextSelectedBg] = ImVec4(0.44f, 0.44f, 0.44f, 0.35f);
+    colors[ImGuiCol_DockingPreview] = ImVec4(0.38f, 0.39f, 0.39f, 0.70f);
     colors[ImGuiCol_DragDropTarget] = ImVec4(0.58f, 0.58f, 0.57f, 0.90f);
     colors[ImGuiCol_NavHighlight] = ImVec4(0.80f, 0.80f, 0.80f, 1.00f);
     colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
@@ -377,6 +400,8 @@ void windowView::showMainMenuBar() {
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("View")) {
+            static bool tab_menu_button;
+            static bool tab_close_button;
             if (ImGui::MenuItem("Control")) {
                 show_control_window = !show_control_window;
             }
@@ -386,9 +411,26 @@ void windowView::showMainMenuBar() {
             if (ImGui::MenuItem("Status")) {
                 show_overlay_bar = !show_overlay_bar;
             }
-            ImGui::Separator();
-            if (ImGui::MenuItem("Version")) {
+            if (ImGui::MenuItem("Node view")) {
+                show_node_window = !show_node_window;
             }
+            if (ImGui::MenuItem("Inspector")) {
+                show_inspector_window = !show_inspector_window;
+            }
+            if (ImGui::MenuItem("Graph")) {
+                show_graph_window = !show_graph_window;
+            }
+            if (ImGui::MenuItem("Demo")) {
+                show_demo_window = !show_demo_window;
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Tab menu", NULL, &tab_menu_button)) {
+                dockspace_flags ^= ImGuiDockNodeFlags_NoWindowMenuButton;
+            }
+            if (ImGui::MenuItem("Close button", NULL, &tab_close_button)) {
+                dockspace_flags ^= ImGuiDockNodeFlags_NoCloseButton;
+            }
+
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Theme")) {
@@ -412,24 +454,8 @@ void windowView::showMainMenuBar() {
 }
 
 void windowView::showOverlay() {
-    const float DISTANCE_X = 10.0f;
-    const float DISTANCE_Y = 30.0f;
-    static int corner = 1;
-    ImVec2 window_pos = ImVec2(
-        (corner & 1) ? ImGui::GetIO().DisplaySize.x - DISTANCE_X : DISTANCE_X,
-        (corner & 2) ? ImGui::GetIO().DisplaySize.y - DISTANCE_Y : DISTANCE_Y);
-    ImVec2 window_pos_pivot =
-        ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
-    if (corner != -1)
-        ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     ImGui::SetNextWindowBgAlpha(0.3f);
-    if (ImGui::Begin(
-            "Example: Simple overlay", &show_overlay_bar,
-            (corner != -1 ? ImGuiWindowFlags_NoMove : 0) |
-                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_AlwaysAutoResize |
-                ImGuiWindowFlags_NoSavedSettings |
-                ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav)) {
+    if (ImGui::Begin("Example: Simple overlay", &show_overlay_bar)) {
         ImGui::Text("Keymap:");
         ImGui::Text("C : Open control panel.");
         ImGui::Text("D : Open display panel.");
@@ -440,18 +466,67 @@ void windowView::showOverlay() {
                         ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
         else
             ImGui::Text("Mouse Position: <invalid>");
-        if (ImGui::BeginPopupContextWindow()) {
-            if (ImGui::MenuItem("Custom", NULL, corner == -1)) corner = -1;
-            if (ImGui::MenuItem("Top-left", NULL, corner == 0)) corner = 0;
-            if (ImGui::MenuItem("Top-right", NULL, corner == 1)) corner = 1;
-            if (ImGui::MenuItem("Bottom-left", NULL, corner == 2)) corner = 2;
-            if (ImGui::MenuItem("Bottom-right", NULL, corner == 3)) corner = 3;
-            if (show_overlay_bar && ImGui::MenuItem("Close"))
-                show_overlay_bar = false;
-            ImGui::EndPopup();
-        }
     }
     ImGui::End();
+}
+
+void windowView::showInspector() {
+    if (ImGui::Begin("Inspector", &show_inspector_window)) {
+        // right
+        static int selected = 0;
+        ImGui::BeginChild("DSAD", ImVec2(0, 0), true);
+        for (int i = 0; i < 10; i++) {
+            char DS[128];
+            sprintf(DS, "MyObject %d", i);
+            if (ImGui::Selectable(DS, selected == i)) selected = i;
+        }
+        ImGui::EndChild();
+        ImGui::SameLine();
+        ImGui::End();
+    }
+}
+
+void windowView::showGraph() {
+    if (ImGui::Begin("Graph", &show_graph_window, 0)) {
+        static bool animate = false;
+        ImGui::Checkbox("Animate", &animate);
+
+        static float arr[] = {0.6f,  0.1f, 21.0f, 0.5f,
+                              0.92f, 0.1f, 0.2f,  13.0f};
+        // ImGui::PlotLines("Frame Times", arr, IM_ARRAYSIZE(arr));
+        static float values[90] = {0};
+        static int values_offset = 3;
+        static double refresh_time = 0.0;
+        if (!animate || refresh_time == 0.0) refresh_time = ImGui::GetTime();
+        while (refresh_time < ImGui::GetTime()) {
+            static float phase = 0.0f;
+            values[values_offset] = cosf(phase * 0.01);
+            values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
+            phase += 0.1f * values_offset;
+            refresh_time += 1.0f / 60.0f;
+        }
+
+        {
+            float average = 0.0f;
+            for (int n = 0; n < IM_ARRAYSIZE(values); n++) average += values[n];
+            average /= (float)IM_ARRAYSIZE(values);
+            char overlay[32];
+            sprintf(overlay, "avg %f", average);
+            ImGui::PlotLines("Lines", values, IM_ARRAYSIZE(values),
+                             values_offset, overlay, -1.0f, 1.0f,
+                             ImVec2(0, 80));
+        }
+        // ImGui::SameLine();
+        ImGui::PlotHistogram("Histogram", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f,
+                             1.0f, ImVec2(0, 50));
+
+        struct Funcs {
+            static float Sin(void*, int i) { return sinf(i * 0.1f); }
+            static float Saw(void*, int i) { return (i & 1) ? 1.0f : -1.0f; }
+        };
+
+        ImGui::End();
+    }
 }
 
 void windowView::showControlWindow() {
@@ -465,60 +540,51 @@ void windowView::showControlWindow() {
     static float mutate_rate = 0.005;
     static int robbie_cnt = 200;
 
-    static int width_height[2] = {16, 16};
+    static int map_width = 16;
+    static int map_height = 16;
     ImGui::Begin("Control", &show_control_window, 0);
 
     ImGui::BeginGroup();
     ImGui::BeginChild("item view",
                       ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
-    ImGui::Text("The control panel");
-    if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
-        if (ImGui::BeginTabItem("Control params")) {
-            // controller data
-            ImGui::Text("Controller:");
-            ImGui::SliderInt("loop controller", &loop_controller, 1, 40000);
-            ImGui::SameLine();
-            showHelpMarker("control all loop control for all robbies.");
+    if (ImGui::TreeNode("Controller")) {
+        ImGui::SliderInt("loop controller", &loop_controller, 1, 40000);
+        ImGui::SameLine();
+        showHelpMarker("control all loop control for all robbies.");
 
-            ImGui::SliderInt("loop map", &loop_map, 1, 200);
-            ImGui::SameLine();
-            showHelpMarker("Map count for every robbie play.");
+        ImGui::SliderInt("loop map", &loop_map, 1, 200);
+        ImGui::SameLine();
+        showHelpMarker("Map count for every robbie play.");
 
-            ImGui::SliderInt("Max histyory", &max_histyory, -2000, 1000);
-            ImGui::SameLine();
-            showHelpMarker("max_histyory.");
+        ImGui::SliderInt("Max histyory", &max_histyory, -2000, 1000);
+        ImGui::SameLine();
+        showHelpMarker("max_histyory.");
 
-            ImGui::Checkbox("Save Gene", &save_result);
-            ImGui::InputText("Save path", save_path, IM_ARRAYSIZE(save_path));
-            ImGui::SameLine();
-            showHelpMarker("save modle.");
-            ImGui::Separator();
+        ImGui::InputText("Save path", save_path, IM_ARRAYSIZE(save_path));
+        showHelpMarker("save modle.");
 
-            // Robbie data
-            ImGui::Text("Robbie");
-            ImGui::SliderFloat("mutate rate", &mutate_rate, 0.0, 0.1);
-            ImGui::SameLine();
-            showHelpMarker("Mutate rate for robbies");
+        ImGui::Checkbox("Save Gene", &save_result);
+        ImGui::TreePop();
+    }
+    if (ImGui::TreeNode("Robbie")) {
+        ImGui::SliderFloat("mutate rate", &mutate_rate, 0.0, 0.1);
+        ImGui::SameLine();
+        showHelpMarker("Mutate rate for robbies");
 
-            ImGui::SliderInt("robbie cnt", &robbie_cnt, 1, 400);
-            ImGui::SameLine();
-            showHelpMarker("Robbies count for erery generation.");
-            ImGui::EndTabItem();
-        }
-        if (ImGui::BeginTabItem("Edit gene")) {
-            ImGui::EndTabItem();
-        }
-        if (ImGui::BeginTabItem("Edit Map")) {
-            // Map edit
-            ImGui::SliderInt2("W&H", width_height, 8, 100);
-            ImGui::SameLine();
-            showHelpMarker("Map width and height.");
-            ImGui::Button(" + ");
-            ImGui::SameLine();
-            ImGui::Button(" - ");
-            ImGui::EndTabItem();
-        }
-        ImGui::EndTabBar();
+        ImGui::SliderInt("robbie cnt", &robbie_cnt, 1, 400);
+        ImGui::SameLine();
+        showHelpMarker("Robbies count for erery generation.");
+        ImGui::TreePop();
+    }
+    // if (ImGui::TreeNode("Gene")) {
+    //     ImGui::TreePop();
+    // }
+    if (ImGui::TreeNode("Map")) {
+        ImGui::InputInt("Width", &map_width, 1, 2);
+        ImGui::InputInt("Height", &map_height, 1, 2);
+        ImGui::SameLine();
+        showHelpMarker("Map width and height.");
+        ImGui::TreePop();
     }
     ImGui::EndChild();
     if (ImGui::Button("run")) {
@@ -537,39 +603,93 @@ void windowView::showControlWindow() {
 void windowView::showDisplayWindow() {
     ImGui::SetNextWindowBgAlpha(0.3f);
     if (ImGui::Begin("Display", &show_display_window, 0)) {
-        static int selected = 0;
-
-        // right
-        ImGui::BeginChild("DSAD", ImVec2(200, 0), true);
-        for (int i = 0; i < 10; i++) {
-            char DS[128];
-            sprintf(DS, "MyObject %d", i);
-            if (ImGui::Selectable(DS, selected == i)) selected = i;
-        }
-        ImGui::EndChild();
-        ImGui::SameLine();
-        // left
-        ImGui::BeginGroup();
-        ImGui::BeginChild("item view", ImVec2(0, 0));
-        ImGui::Separator();
-        if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None)) {
-            if (ImGui::BeginTabItem("Description")) {
-                ImGui::TextWrapped(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing ");
-                ImGui::TextWrapped(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing ");
-                ImGui::Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing ");
-                ImGui::EndTabItem();
+        int WIDTH_ = 26;
+        int HEIGHT_ = 36;
+        static float sc = 6.28 * 2 / WIDTH_;
+        sc += 0.001;
+        for (int i = 0; i < HEIGHT_; i++) {
+            for (int j = 0; j < WIDTH_; j++) {
+                ImGui::PushID(i);
+                float h = 0.6;
+                float s = 0.8;
+                // float h = sin((i + j) * sc);
+                // float s = cos((i + j) * sc);
+                // float s = cos(i * j * sc);
+                float v = 0.4;
+                ImGui::PushStyleColor(ImGuiCol_Button,
+                                      (ImVec4)ImColor::HSV(h, s, v));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                                      (ImVec4)ImColor::HSV(h, s, v + 0.1));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                      (ImVec4)ImColor::HSV(h, s, v + 0.2));
+                ImGui::SmallButton(" ");
+                ImGui::PopStyleColor(3);
+                ImGui::PopID();
+                if (j != WIDTH_ - 1) {
+                    ImGui::SameLine();
+                }
             }
-            if (ImGui::BeginTabItem("Details")) {
-                ImGui::Text("ID: 0123456789");
-                ImGui::EndTabItem();
-            }
-            ImGui::EndTabBar();
         }
-        ImGui::EndChild();
-        ImGui::EndGroup();
     };
     ImGui::End();
+}
+
+void windowView::showNodeWindow() {
+    if (ImGui::Begin("Node View", &show_node_window, 0)) {
+        ImGui::Text("This view display for show node connections of robbies.");
+        // ImGui::End();
+    }
+    ImGui::End();
+}
+
+void windowView::showDcokSpace() {
+    static bool opt_fullscreen_persistant = true;
+    bool opt_fullscreen = opt_fullscreen_persistant;
+
+    ImGuiWindowFlags window_flags =
+        ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    if (opt_fullscreen) {
+        ImGuiViewport* viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(viewport->Pos);
+        ImGui::SetNextWindowSize(viewport->Size);
+        ImGui::SetNextWindowViewport(viewport->ID);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        window_flags |= ImGuiWindowFlags_NoTitleBar |
+                        ImGuiWindowFlags_NoCollapse |
+                        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus |
+                        ImGuiWindowFlags_NoNavFocus;
+    }
+
+    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+        window_flags |= ImGuiWindowFlags_NoBackground;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::Begin("DockSpace Geneteic", &show_dock_sapce, window_flags);
+    ImGui::PopStyleVar();
+
+    if (opt_fullscreen) ImGui::PopStyleVar(2);
+
+    // DockSpace
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+    } else {
+        showDisabledMessage();
+    }
+
+    ImGui::End();
+}
+
+void windowView::showDisabledMessage() {
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::Text("ERROR: Docking is not enabled! See Demo > Configuration.");
+    ImGui::Text(
+        "Set io.ConfigFlags |= ImGuiConfigFlags_DockingEnable in your code, "
+        "or ");
+    ImGui::SameLine(0.0f, 0.0f);
+    if (ImGui::SmallButton("click here"))
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }

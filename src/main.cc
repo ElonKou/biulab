@@ -8,6 +8,7 @@
 // #include <GL/glew.h>
 // #include <GLFW/glfw3.h>
 #include <iostream>
+#include "main.hh"
 #include "core.hh"
 #include "frame.hh"
 #include "imgui.h"

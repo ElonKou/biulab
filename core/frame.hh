@@ -14,11 +14,18 @@ class windowView {
    public:
     GLFWwindow* window;
 
+    static bool show_dock_sapce;
+    static bool show_main_window;
     static bool show_demo_window;
     static bool show_main_menu_bar;
     static bool show_overlay_bar;
     static bool show_control_window;
     static bool show_display_window;
+    static bool show_graph_window;
+    static bool show_node_window;
+    static bool show_inspector_window;
+
+    static ImGuiDockNodeFlags dockspace_flags;
 
     windowView();
     ~windowView();
@@ -36,7 +43,14 @@ class windowView {
     void showMainMenuBar();
     void showControlWindow();
     void showDisplayWindow();
+    void showNodeWindow();
     void showOverlay();
+    void showInspector();
+    void showGraph();
+   //  void showMainWindow();
+
+    void showDcokSpace();
+    void showDisabledMessage();
     void showHelpMarker(const char* desc);
 
     static void key_back(GLFWwindow* window, int key, int scanmode, int action,
