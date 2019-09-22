@@ -74,7 +74,7 @@ class Robbie {
     int genes[GENE_LEN];
     int mutate_all;
     int mutate_val;
-    
+
     void init();
     void randomPos();
     void clear();
@@ -107,19 +107,28 @@ class Map {
     Map();
     ~Map();
     vec_2i size;
-    int map[MAP_HEIGHT][MAP_WIDTH];
-    int target[MAP_HEIGHT][MAP_WIDTH];
-    int path[MAP_HEIGHT][MAP_WIDTH];
+    int **map;
+    int **target;
+    int **path;
+    int rubbish_cnt;
+    string map_name;
+
     vec_2i getSize();
+    void randomMap();
     void print(vec_2i pos);
     void drawFrame(PlayActions act, int *gen);
     void cleanTarget();
     void init();
+
+    void loadMap(const string &load_path);
+    void saveMap(const string &save_path);
     int inline getValue(vec_2i pos);
     int getHash(vec_2i pos);
     int getTarget(vec_2i pos);
     void setTarget(vec_2i pos, int key);
     int doAction(vec_2i start, vec_2i offset);
+
+    inline int *operator[](int row);
 };
 
 class Controller {
@@ -135,21 +144,32 @@ class Controller {
     int loop_controller;
     int loop_map;
     int robbie_cnt;
+    float mutate_rate;
     float max_histyory;
-    string save_path;
+    char save_path[255];
+    char load_path[255];
     // Map map;
+    int map_width;
+    int map_height;
+    // run
+    bool save_run;
+    bool running;
+    bool chanegd;
+    bool run_step;
+
     Robbie robbies[ROBBIE_CNT];
     Robbie robbies_temp[ROBBIE_CNT];
     float scores[ROBBIE_CNT];
     float scores_tf[ROBBIE_CNT];
     // void play(Robbie r, Map &m);
-    void run();
+    void init();
     void train();
     void print_str();
     void playScreen(Robbie &rob, Map &map);
     Robbie loadRobbie(string robbie_path);
     void saveRobbie(Robbie &rob, string robbie_path);
     void addRobbie();
+    void setMap(Map *map);
     int showHisgram(int num);
     int getIndex(float random_index);
 };

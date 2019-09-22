@@ -7,6 +7,7 @@
 #include "../imgui/imgui_impl_opengl3.h"
 #include "../imgui/imgui_internal.h"
 #include "core.hh"
+#include "lib.hh"
 
 using namespace std;
 
@@ -35,11 +36,15 @@ windowView::windowView() {
     loadFont();
     setGL(window);
     setNewTheme();
-    for (int i = 0; i < HEIGHT_; i++) {
-        for (int j = 0; j < WIDTH_; j++) {
-            arr[i][j] = randomFloat() * 0.2 + 0.3;
-        }
-    }
+    ins_load_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/results";
+    ins_select_path = "";
+    has_map = false;
+    map_changed = false;
+}
+
+windowView::windowView(Controller* con_ptr) {
+    windowView();
+    con = con_ptr;
 }
 
 windowView::~windowView() {}
@@ -72,6 +77,23 @@ void windowView::drawWindow() {
     if (show_graph_window) {
         showGraph();
     }
+}
+
+void windowView::startWindow() {
+    while (!glfwWindowShouldClose(window)) {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glfwPollEvents();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        drawWindow();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        glfwSwapBuffers(window);
+    }
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+    glfwTerminate();
 }
 
 void windowView::key_back(GLFWwindow* window, int key, int scanmode, int action,
@@ -203,6 +225,13 @@ void windowView::setNewTheme() {
     colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
     colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
+}
+
+void windowView::setController(Controller* con_ptr) { con = con_ptr; }
+
+void windowView::setMap(Map* mp) {
+    map = mp;
+    has_map = true;
 }
 
 void windowView::setWhiteTheme() {
@@ -482,13 +511,17 @@ void windowView::showOverlay() {
 }
 
 void windowView::showInspector() {
+    vector<string> vec = getFiles(ins_load_path);
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
-        static int selected = 0;
+        int selected = 0;
         ImGui::BeginChild("DSAD", ImVec2(0, 0), 0);
-        for (int i = 0; i < 10; i++) {
-            char DS[128];
-            sprintf(DS, "MyObject %d", i);
-            if (ImGui::Selectable(DS, selected == i)) selected = i;
+        for (int i = 0; i < vec.size(); i++) {
+            // string list_name = inspector_str + "/" + vec[i];
+            string list_name = vec[i];
+            if (ImGui::Selectable(list_name.c_str(), selected == i)) {
+                selected = i;
+                ins_select_path = list_name;
+            }
         }
         ImGui::EndChild();
     }
@@ -538,66 +571,71 @@ void windowView::showGraph() {
 }
 
 void windowView::showControlWindow() {
-    // Draw Control window
-    static int loop_controller = 10000;
-    static int loop_map = 10;
-    static int max_histyory = -1000;
-    static bool save_result = true;
-    static char save_path[256] = "~/ELONKOU/03.GENETIC/genetic/results";
-
-    static float mutate_rate = 0.005;
-    static int robbie_cnt = 200;
-
-    static int map_width = 16;
-    static int map_height = 16;
     ImGui::Begin("Control", &show_control_window, 0);
 
     ImGui::BeginChild("item view",
                       ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
     if (ImGui::TreeNode("Controller")) {
-        ImGui::SliderInt("loop controller", &loop_controller, 1, 40000);
+        ImGui::SliderInt("loop cnt", &con->loop_controller, 1, 40000);
         ImGui::SameLine();
         showHelpMarker("control all loop control for all robbies.");
 
-        ImGui::SliderInt("loop map", &loop_map, 1, 200);
+        ImGui::SliderInt("loop map", &con->loop_map, 1, 200);
         ImGui::SameLine();
         showHelpMarker("Map count for every robbie play.");
 
-        ImGui::SliderInt("Max histyory", &max_histyory, -2000, 1000);
+        ImGui::SliderFloat("Max histyory", &con->max_histyory, -2000.0, 1000.0);
         ImGui::SameLine();
         showHelpMarker("max_histyory.");
 
-        ImGui::InputText("Save path", save_path, IM_ARRAYSIZE(save_path));
+        ImGui::InputText("Save path", con->save_path,
+                         IM_ARRAYSIZE(con->save_path));
+        ImGui::SameLine();
         showHelpMarker("save modle.");
+        ImGui::InputText("load path", con->load_path,
+                         IM_ARRAYSIZE(con->load_path));
+        ImGui::SameLine();
+        showHelpMarker("load modle.");
 
-        ImGui::Checkbox("Save Gene", &save_result);
+        ImGui::Checkbox("Save Gene", &con->save_run);
         ImGui::TreePop();
     }
     if (ImGui::TreeNode("Robbie")) {
-        ImGui::SliderFloat("mutate rate", &mutate_rate, 0.0, 0.1);
+        ImGui::SliderFloat("mutate rate", &con->mutate_rate, 0.0, 0.1);
         ImGui::SameLine();
         showHelpMarker("Mutate rate for robbies");
 
-        ImGui::SliderInt("robbie cnt", &robbie_cnt, 1, 400);
+        ImGui::SliderInt("robbie cnt", &con->robbie_cnt, 1, 400);
         ImGui::SameLine();
         showHelpMarker("Robbies count for erery generation.");
         ImGui::TreePop();
     }
     if (ImGui::TreeNode("Map")) {
-        ImGui::InputInt("Width", &map_width, 1, 2);
-        ImGui::InputInt("Height", &map_height, 1, 2);
+        ImGui::InputInt("Width", &con->map_width, 1, 2);
+        ImGui::InputInt("Height", &con->map_height, 1, 2);
         ImGui::SameLine();
         showHelpMarker("Map width and height.");
         ImGui::TreePop();
     }
     ImGui::EndChild();
     if (ImGui::Button("run")) {
+        con->running = !con->running;
+        con->init();
+        if (!has_map) {
+            Map* mp = new Map();
+            // mp->init();
+            mp->loadMap("/home/elonkou/ELONKOU/03.GENETIC/genetic/maps/std.map");
+            setMap(mp);
+            cout << "Create new map" << endl;
+        }
     }
     ImGui::SameLine();
     if (ImGui::Button("stop")) {
+        con->running = false;
     }
     ImGui::SameLine();
     if (ImGui::Button("step")) {
+        con->run_step = !con->run_step;
     }
 
     ImGui::End();
@@ -607,24 +645,36 @@ void windowView::showDisplayWindow() {
     // ImGui::SetNextWindowBgAlpha(0.3f);
 
     if (ImGui::Begin("Display Panel", &show_display_window, 0)) {
-        static float bsize = 6.0f;
+        static float bsize = 16.0f;
         static float threshold = 0.5f;
 
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         auto savePos = ImGui::GetCursorScreenPos();
         auto drawList = ImGui::GetWindowDrawList();
 
-        for (int i = 0; i < HEIGHT_; ++i) {
-            for (int j = 0; j < WIDTH_; ++j) {
-                float col = arr[i][j];
-                ImVec2 p0 = {savePos.x + j * bsize, savePos.y + i * bsize};
-                ImVec2 p1 = {savePos.x + (j + 1) * bsize - 1.0f,
-                             savePos.y + (i + 1) * bsize - 1.0f};
-                drawList->AddRectFilled(
-                    p0, p1,
-                    ImGui::ColorConvertFloat4ToU32({1.0f, 1.0f, 1.0f, col}));
+        if (has_map) {
+            for (int i = 0; i < map->size.x; i++) {
+                for (int j = 0; j < map->size.y; j++) {
+                    ImVec2 p0 = {savePos.x + j * bsize, savePos.y + i * bsize};
+                    ImVec2 p1 = {savePos.x + (j + 1) * bsize - 1.0f,
+                                 savePos.y + (i + 1) * bsize - 1.0f};
+                    if ((*map).map[j][i] == EDGE) {
+                        drawList->AddRectFilled(p0, p1,
+                                                ImGui::ColorConvertFloat4ToU32(
+                                                    {1.0f, 1.0f, 1.0f, 0.4}));
+                    } else if ((*map).map[j][i] == RUBBISH) {
+                        drawList->AddRectFilled(p0, p1,
+                                                ImGui::ColorConvertFloat4ToU32(
+                                                    {1.0f, 0.0f, 0.0f, 0.5}));
+                    } else if ((*map).map[j][i] == EMPTY) {
+                        drawList->AddRectFilled(p0, p1,
+                                                ImGui::ColorConvertFloat4ToU32(
+                                                    {1.0f, 1.0f, 1.0f, 0.0}));
+                    }
+                }
             }
         }
+
         ImGui::EndChild();
     }
     ImGui::End();

@@ -15,6 +15,7 @@ MAINOBJS = $(addprefix src/, $(MAINOBJ))
 OBJS = $(GUIOBJS) $(LIBOBJS) $(COREOBJS) $(MAINOBJS)
 
 # $(CC) -I./ -I./imgui/ -I./src/ -I./lib/ -I./core/ -c $< -o $@ -std=c++11
+# /usr/include/x86_64-linux-gnu/sys/io.h
 %.o:%.cc
 	$(CC) -I./lib/ -I./core/ -I./imgui/ -I./src/ -c $< -o $@ -std=c++11
 $(EXE):$(OBJS)

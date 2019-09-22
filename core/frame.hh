@@ -3,6 +3,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <string>
+#include "core.hh"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -10,9 +12,18 @@
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720
 
+using namespace std;
+
 class windowView {
    public:
     GLFWwindow* window;
+    Controller* con;
+    Map* map;
+    // inspector
+    string ins_robbie_path;
+    string ins_select_path;
+    bool has_map;
+    bool map_changed;
 
     static bool show_dock_sapce;
     static bool show_main_window;
@@ -28,16 +39,19 @@ class windowView {
     static ImGuiDockNodeFlags dockspace_flags;
 
     windowView();
+    windowView(Controller* con_ptr);
     ~windowView();
 
-    void drawWindow();
-
     GLFWwindow* initWindow();
+    void drawWindow();
+    void startWindow();
     void loadFont();
     void setGL(GLFWwindow* window);
     void setWhiteTheme();
     void setDarkTheme();
     void setNewTheme();
+    void setController(Controller* con_ptr);
+    void setMap(Map *map);
 
     void showMenuFile();
     void showMainMenuBar();
@@ -47,7 +61,7 @@ class windowView {
     void showOverlay();
     void showInspector();
     void showGraph();
-   //  void showMainWindow();
+    //  void showMainWindow();
 
     void showDcokSpace();
     void showDisabledMessage();

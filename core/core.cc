@@ -11,6 +11,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <algorithm>
+#include <cstring>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -48,7 +49,7 @@ vec_2i vec_2i::operator+(vec_2i other) {
     v.y = y + other.y;
     return v;
 }
-void vec_2i::print() { std::cout << "(" << x << "," << y << ")"; }
+void vec_2i::print() { cout << "(" << x << "," << y << ")"; }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Robbie::Robbie() {
@@ -174,10 +175,10 @@ void Robbie::play(Map &map) {
                 result = move(action, map);
                 break;
         }
-        // std::cout << "=" << result << " ";
-        // std::cout << "=" << action << " ";
+        // cout << "=" << result << " ";
+        // cout << "=" << action << " ";
     }
-    // std::cout << endl << score << endl;
+    // cout << endl << score << endl;
     // map.cleanTarget();
 }
 
@@ -225,7 +226,24 @@ void Robbie::load(string fileName) {}
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Map::Map() {
     size = {MAP_WIDTH, MAP_HEIGHT};
+    rubbish_cnt = RUBBISH_CNT;
     // Init the map
+    map = nullptr;
+    target = nullptr;
+    path = nullptr;
+    rubbish_cnt = RUBBISH_CNT;
+}
+Map::~Map() {}
+
+void Map::cleanTarget() {
+    for (int i = 0; i < size.y; i++) {
+        for (int j = 0; j < size.x; j++) {
+            target[i][j] = map[i][j];
+        }
+    }
+}
+
+void Map::randomMap() {
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
             map[i][j] = EMPTY;
@@ -283,7 +301,7 @@ Map::Map() {
         }
     }
 
-    for (int i = 0; i < RUBBISH_CNT;) {
+    for (int i = 0; i < rubbish_cnt;) {
         int temp_x = randomInt(size.x);
         int temp_y = randomInt(size.y);
         if (map[temp_y][temp_x] == 0) {
@@ -293,16 +311,16 @@ Map::Map() {
         }
     }
 }
-Map::~Map() {}
-void Map::cleanTarget() {
-    for (int i = 0; i < size.y; i++) {
-        for (int j = 0; j < size.x; j++) {
-            target[i][j] = map[i][j];
-        }
-    }
-}
+
 void Map::init() {
-    // init the map
+    // cout <<size.x  << " " << size.y << endl;
+    // init the std map
+    map = new int *[size.y];
+    target = new int *[size.y];
+    for (int i = 0; i < size.y; i++) {
+        map[i] = new int[size.x];
+        target[i] = new int[size.x];
+    }
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
             map[i][j] = EMPTY;
@@ -317,7 +335,7 @@ void Map::init() {
         map[0][i] = map[size.y - 1][i] = EDGE;
         target[0][i] = target[size.y - 1][i] = EDGE;
     }
-    for (int i = 0; i < RUBBISH_CNT;) {
+    for (int i = 0; i < rubbish_cnt;) {
         int temp_x = randomInt(size.x);
         int temp_y = randomInt(size.y);
         if (map[temp_y][temp_x] == 0) {
@@ -327,7 +345,64 @@ void Map::init() {
         }
     }
 }
+
+void Map::loadMap(const string &load_path) {
+    cout << "Loading:" << load_path << endl;
+    fstream fp;
+    string line;
+    fp.open(load_path, ios::in);
+    while (getline(fp, line)) {
+        std::string str;
+        size_t found = line.find("version:");
+        if (found != string::npos) {
+            str = line.substr(found + 8, line.size());
+            float map_version = stringToNum<float>(str);
+        }
+        found = line.find("name:");
+        if (found != string::npos) {
+            str = line.substr(found + 5, line.size());
+            map_name = str;
+        }
+        found = line.find("width:");
+        if (found != string::npos) {
+            str = line.substr(found + 6, line.size());
+            size.x = stringToNum<int>(str);
+        }
+        found = line.find("height:");
+        if (found != string::npos) {
+            str = line.substr(found + 7, line.size());
+            size.y = stringToNum<int>(str);
+        }
+        found = line.find("rubbish:");
+        if (found != string::npos) {
+            str = line.substr(found + 8, line.size());
+            rubbish_cnt = stringToNum<int>(str);
+        }
+        found = line.find("map:");
+        if (found != string::npos) {
+            map = new int *[size.y];
+            for (int i = 0; i < size.y; i++) {
+                map[i] = new int[size.x];
+                getline(fp, line);
+                vector<string> vec = split(line, ",");
+                for (int j = 0; j < size.x; j++) {
+                    if (vec[j] == "#") {
+                        map[i][j] = EDGE;
+                    } else if (vec[j] == "*") {
+                        map[i][j] = RUBBISH;
+                    } else if (vec[j] == " ") {
+                        map[i][j] = EMPTY;
+                    }
+                }
+            }
+        }
+    }
+    fp.close();
+}
+void Map::saveMap(const string &save_path) {}
+
 int inline Map::getValue(vec_2i pos) { return target[pos.y][pos.x]; }
+
 int Map::getHash(vec_2i pos) {
     int east = getValue(vec_2i(pos.x + 1, pos.y));
     int north = getValue(vec_2i(pos.x, pos.y + 1));
@@ -356,6 +431,8 @@ int Map::doAction(vec_2i start, vec_2i offset) {
     } else {
     }
 }
+
+inline int *Map::operator[](int row) { return map[row]; }
 
 void Map::print(vec_2i pos) {
     printSucceed("map:\t\t\t\t\t\ttarget:\n");
@@ -477,36 +554,37 @@ void Map::drawFrame(PlayActions act, int *gene) {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Controller::Controller()
-    : loop_map(LOOP_MAP),
-      loop_controller(LOOP_CONTROLLER),
+    : loop_controller(LOOP_CONTROLLER),
+      loop_map(LOOP_MAP),
       robbie_cnt(ROBBIE_CNT),
+      mutate_rate(MUTATE_VAL * 1.0 / MUTATE_ALL),
       max_histyory(-1000.0),
-      save_path("") {
-    // init controller
-    float res[ROBBIE_CNT];
-    float res_ori[ROBBIE_CNT];
-    for (int i = 0; i < ROBBIE_CNT; i++) {
-        robbies[i] = Robbie();
-        scores[i] = 0.0;
-        scores_tf[i] = 0.0;
-    }
+      map_width(MAP_WIDTH),
+      map_height(MAP_HEIGHT),
+      save_run(false),
+      running(false),
+      chanegd(false),
+      run_step(false) {
+    string default_path = "~/ELONKOU/03.GENETIC/genetic/results";
+    strcpy(save_path, default_path.c_str());
+    strcpy(load_path, default_path.c_str());
 }
-Controller::Controller(string save_path)
-    : loop_map(LOOP_MAP),
-      loop_controller(LOOP_CONTROLLER),
-      robbie_cnt(ROBBIE_CNT),
-      max_histyory(-1000.0),
-      save_path(save_path) {
-    // init controller
-    float res[ROBBIE_CNT];
-    float res_ori[ROBBIE_CNT];
-    for (int i = 0; i < ROBBIE_CNT; i++) {
-        robbies[i] = Robbie();
-        scores[i] = 0.0;
-        scores_tf[i] = 0.0;
-    }
+Controller::Controller(string save_p) {
+    Controller();
+    strcpy(save_path, save_p.c_str());
 }
 Controller::~Controller() {}
+
+void Controller::init() {
+    // init controller
+    float res[robbie_cnt];
+    float res_ori[robbie_cnt];
+    for (int i = 0; i < robbie_cnt; i++) {
+        robbies[i] = Robbie();
+        scores[i] = 0.0;
+        scores_tf[i] = 0.0;
+    }
+}
 
 void Controller::train() {
     for (int k = 0; k < loop_controller; k++) {
@@ -563,9 +641,9 @@ void Controller::train() {
 }
 
 void Controller::print_str() {
-    std::cout << "   0  " << endl;
-    std::cout << " 3 4 2" << endl;
-    std::cout << "   1  " << endl;
+    cout << "   0  " << endl;
+    cout << " 3 4 2" << endl;
+    cout << "   1  " << endl;
 }
 
 void Controller::playScreen(Robbie &rob, Map &map) {
@@ -594,10 +672,10 @@ void Controller::playScreen(Robbie &rob, Map &map) {
                 result = rob.move(action, map);
                 break;
         }
-        // std::cout << "=" << result << " ";
-        // std::cout << "=" << action << " ";
+        // cout << "=" << result << " ";
+        // cout << "=" << action << " ";
     }
-    // std::cout << endl << score << endl;
+    // cout << endl << score << endl;
     // map.cleanTarget();
 }
 
@@ -618,7 +696,7 @@ Robbie Controller::loadRobbie(string robbie_path) {
 }
 void Controller::saveRobbie(Robbie &rob, string robbie_path) {
     int score = int(rob.averScore);
-    if(save_path != ""){
+    if (save_path != "") {
         robbie_path += to_string(score) + ".txt";
         ofstream fp;
         fp.open(robbie_path);
@@ -675,8 +753,8 @@ int Controller::showHisgram(int num) {
          << sum / ROBBIE_CNT << "\t>=0:" << nevCnt << "\tMIN:" << minData
          << "\tMAX:" << maxData << "\tHIS_MAX:" << max_histyory << endl;
     for (int i = 0; i < clipCnt; i++) {
-        cout << std::left << setw(9) << minData + i * step << std::right
-             << setw(9) << minData + (i + 1) * step << ":";
+        cout << left << setw(9) << minData + i * step << right << setw(9)
+             << minData + (i + 1) * step << ":";
         for (int j = 0; j < shows[i]; j++) {
             cout << "*";
         }

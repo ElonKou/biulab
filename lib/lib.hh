@@ -29,8 +29,13 @@
 #define CLOSE "\033[0m"
 #endif
 
+#include <dirent.h>
+#include <unistd.h>
 #include <string>
+#include <vector>
+#include <sstream>
 using namespace std;
+
 char *getChar(string str);
 void printOk(string str);
 void printOk(int str);
@@ -42,3 +47,18 @@ void printError(string str);
 void printError(int str);
 void printSome(string str);
 void printSome(int str);
+
+// File tools
+
+template <class Type>
+Type stringToNum(const std::string &str) {
+    istringstream iss(str);
+    Type num;
+    iss >> num;
+    return num;
+}
+
+vector<string> getFiles(string dir);
+vector<string> split(const string &s, const string &seperator);
+string &replace_all(string &str, const string &old_value,
+                    const string &new_value);

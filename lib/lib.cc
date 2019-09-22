@@ -6,8 +6,12 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #include "lib.hh"
+#include <dirent.h>
 #include <cstdio>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -70,3 +74,62 @@ void printSome(int str) { printf(PURPLE "%d" NONE, str); }
 // printf("[%2u]" UNDERLINE "UNDERLINE\n" NONE, __LINE__);
 // printf("[%2u]" BLINK "BLINK\n" NONE, __LINE__);
 // printf("[%2u]" REVERSE "REVERSE\n" NONE, __LINE__);
+
+vector<string> getFiles(string dir) {
+    vector<string> files;
+    DIR *dp = opendir(dir.c_str());
+    struct dirent *dirp;
+    while ((dirp = readdir(dp)) != NULL) {
+        if (string(dirp->d_name) == "." || string(dirp->d_name) == "..") {
+            continue;
+        }
+        files.push_back(string(dirp->d_name));
+    }
+    closedir(dp);
+    return files;
+}
+
+vector<string> split(const string &s, const string &seperator) {
+    std::vector<string> result;
+    typedef string::size_type string_size;
+    string_size i = 0;
+
+    while (i != s.size()) {
+        int flag = 0;
+        while (i != s.size() && flag == 0) {
+            flag = 1;
+            for (string_size x = 0; x < seperator.size(); ++x)
+                if (s[i] == seperator[x]) {
+                    ++i;
+                    flag = 0;
+                    break;
+                }
+        }
+        flag = 0;
+        string_size j = i;
+        while (j != s.size() && flag == 0) {
+            for (string_size x = 0; x < seperator.size(); ++x)
+                if (s[j] == seperator[x]) {
+                    flag = 1;
+                    break;
+                }
+            if (flag == 0) ++j;
+        }
+        if (i != j) {
+            result.push_back(s.substr(i, j - i));
+            i = j;
+        }
+    }
+    return result;
+}
+string &replace_all(string &str, const string &old_value,
+                    const string &new_value) {
+    while (true) {
+        string::size_type pos(0);
+        if ((pos = str.find(old_value)) != string::npos)
+            str.replace(pos, old_value.length(), new_value);
+        else
+            break;
+    }
+    return str;
+}
