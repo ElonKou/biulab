@@ -392,6 +392,8 @@ void Map::loadMap(const string &load_path) {
                         map[i][j] = RUBBISH;
                     } else if (vec[j] == " ") {
                         map[i][j] = EMPTY;
+                    } else if (vec[j] == ".") {
+                        map[i][j] = OUT;
                     }
                 }
             }
@@ -418,7 +420,11 @@ int Map::getHash(vec_2i pos) {
     return hash;
 }
 int Map::getTarget(vec_2i pos) { return target[pos.y][pos.x]; }
+
 void Map::setTarget(vec_2i pos, int key) { target[pos.y][pos.x] = key; }
+
+void Map::setElem(vec_2i pos, int key) { map[pos.y][pos.x] = key; }
+
 int Map::doAction(vec_2i start, vec_2i offset) {
     // EDGE : -1(failed)
     // pick : 0(empty)

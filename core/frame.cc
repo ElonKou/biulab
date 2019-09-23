@@ -36,10 +36,14 @@ windowView::windowView() {
     loadFont();
     setGL(window);
     setNewTheme();
-    ins_load_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/results";
-    ins_select_path = "";
+    ins_robbie_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/results";
+    ins_select_robbie = " ";
+    ins_map_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/maps";
+    ins_select_map = " ";
     has_map = false;
     map_changed = false;
+    has_rob = false;
+    rob_changed = false;
 }
 
 windowView::windowView(Controller* con_ptr) {
@@ -50,6 +54,7 @@ windowView::windowView(Controller* con_ptr) {
 windowView::~windowView() {}
 
 void windowView::drawWindow() {
+    checkState();
     if (show_dock_sapce) {
         showDcokSpace();
     }
@@ -495,35 +500,63 @@ void windowView::showMainMenuBar() {
 
 void windowView::showOverlay() {
     ImGui::SetNextWindowBgAlpha(0.3f);
-    if (ImGui::Begin("Example: Simple overlay", &show_overlay_bar, 0)) {
-        ImGui::Text("Keymap:");
+    if (ImGui::Begin("Overlay", &show_overlay_bar, 0)) {
         ImGui::Text("C : Open control panel.");
         ImGui::Text("D : Open display panel.");
-        ImGui::Separator();
-        ImGui::Text("Application FPS: %.1f.", ImGui::GetIO().Framerate);
-        if (ImGui::IsMousePosValid())
-            ImGui::Text("Mouse Position: (%6.1f,%6.1f)",
-                        ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-        else
-            ImGui::Text("Mouse Position: <invalid>");
+        // ImGui::Separator();
+        ImGui::Text("F : %.1f.", ImGui::GetIO().Framerate);
+        if (ImGui::IsMousePosValid()) {
+            ImGui::SameLine();
+            ImGui::Text("(%6.1f,%6.1f)", ImGui::GetIO().MousePos.x,
+                        ImGui::GetIO().MousePos.y);
+        } else {
+            ImGui::Text("<invalid>");
+        }
+        ImGui::Text("robbie:%s", ins_select_robbie.c_str());
+        ImGui::Text("map:%s", ins_select_map.c_str());
     }
     ImGui::End();
 }
 
 void windowView::showInspector() {
-    vector<string> vec = getFiles(ins_load_path);
+    vector<string> vec_robbies = getFiles(ins_robbie_path);
+    vector<string> vec_maps = getFiles(ins_map_path);
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
-        int selected = 0;
-        ImGui::BeginChild("DSAD", ImVec2(0, 0), 0);
-        for (int i = 0; i < vec.size(); i++) {
-            // string list_name = inspector_str + "/" + vec[i];
-            string list_name = vec[i];
-            if (ImGui::Selectable(list_name.c_str(), selected == i)) {
-                selected = i;
-                ins_select_path = list_name;
+        if (ImGui::TreeNode("Robbies")) {
+            ImGui::BeginChild("SSS", ImVec2(0, 0), 0);
+            for (int i = 0; i < vec_robbies.size(); i++) {
+                string list_name = vec_robbies[i];
+                if (ImGui::Selectable(list_name.c_str(),
+                                      list_name == ins_select_robbie)) {
+                    if (list_name == ins_select_robbie) {
+                        rob_changed = false;
+                    } else {
+                        rob_changed = true;
+                        ins_select_robbie = list_name;
+                    }
+                }
             }
+            ImGui::EndChild();
+            ImGui::TreePop();
+            ImGui::Separator();
         }
-        ImGui::EndChild();
+        if (ImGui::TreeNode("Maps")) {
+            ImGui::BeginChild("DDD", ImVec2(0, 0), 0);
+            for (int i = 0; i < vec_maps.size(); i++) {
+                string list_name = vec_maps[i];
+                if (ImGui::Selectable(list_name.c_str(),
+                                      list_name == ins_select_robbie)) {
+                    if (list_name == ins_select_map) {
+                        map_changed = false;
+                    } else {
+                        map_changed = true;
+                        ins_select_map = list_name;
+                    }
+                }
+            }
+            ImGui::EndChild();
+            ImGui::TreePop();
+        }
     }
     ImGui::End();
 }
@@ -621,13 +654,7 @@ void windowView::showControlWindow() {
     if (ImGui::Button("run")) {
         con->running = !con->running;
         con->init();
-        if (!has_map) {
-            Map* mp = new Map();
-            // mp->init();
-            mp->loadMap("/home/elonkou/ELONKOU/03.GENETIC/genetic/maps/std.map");
-            setMap(mp);
-            cout << "Create new map" << endl;
-        }
+        // con->run();
     }
     ImGui::SameLine();
     if (ImGui::Button("stop")) {
@@ -653,20 +680,24 @@ void windowView::showDisplayWindow() {
         auto drawList = ImGui::GetWindowDrawList();
 
         if (has_map) {
-            for (int i = 0; i < map->size.x; i++) {
-                for (int j = 0; j < map->size.y; j++) {
+            for (int i = 0; i < map->size.y; i++) {
+                for (int j = 0; j < map->size.x; j++) {
                     ImVec2 p0 = {savePos.x + j * bsize, savePos.y + i * bsize};
                     ImVec2 p1 = {savePos.x + (j + 1) * bsize - 1.0f,
                                  savePos.y + (i + 1) * bsize - 1.0f};
-                    if ((*map).map[j][i] == EDGE) {
+                    if ((*map).map[i][j] == EDGE) {
                         drawList->AddRectFilled(p0, p1,
                                                 ImGui::ColorConvertFloat4ToU32(
                                                     {1.0f, 1.0f, 1.0f, 0.4}));
-                    } else if ((*map).map[j][i] == RUBBISH) {
+                    } else if ((*map).map[i][j] == RUBBISH) {
                         drawList->AddRectFilled(p0, p1,
                                                 ImGui::ColorConvertFloat4ToU32(
                                                     {1.0f, 0.0f, 0.0f, 0.5}));
-                    } else if ((*map).map[j][i] == EMPTY) {
+                    } else if ((*map).map[i][j] == EMPTY) {
+                        drawList->AddRectFilled(p0, p1,
+                                                ImGui::ColorConvertFloat4ToU32(
+                                                    {1.0f, 1.0f, 1.0f, 0.1}));
+                    } else if ((*map).map[i][j] == OUT) {
                         drawList->AddRectFilled(p0, p1,
                                                 ImGui::ColorConvertFloat4ToU32(
                                                     {1.0f, 1.0f, 1.0f, 0.0}));
@@ -739,4 +770,21 @@ void windowView::showDisabledMessage() {
     ImGui::SameLine(0.0f, 0.0f);
     if (ImGui::SmallButton("click here"))
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+}
+
+void windowView::checkState() {
+    if (map_changed) {
+        if (has_map) {
+            map = nullptr;
+        }
+        Map* mp = new Map();
+        // mp->init();
+        if (ins_select_map != " ") {
+            mp->loadMap(ins_map_path + "/" + ins_select_map);
+        }
+        setMap(mp);
+        has_map = true;
+        map_changed = false;
+        cout << "Create/Load suceed." << endl;
+    }
 }

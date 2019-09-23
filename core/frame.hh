@@ -21,9 +21,14 @@ class windowView {
     Map* map;
     // inspector
     string ins_robbie_path;
-    string ins_select_path;
+    string ins_map_path;
+    string ins_select_robbie;
+    string ins_select_map;
     bool has_map;
     bool map_changed;
+    bool has_rob;
+    bool rob_changed;
+   
 
     static bool show_dock_sapce;
     static bool show_main_window;
@@ -51,7 +56,7 @@ class windowView {
     void setDarkTheme();
     void setNewTheme();
     void setController(Controller* con_ptr);
-    void setMap(Map *map);
+    void setMap(Map* map);
 
     void showMenuFile();
     void showMainMenuBar();
@@ -67,6 +72,7 @@ class windowView {
     void showDisabledMessage();
     void showHelpMarker(const char* desc);
 
+    void checkState();
     static void key_back(GLFWwindow* window, int key, int scanmode, int action,
                          int mode);
 };

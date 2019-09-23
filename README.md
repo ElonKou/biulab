@@ -20,9 +20,11 @@ make
 
 ## 3.TODO
 - [x] display map panel.
+- [x] add new map elem(OUT).
+- [x] add robbie/map Selectable tab.
 - [ ] Robbie run on map.
 - [ ] display robbie and wall(Texture).
-- [ ] select gene & map function.
+- [x] select gene & map function.
 - [ ] save map.
 - [ ] select map elem enevts.
 - [ ] create new map by mouse.

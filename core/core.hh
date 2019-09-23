@@ -23,6 +23,7 @@
 #define EDGE 2          // 边界标志
 #define RUBBISH 1       // 物体标志
 #define EMPTY 0         // 空的标志
+#define OUT -1          // 空的标志
 #define WALL_CNT 2      // 墙壁数量
 #define PATH_EMPTY -1   // 路径空标志
 
@@ -126,6 +127,7 @@ class Map {
     int getHash(vec_2i pos);
     int getTarget(vec_2i pos);
     void setTarget(vec_2i pos, int key);
+    void setElem(vec_2i pos, int key);
     int doAction(vec_2i start, vec_2i offset);
 
     inline int *operator[](int row);
