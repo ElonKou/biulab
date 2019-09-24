@@ -127,6 +127,7 @@ class Map {
     int getHash(vec_2i pos);
     int getTarget(vec_2i pos);
     void setTarget(vec_2i pos, int key);
+    int getElem(vec_2i pos);
     void setElem(vec_2i pos, int key);
     int doAction(vec_2i start, vec_2i offset);
 

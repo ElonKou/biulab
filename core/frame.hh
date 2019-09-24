@@ -38,6 +38,7 @@ class windowView {
     static bool show_control_window;
     static bool show_display_window;
     static bool show_graph_window;
+    static bool show_editor_window;
     static bool show_node_window;
     static bool show_inspector_window;
 
@@ -66,6 +67,7 @@ class windowView {
     void showOverlay();
     void showInspector();
     void showGraph();
+    void showEditor();
     //  void showMainWindow();
 
     void showDcokSpace();

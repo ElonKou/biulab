@@ -4,7 +4,7 @@ EXE = genetic
 
 GUIOBJ = imgui.o imgui_demo.o imgui_draw.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o
 LIBOBJ = lib.o
-COREOBJ = core.o frame.o
+COREOBJ = core.o frame.o editor_map.o editor_robbie.o
 MAINOBJ = main.o
 
 GUIOBJS = $(addprefix imgui/, $(GUIOBJ))

@@ -19,6 +19,7 @@ bool windowView::show_overlay_bar = true;
 bool windowView::show_control_window = true;
 bool windowView::show_display_window = true;
 bool windowView::show_graph_window = true;
+bool windowView::show_editor_window = true;
 bool windowView::show_node_window = true;
 bool windowView::show_inspector_window = true;
 
@@ -81,6 +82,9 @@ void windowView::drawWindow() {
     }
     if (show_graph_window) {
         showGraph();
+    }
+    if (show_editor_window) {
+        showEditor();
     }
 }
 
@@ -465,6 +469,9 @@ void windowView::showMainMenuBar() {
             if (ImGui::MenuItem("Graph")) {
                 show_graph_window = !show_graph_window;
             }
+            if (ImGui::MenuItem("Editor")) {
+                show_editor_window = !show_editor_window;
+            }
             if (ImGui::MenuItem("Demo")) {
                 show_demo_window = !show_demo_window;
             }
@@ -599,6 +606,90 @@ void windowView::showGraph() {
             static float Sin(void*, int i) { return sinf(i * 0.1f); }
             static float Saw(void*, int i) { return (i & 1) ? 1.0f : -1.0f; }
         };
+    }
+    ImGui::End();
+}
+
+void windowView::showEditor() {
+    if (ImGui::Begin("Editor", &show_editor_window, 0)) {
+        if (ImGui::TreeNode("Map editor")) {
+            // Base
+            {
+                ImGui::BulletText("Base:");
+                // ImGui::SliderInt2("Width")
+            }
+            ImGui::Separator();
+            // add new button for edit
+            {
+                ImGui::BulletText("Tools:");
+                ImGui::PushID(0);
+                ImGui::PushStyleColor(ImGuiCol_Button,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.6f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.7f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.8f));
+                ImGui::Button("Edge");
+                ImGui::PopStyleColor(3);
+                ImGui::PopID();
+                ImGui::SameLine();
+
+                ImGui::PushID(1);
+                ImGui::PushStyleColor(ImGuiCol_Button,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.7f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.8f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.9f));
+                ImGui::Button("Rubbish");
+                ImGui::PopStyleColor(3);
+                ImGui::PopID();
+                ImGui::SameLine();
+
+                ImGui::PushID(2);
+                ImGui::PushStyleColor(ImGuiCol_Button,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.15f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.19f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.21f));
+                ImGui::Button("Out");
+                ImGui::PopStyleColor(3);
+                ImGui::SameLine();
+
+                ImGui::PopID();
+                ImGui::PushID(3);
+                ImGui::PushStyleColor(ImGuiCol_Button,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.3f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.4f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                      (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.5f));
+                ImGui::Button("Empty");
+                ImGui::PopStyleColor(3);
+                ImGui::PopID();
+            }
+            ImGui::Separator();
+            // button for select type.
+            {
+                ImGui::BulletText("Selection:");
+                if (ImGui::Button("Point")) {
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Line")) {
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Rect")) {
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("All")) {
+                }
+            }
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("Robbie editor")) {
+            ImGui::TreePop();
+        }
     }
     ImGui::End();
 }

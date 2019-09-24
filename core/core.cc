@@ -419,9 +419,12 @@ int Map::getHash(vec_2i pos) {
     hash += 81 * mid;
     return hash;
 }
+
 int Map::getTarget(vec_2i pos) { return target[pos.y][pos.x]; }
 
 void Map::setTarget(vec_2i pos, int key) { target[pos.y][pos.x] = key; }
+
+int Map::getElem(vec_2i pos) { return map[pos.y][pos.x]; }
 
 void Map::setElem(vec_2i pos, int key) { map[pos.y][pos.x] = key; }
 
