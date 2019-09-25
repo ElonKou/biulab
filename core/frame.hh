@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include "core.hh"
+#include "editor_map.hh"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -18,6 +19,7 @@ class windowView {
    public:
     GLFWwindow* window;
     Controller* con;
+    MapEditor* mapEditor;
     Map* map;
     // inspector
     string ins_robbie_path;
@@ -28,7 +30,6 @@ class windowView {
     bool map_changed;
     bool has_rob;
     bool rob_changed;
-   
 
     static bool show_dock_sapce;
     static bool show_main_window;

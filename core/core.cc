@@ -233,6 +233,22 @@ Map::Map() {
     path = nullptr;
     rubbish_cnt = RUBBISH_CNT;
 }
+
+Map::Map(vec_2i map_size) {
+    size = map_size;
+    map = new int *[size.y];
+    target = new int *[size.y];
+    path = new int *[size.y];
+    for (int i = 0; i < size.y; i++) {
+        map[i] = new int[size.x];
+    }
+    for (int i = 0; i < size.y; i++) {
+        for (int j = 0; j < size.x; j++) {
+            map[i][j] = EMPTY;
+        }
+    }
+}
+
 Map::~Map() {}
 
 void Map::cleanTarget() {
@@ -344,6 +360,34 @@ void Map::init() {
             i++;
         }
     }
+}
+
+void Map::updateSize(vec_2i new_size) {
+    int map_temp[size.y][size.x];
+    for (int j = 0; j < size.y; j++) {
+        for (int i = 0; i < size.x; i++) {
+            map_temp[j][i] = map[j][i];
+        }
+    }
+
+    map = new int *[new_size.y];
+    for (int i = 0; i < new_size.y; i++) {
+        map[i] = new int[new_size.x];
+    }
+    int min_x = size.x < new_size.x ? size.x : new_size.x;
+    int min_y = size.y < new_size.y ? size.y : new_size.y;
+    int max_x = size.x > new_size.x ? size.x : new_size.x;
+    int max_y = size.y > new_size.y ? size.y : new_size.y;
+    for (int i = 0; i < new_size.y; i++) {
+        for (int j = 0; j < new_size.x; j++) {
+            if (i < min_y && j < min_x) {
+                map[i][j] = map_temp[i][j];
+            } else {
+                map[i][j] = EMPTY;
+            }
+        }
+    }
+    size = new_size;
 }
 
 void Map::loadMap(const string &load_path) {

@@ -27,11 +27,6 @@ ImGuiDockNodeFlags windowView::dockspace_flags =
     ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode |
     ImGuiDockNodeFlags_NoWindowMenuButton;
 
-#define WIDTH_ 150
-#define HEIGHT_ 80
-
-static float arr[HEIGHT_][WIDTH_];
-
 windowView::windowView() {
     window = initWindow();
     loadFont();
@@ -45,11 +40,17 @@ windowView::windowView() {
     map_changed = false;
     has_rob = false;
     rob_changed = false;
+
+    mapEditor = new MapEditor();
+    map = nullptr;
+    con = nullptr;
 }
 
 windowView::windowView(Controller* con_ptr) {
     windowView();
     con = con_ptr;
+    mapEditor = new MapEditor();
+    map = nullptr;
 }
 
 windowView::~windowView() {}
@@ -519,6 +520,7 @@ void windowView::showOverlay() {
         } else {
             ImGui::Text("<invalid>");
         }
+        // ImGui::Text("Slection");
         ImGui::Text("robbie:%s", ins_select_robbie.c_str());
         ImGui::Text("map:%s", ins_select_map.c_str());
     }
@@ -615,8 +617,35 @@ void windowView::showEditor() {
         if (ImGui::TreeNode("Map editor")) {
             // Base
             {
+                static bool has_create_map = false;
+                static bool has_saved_map = false;
                 ImGui::BulletText("Base:");
-                // ImGui::SliderInt2("Width")
+                if (ImGui::Button("Create new Map")) {
+                    if (!has_create_map) {
+                        has_create_map = true;
+                        Map* empty_map = new Map(vec_2i(MAP_WIDTH, MAP_HEIGHT));
+                        setMap(empty_map);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("update")) {
+                    if (has_map) {
+                        mapEditor->updateMap(*map);
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Save")) {
+                    if (has_map && has_create_map) {
+                        cout << "save map" << endl;
+                        map->saveMap("some place.");
+                        has_map = false;
+                        // delete map;
+                        // map = nullptr;
+                        has_create_map = false;
+                    }
+                }
+                ImGui::InputInt("Width", &mapEditor->width, 1, 2);
+                ImGui::InputInt("Height", &mapEditor->height, 1, 2);
             }
             ImGui::Separator();
             // add new button for edit
@@ -624,48 +653,74 @@ void windowView::showEditor() {
                 ImGui::BulletText("Tools:");
                 ImGui::PushID(0);
                 ImGui::PushStyleColor(ImGuiCol_Button,
+                                      (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.6f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                                      (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.7f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                      (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.8f));
+                if (ImGui::Button("None")) {
+                    mapEditor->setTools(T_NONE);
+                }
+                ImGui::PopStyleColor(3);
+                ImGui::PopID();
+                ImGui::SameLine();
+                // ############################
+
+                ImGui::PushID(1);
+                ImGui::PushStyleColor(ImGuiCol_Button,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.6f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.7f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.8f));
-                ImGui::Button("Edge");
+                if (ImGui::Button("Edge")) {
+                    mapEditor->setTools(T_EDGE);
+                }
                 ImGui::PopStyleColor(3);
                 ImGui::PopID();
                 ImGui::SameLine();
+                // ############################
 
-                ImGui::PushID(1);
+                ImGui::PushID(2);
                 ImGui::PushStyleColor(ImGuiCol_Button,
                                       (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.7f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
                                       (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.8f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive,
                                       (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.9f));
-                ImGui::Button("Rubbish");
+                if (ImGui::Button("Rubbish")) {
+                    mapEditor->setTools(T_RUBBISH);
+                }
                 ImGui::PopStyleColor(3);
                 ImGui::PopID();
                 ImGui::SameLine();
+                // ############################
 
-                ImGui::PushID(2);
+                ImGui::PushID(3);
                 ImGui::PushStyleColor(ImGuiCol_Button,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.15f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.19f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.21f));
-                ImGui::Button("Out");
+                if (ImGui::Button("Out")) {
+                    mapEditor->setTools(T_OUT);
+                }
                 ImGui::PopStyleColor(3);
                 ImGui::SameLine();
+                // ############################
 
                 ImGui::PopID();
-                ImGui::PushID(3);
+                ImGui::PushID(4);
                 ImGui::PushStyleColor(ImGuiCol_Button,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.3f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.4f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive,
                                       (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.5f));
-                ImGui::Button("Empty");
+                if (ImGui::Button("Empty")) {
+                    mapEditor->setTools(T_EMPTY);
+                }
                 ImGui::PopStyleColor(3);
                 ImGui::PopID();
             }
@@ -673,13 +728,20 @@ void windowView::showEditor() {
             // button for select type.
             {
                 ImGui::BulletText("Selection:");
+                ImGui::SameLine();
+                if (ImGui::Button("None")) {
+                    mapEditor->setSelection(S_NONE);
+                }
                 if (ImGui::Button("Point")) {
+                    mapEditor->setSelection(S_POINT);
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Line")) {
+                    mapEditor->setSelection(S_LINE);
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Rect")) {
+                    mapEditor->setSelection(S_RECT);
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("All")) {
@@ -770,6 +832,12 @@ void windowView::showDisplayWindow() {
         auto savePos = ImGui::GetCursorScreenPos();
         auto drawList = ImGui::GetWindowDrawList();
 
+        // auto xx = ImGui::GetWindowSize();
+        // auto xx = ImGui::GetWindowContentRegionWidth();
+        // auto xx = ImGui::GetWindowViewport()->Size;
+        // cout << xx.x << " " << xx.y << endl;
+        // cout << xx << endl;
+
         if (has_map) {
             for (int i = 0; i < map->size.y; i++) {
                 for (int j = 0; j < map->size.x; j++) {
@@ -792,6 +860,16 @@ void windowView::showDisplayWindow() {
                         drawList->AddRectFilled(p0, p1,
                                                 ImGui::ColorConvertFloat4ToU32(
                                                     {1.0f, 1.0f, 1.0f, 0.0}));
+                    }
+                    // Hover
+                    // int hoveredId = -1;
+                    if (ImGui::IsMouseHoveringRect(
+                            p0, {p1.x + 1.0f, p1.y + 1.0f})) {
+                        // if (i == j) hoveredId = i;
+                        if (ImGui::IsMouseClicked(0)) {
+                            cout << "clicked" << j << " " << i << " " << endl;
+                            mapEditor->modifiedMap(*map, vec_2i(j, i));
+                        }
                     }
                 }
             }

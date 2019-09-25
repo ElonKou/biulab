@@ -30,10 +30,16 @@ class MapEditor {
 
     MapEditor();
     ~MapEditor();
+    inline int abs(int x);
     inline int max(int x, int y);
     inline int min(int x, int y);
     void checkAndSetElem(Map &mp, vec_2i pos);
 
+    void drawLine(Map &mp, vec_2i pos_x, vec_2i pos_y);
+    void drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y);
+    void drawPoint(Map &mp, vec_2i pos);
+
+    void updateMap(Map &mp);
     void setTools(ToolsType tool);
     void setSelection(SelectionsType slect);
     void resize(Map &mp);

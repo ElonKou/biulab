@@ -17,8 +17,8 @@
 #define PARENT_CNT 2    // 双亲数量
 #define GENE_LEN 243    // 基因长度
 
-#define MAP_WIDTH 12    // 地图宽度
-#define MAP_HEIGHT 12   // 地图长度
+#define MAP_WIDTH 16    // 地图宽度
+#define MAP_HEIGHT 16   // 地图长度
 #define RUBBISH_CNT 50  // 垃圾数量
 #define EDGE 2          // 边界标志
 #define RUBBISH 1       // 物体标志
@@ -106,6 +106,7 @@ class Robbie {
 class Map {
    public:
     Map();
+    Map(vec_2i map_size);
     ~Map();
     vec_2i size;
     int **map;
@@ -120,6 +121,8 @@ class Map {
     void drawFrame(PlayActions act, int *gen);
     void cleanTarget();
     void init();
+
+    void updateSize(vec_2i new_size);
 
     void loadMap(const string &load_path);
     void saveMap(const string &save_path);
