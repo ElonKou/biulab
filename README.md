@@ -19,15 +19,28 @@ make
 ```
 
 ## 3.TODO
+
+Map:
 - [x] display map panel.
 - [x] add new map elem(OUT).
 - [x] add robbie/map Selectable tab.
-- [ ] Robbie run on map.
 - [ ] display robbie and wall(Texture).
 - [x] select gene & map function.
-- [ ] save map.
-- [ ] select map elem enevts.
-- [ ] create new map by mouse.
+- [x] save map.
+- [x] select map elem enevts.
+- [x] create new map by mouse.
+- [x] select save and load path.
+- [ ] rebuild the Map class.
+- [ ] Mapeditor history.
+- [ ] redo/undo and so on.
+
+Algorithm:
 - [ ] add map/algorithm panel/tab.
-- [ ] select save and load path.
+- [ ] Robbie run on map.
+
+Frame:
+- [ ] separate all the module from project.
+- [ ] 
+
+
 

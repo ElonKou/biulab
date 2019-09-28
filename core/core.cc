@@ -328,6 +328,10 @@ void Map::randomMap() {
     }
 }
 
+bool Map::inMap(vec_2i pos) {
+    return (pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y);
+}
+
 void Map::init() {
     // cout <<size.x  << " " << size.y << endl;
     // init the std map
@@ -445,7 +449,42 @@ void Map::loadMap(const string &load_path) {
     }
     fp.close();
 }
-void Map::saveMap(const string &save_path) {}
+
+void Map::saveMap(string &save_path) {
+    cout << save_path << endl;
+    size.print();
+    fstream fp;
+    fp.open(save_path, ios::out | ios::trunc);
+    if (!fp) {
+        cout << "Save error." << endl;
+        return;
+    }
+    fp << "version:0.1" << endl;
+    fp << "map_name:some.map" << endl;
+    fp << "width:" << to_string(size.x) << endl;
+    fp << "height:" << to_string(size.y) << endl;
+    fp << "rubbish:" << to_string(20) << endl;
+    fp << "map:" << endl;
+    for (int j = 0; j < size.y; j++) {
+        string x = "";
+        for (int i = 0; i < size.x; i++) {
+            if (map[j][i] == EDGE) {
+                x = "#";
+            } else if (map[j][i] == RUBBISH) {
+                x = "*";
+            } else if (map[j][i] == EMPTY) {
+                x = " ";
+            } else if (map[j][i] == OUT) {
+                x = ".";
+            }
+            fp << x << ",";
+        }
+        if (j != size.y - 1) {
+            fp << endl;
+        }
+    }
+    fp.close();
+}
 
 int inline Map::getValue(vec_2i pos) { return target[pos.y][pos.x]; }
 
@@ -618,13 +657,18 @@ Controller::Controller()
       running(false),
       chanegd(false),
       run_step(false) {
-    string default_path = "~/ELONKOU/03.GENETIC/genetic/results";
-    strcpy(save_path, default_path.c_str());
-    strcpy(load_path, default_path.c_str());
+    string default_robbie_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/results";
+    string default_robbie_name = "robbie.rob";
+    string default_map_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/maps";
+    string default_map_name = "some.map";
+    strcpy(robbie_path, default_robbie_path.c_str());
+    strcpy(robbie_name, default_robbie_name.c_str());
+    strcpy(map_path, default_map_path.c_str());
+    strcpy(map_name, default_map_name.c_str());
 }
 Controller::Controller(string save_p) {
     Controller();
-    strcpy(save_path, save_p.c_str());
+    strcpy(robbie_path, save_p.c_str());
 }
 Controller::~Controller() {}
 
@@ -665,7 +709,7 @@ void Controller::train() {
         if (max_histyory < scores[top_id]) {
             max_histyory = scores[top_id];
             robbies[top_id].print();
-            saveRobbie(robbies[top_id], save_path);
+            saveRobbie(robbies[top_id], robbie_path);
         }
         robbies[top_id].compare(robbies[0]);
 
@@ -749,7 +793,7 @@ Robbie Controller::loadRobbie(string robbie_path) {
 }
 void Controller::saveRobbie(Robbie &rob, string robbie_path) {
     int score = int(rob.averScore);
-    if (save_path != "") {
+    if (robbie_path != "") {
         robbie_path += to_string(score) + ".txt";
         ofstream fp;
         fp.open(robbie_path);

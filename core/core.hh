@@ -120,12 +120,13 @@ class Map {
     void print(vec_2i pos);
     void drawFrame(PlayActions act, int *gen);
     void cleanTarget();
+    bool inMap(vec_2i pos);
     void init();
 
     void updateSize(vec_2i new_size);
 
     void loadMap(const string &load_path);
-    void saveMap(const string &save_path);
+    void saveMap(string &save_path);
     int inline getValue(vec_2i pos);
     int getHash(vec_2i pos);
     int getTarget(vec_2i pos);
@@ -152,8 +153,10 @@ class Controller {
     int robbie_cnt;
     float mutate_rate;
     float max_histyory;
-    char save_path[255];
-    char load_path[255];
+    char robbie_path[255];
+    char robbie_name[255];
+    char map_path[255];
+    char map_name[128];
     // Map map;
     int map_width;
     int map_height;

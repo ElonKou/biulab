@@ -8,6 +8,7 @@
 
 #include "editor_map.hh"
 #include <iostream>
+#include <vector>
 #include "cmath"
 #include "core.hh"
 
@@ -40,75 +41,28 @@ void MapEditor::checkAndSetElem(Map &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::drawLine(Map &mp, vec_2i pos_x, vec_2i pos_y) {
-    int min_y = min(pos_x.y, pos_y.y);
-    int max_y = max(pos_x.y, pos_y.y);
-    int min_x = min(pos_x.x, pos_y.x);
-    int max_x = max(pos_x.x, pos_y.x);
-    if (pos_x.x == pos_y.x) {
-        for (int i = min_y; i <= max_y; i++) {
-            checkAndSetElem(mp, vec_2i(pos_x.x, i));
+void MapEditor::drawLine(Map &mp, vec_2i start, vec_2i end) {
+    vec_2i pos = start;
+    int direction_x = end.x - start.x;
+    int direction_y = end.y - start.y;
+    int delta_x = fabs(direction_x);
+    int delta_y = fabs(direction_y);
+    int max_xy = ((delta_x > delta_y) ? delta_x : delta_y);
+    int cnt_x = -(max_xy / 2);
+    int cnt_y = cnt_x;
+    checkAndSetElem(mp, start);
+    for (int i = 0; i < max_xy; ++i) {
+        cnt_x += delta_x;
+        if (cnt_x > 0) {
+            direction_x > 0 ? pos.x++ : pos.x--;
+            cnt_x -= max_xy;
         }
-    } else if (pos_x.y == pos_y.y) {
-        for (int i = min_x; i <= max_x; i++) {
-            checkAndSetElem(mp, vec_2i(i, pos_x.y));
+        cnt_y += delta_y;
+        if (cnt_y > 0) {
+            direction_y > 0 ? pos.y++ : pos.y--;
+            cnt_y -= max_xy;
         }
-    } else {
-        float rate = (pos_y.y - pos_x.y) * 1.0 / (pos_y.x - pos_x.x);
-        cout << "rate:" << rate << endl;
-        if (fabs(rate + 1) < 1.0e-6) {
-            for (int i = 0; i <= max_x - min_x; i++) {
-                checkAndSetElem(mp, vec_2i(min_x + i, max_y - i));
-                // cout << "VEC" << min_x + i << "," << min_y + i << endl;
-            }
-        } else if (fabs(rate - 1) < 1.0e-6) {
-            for (int i = 0; i <= max_x - min_x; i++) {
-                checkAndSetElem(mp, vec_2i(min_x + i, min_y + i));
-                // cout << "HORI" << min_x + i << "," << min_y + i << endl;
-            }
-        } else 
-        // if (rate > 1 || rate < -1) {
-        //     int temp = pos_x.x;
-        //     pos_x.x = pos_x.y;
-        //     pos_x.y = temp;
-        //     temp = pos_y.x;
-        //     pos_y.x = pos_y.y;
-        //     pos_y.y = temp;
-        // }
-        // swap the pos and do check.
-        if (rate > -1 && rate < 1) {
-            cout << "+++" << endl;
-            int dx = abs(pos_y.x - pos_x.x);
-            int dy = abs(pos_y.y - pos_x.y);
-            int p = 2 * dy - dx;
-            int twoDy = 2 * dy;
-            int twoDyMinusDx = 2 * (dy - dx);
-            if(rate < 0){
-                twoDy *= -1;
-                // twoDyMinusDx *= -1;
-            }
-            int x, y;
-            if (pos_x.x > pos_y.x) {
-                x = pos_y.x;
-                y = pos_y.y;
-                pos_y.x = pos_x.x;
-            } else {
-                x = pos_x.x;
-                y = pos_x.y;
-            }
-            checkAndSetElem(mp, vec_2i(x, y));
-            while (x < pos_y.x) {
-                x++;
-                if (p < 0) {
-                    p += twoDy;
-                } else {
-                    y++;
-                    p += twoDyMinusDx;
-                }
-                checkAndSetElem(mp, vec_2i(x, y));
-            }
-        }
-        //
+        checkAndSetElem(mp, pos);
     }
 }
 
@@ -117,7 +71,6 @@ void MapEditor::drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y) {
     int max_x = max(pos_x.x, pos_y.x);
     int min_y = min(pos_x.y, pos_y.y);
     int max_y = max(pos_x.y, pos_y.y);
-    cout << min_x << " " << min_y << " " << max_x << " " << max_y << endl;
     for (int i = min_y; i <= max_y; i++) {
         for (int j = min_x; j <= max_x; j++) {
             vec_2i rect_pos(j, i);
@@ -128,6 +81,47 @@ void MapEditor::drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y) {
 
 void MapEditor::drawPoint(Map &mp, vec_2i pos) { checkAndSetElem(mp, pos); }
 
+void MapEditor::drawBlock(Map &mp, vec_2i pos) {
+    std::vector<vec_2i> cache;
+    cache.push_back(pos);
+    int select_elem = mp.getElem(pos);
+    cout << select_elem;
+    checkAndSetElem(mp, pos);
+    while (!cache.empty()) {
+        vec_2i point = cache.front();
+        cache.erase(cache.begin());
+
+        vec_2i pos_left = vec_2i(-1, 0) + point;
+        if (mp.inMap(pos_left) && mp.getElem(pos_left) == select_elem) {
+            cache.push_back(pos_left);
+            checkAndSetElem(mp, pos_left);
+        }
+        vec_2i pos_right = vec_2i(1, 0) + point;
+        if (mp.inMap(pos_right) && mp.getElem(pos_right) == select_elem) {
+            cache.push_back(pos_right);
+            checkAndSetElem(mp, pos_right);
+        }
+        vec_2i pos_top = vec_2i(0, -1) + point;
+        if (mp.inMap(pos_top) && mp.getElem(pos_top) == select_elem) {
+            cache.push_back(pos_top);
+            checkAndSetElem(mp, pos_top);
+        }
+        vec_2i pos_bot = vec_2i(0, 1) + point;
+        if (mp.inMap(pos_bot) && mp.getElem(pos_bot) == select_elem) {
+            cache.push_back(pos_bot);
+            checkAndSetElem(mp, pos_bot);
+        }
+    }
+}
+
+void MapEditor::drawAll(Map &mp, vec_2i pos) {
+    for (int i = 0; i < mp.size.y; i++) {
+        for (int j = 0; j < mp.size.y; j++) {
+            checkAndSetElem(mp, vec_2i(j, i));
+        }
+    }
+}
+
 void MapEditor::updateMap(Map &mp) { mp.updateSize(vec_2i(width, height)); }
 
 void MapEditor::setTools(ToolsType tool) { tools = tool; }
@@ -136,7 +130,7 @@ void MapEditor::setSelection(SelectionsType slect) { selections = slect; }
 
 void MapEditor::resize(Map &mp) {}
 
-void MapEditor::modifiedMap(Map &mp, vec_2i pos) {
+void MapEditor::modifiedMap(Map &mp, vec_2i pos) { 
     if (tools != T_NONE && selections != S_NONE) {
         // Select two pos.
         if (selections == S_RECT) {
@@ -163,6 +157,14 @@ void MapEditor::modifiedMap(Map &mp, vec_2i pos) {
         // Point.
         if (selections == S_POINT) {
             drawPoint(mp, pos);
+        }
+        // Filled
+        if (selections == S_BLOCK) {
+            drawBlock(mp, pos);
+        }
+        // All
+        if (selections == S_ALL) {
+            drawAll(mp, pos);
         }
     }
 }

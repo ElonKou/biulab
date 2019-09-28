@@ -5,7 +5,7 @@
 #include "core.hh"
 
 enum ToolsType { T_NONE, T_EDGE, T_OUT, T_EMPTY, T_RUBBISH };
-enum SelectionsType { S_NONE, S_POINT, S_LINE, S_RECT, S_ALL };
+enum SelectionsType { S_NONE, S_POINT, S_LINE, S_RECT, S_BLOCK, S_ALL };
 enum ActionType { A_NONE, A_UNDO, A_REDO };
 
 typedef struct {
@@ -38,6 +38,8 @@ class MapEditor {
     void drawLine(Map &mp, vec_2i pos_x, vec_2i pos_y);
     void drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y);
     void drawPoint(Map &mp, vec_2i pos);
+    void drawBlock(Map &mp, vec_2i pos);
+    void drawAll(Map &mp, vec_2i pos);
 
     void updateMap(Map &mp);
     void setTools(ToolsType tool);

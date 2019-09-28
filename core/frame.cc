@@ -531,26 +531,8 @@ void windowView::showInspector() {
     vector<string> vec_robbies = getFiles(ins_robbie_path);
     vector<string> vec_maps = getFiles(ins_map_path);
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
-        if (ImGui::TreeNode("Robbies")) {
-            ImGui::BeginChild("SSS", ImVec2(0, 0), 0);
-            for (int i = 0; i < vec_robbies.size(); i++) {
-                string list_name = vec_robbies[i];
-                if (ImGui::Selectable(list_name.c_str(),
-                                      list_name == ins_select_robbie)) {
-                    if (list_name == ins_select_robbie) {
-                        rob_changed = false;
-                    } else {
-                        rob_changed = true;
-                        ins_select_robbie = list_name;
-                    }
-                }
-            }
-            ImGui::EndChild();
-            ImGui::TreePop();
-            ImGui::Separator();
-        }
+        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNode("Maps")) {
-            ImGui::BeginChild("DDD", ImVec2(0, 0), 0);
             for (int i = 0; i < vec_maps.size(); i++) {
                 string list_name = vec_maps[i];
                 if (ImGui::Selectable(list_name.c_str(),
@@ -563,8 +545,24 @@ void windowView::showInspector() {
                     }
                 }
             }
-            ImGui::EndChild();
             ImGui::TreePop();
+        }
+        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+        if (ImGui::TreeNode("Robbies")) {
+            for (int i = 0; i < vec_robbies.size(); i++) {
+                string list_name = vec_robbies[i];
+                if (ImGui::Selectable(list_name.c_str(),
+                                      list_name == ins_select_robbie)) {
+                    if (list_name == ins_select_robbie) {
+                        rob_changed = false;
+                    } else {
+                        rob_changed = true;
+                        ins_select_robbie = list_name;
+                    }
+                }
+            }
+            ImGui::TreePop();
+            ImGui::Separator();
         }
     }
     ImGui::End();
@@ -614,13 +612,13 @@ void windowView::showGraph() {
 
 void windowView::showEditor() {
     if (ImGui::Begin("Editor", &show_editor_window, 0)) {
+        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNode("Map editor")) {
             // Base
             {
                 static bool has_create_map = false;
                 static bool has_saved_map = false;
-                ImGui::BulletText("Base:");
-                if (ImGui::Button("Create new Map")) {
+                if (ImGui::Button("Create Map")) {
                     if (!has_create_map) {
                         has_create_map = true;
                         Map* empty_map = new Map(vec_2i(MAP_WIDTH, MAP_HEIGHT));
@@ -628,27 +626,27 @@ void windowView::showEditor() {
                     }
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("update")) {
-                    if (has_map) {
-                        mapEditor->updateMap(*map);
-                    }
-                }
-                ImGui::SameLine();
                 if (ImGui::Button("Save")) {
-                    if (has_map && has_create_map) {
-                        cout << "save map" << endl;
-                        map->saveMap("some place.");
+                    if (has_map) {
+                        string full_path =
+                            string(con->map_path) + "/" + string(con->map_name);
+                        map->saveMap(full_path);
                         has_map = false;
-                        // delete map;
-                        // map = nullptr;
                         has_create_map = false;
                     }
                 }
-                ImGui::InputInt("Width", &mapEditor->width, 1, 2);
-                ImGui::InputInt("Height", &mapEditor->height, 1, 2);
+                ImGui::BulletText("Base:");
+                ImGui::InputText("Save name", con->map_name,
+                                 IM_ARRAYSIZE(con->map_name));
+                if (ImGui::InputInt("Width", &mapEditor->width, 1, 2)) {
+                    mapEditor->updateMap(*map);
+                }
+                if (ImGui::InputInt("Height", &mapEditor->height, 1, 2)) {
+                    mapEditor->updateMap(*map);
+                }
             }
             ImGui::Separator();
-            // add new button for edit
+            // Tools
             {
                 ImGui::BulletText("Tools:");
                 ImGui::PushID(0);
@@ -657,7 +655,7 @@ void windowView::showEditor() {
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
                                       (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.7f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-                                      (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.8f));
+                                      (ImVec4)ImColor::HSV(0.9f, 0.5f, 0.8f));
                 if (ImGui::Button("None")) {
                     mapEditor->setTools(T_NONE);
                 }
@@ -725,13 +723,13 @@ void windowView::showEditor() {
                 ImGui::PopID();
             }
             ImGui::Separator();
-            // button for select type.
+            // Selections.
             {
                 ImGui::BulletText("Selection:");
-                ImGui::SameLine();
                 if (ImGui::Button("None")) {
                     mapEditor->setSelection(S_NONE);
                 }
+                ImGui::SameLine();
                 if (ImGui::Button("Point")) {
                     mapEditor->setSelection(S_POINT);
                 }
@@ -744,11 +742,17 @@ void windowView::showEditor() {
                     mapEditor->setSelection(S_RECT);
                 }
                 ImGui::SameLine();
+                if (ImGui::Button("Block")) {
+                    mapEditor->setSelection(S_BLOCK);
+                }
+                ImGui::SameLine();
                 if (ImGui::Button("All")) {
+                    mapEditor->setSelection(S_ALL);
                 }
             }
             ImGui::TreePop();
         }
+        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNode("Robbie editor")) {
             ImGui::TreePop();
         }
@@ -774,12 +778,12 @@ void windowView::showControlWindow() {
         ImGui::SameLine();
         showHelpMarker("max_histyory.");
 
-        ImGui::InputText("Save path", con->save_path,
-                         IM_ARRAYSIZE(con->save_path));
+        ImGui::InputText("Save path", con->robbie_path,
+                         IM_ARRAYSIZE(con->robbie_path));
         ImGui::SameLine();
         showHelpMarker("save modle.");
-        ImGui::InputText("load path", con->load_path,
-                         IM_ARRAYSIZE(con->load_path));
+        ImGui::InputText("load path", con->robbie_path,
+                         IM_ARRAYSIZE(con->robbie_path));
         ImGui::SameLine();
         showHelpMarker("load modle.");
 
@@ -862,12 +866,8 @@ void windowView::showDisplayWindow() {
                                                     {1.0f, 1.0f, 1.0f, 0.0}));
                     }
                     // Hover
-                    // int hoveredId = -1;
-                    if (ImGui::IsMouseHoveringRect(
-                            p0, {p1.x + 1.0f, p1.y + 1.0f})) {
-                        // if (i == j) hoveredId = i;
+                    if (ImGui::IsMouseHoveringRect(p0, p1)) {
                         if (ImGui::IsMouseClicked(0)) {
-                            cout << "clicked" << j << " " << i << " " << endl;
                             mapEditor->modifiedMap(*map, vec_2i(j, i));
                         }
                     }
@@ -954,6 +954,5 @@ void windowView::checkState() {
         setMap(mp);
         has_map = true;
         map_changed = false;
-        cout << "Create/Load suceed." << endl;
     }
 }
