@@ -3,21 +3,20 @@ CC = g++
 EXE = genetic
 
 GUIOBJ = imgui.o imgui_demo.o imgui_draw.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o
-LIBOBJ = lib.o
-COREOBJ = core.o frame.o editor_map.o editor_robbie.o
-MAINOBJ = main.o
+COREOBJ = Frame.o Main.o Vec.o Lib.o ControllerBase.o MapBase.o
+MODULES_ROBBIE_OBJ = Robbie.o RobbieController.o RobbieMap.o RobbieConfig.o
+MODULES_MAPEDITOR_OBJ = MapEditor.o
+
 
 GUIOBJS = $(addprefix imgui/, $(GUIOBJ))
-LIBOBJS = $(addprefix lib/, $(LIBOBJ))
 COREOBJS = $(addprefix core/, $(COREOBJ))
-MAINOBJS = $(addprefix src/, $(MAINOBJ))
+MODULES_ROBBIE_OBJS = $(addprefix modules/Robbie/, $(MODULES_ROBBIE_OBJ))
+MODULES_MAPEDITOR_OBJS = $(addprefix modules/MapEditor/, $(MODULES_MAPEDITOR_OBJ))
 
-OBJS = $(GUIOBJS) $(LIBOBJS) $(COREOBJS) $(MAINOBJS)
+OBJS = $(GUIOBJS) $(COREOBJS) $(MODULES_ROBBIE_OBJS) ${MODULES_MAPEDITOR_OBJS}
 
-# $(CC) -I./ -I./imgui/ -I./src/ -I./lib/ -I./core/ -c $< -o $@ -std=c++11
-# /usr/include/x86_64-linux-gnu/sys/io.h
 %.o:%.cc
-	$(CC) -I./lib/ -I./core/ -I./imgui/ -I./src/ -c $< -o $@ -std=c++11
+	$(CC) -I./include/ -I./core/ -I./imgui/ -I./modules/MapEditor/ -I./modules/Robbie/ -c $< -o $@ -std=c++11
 $(EXE):$(OBJS)
 	$(CC) $(OBJS) -lglfw -lGLEW -lGL -o $(EXE)
 clean:

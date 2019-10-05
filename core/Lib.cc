@@ -1,12 +1,14 @@
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// File:  lib.cpp
-// Author :elonkou
-// E-mail :elonkou@ktime.cc
-// Date   :Mon 30 Apr 2018 11:21:21 PM CST
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*================================================================
+*  Copyright (C)2019 All rights reserved.
+*  FileName : Lib.cc
+*  Author   : elonkou
+*  Email    : elonkou@ktime.cc
+*  Date     : 2019年10月02日 星期三 11时40分13秒
+================================================================*/
 
-#include "lib.hh"
+#include "Lib.hh"
 #include <dirent.h>
+#include <sys/time.h>
 #include <cstdio>
 #include <iostream>
 #include <sstream>
@@ -133,3 +135,12 @@ string &replace_all(string &str, const string &old_value,
     }
     return str;
 }
+
+int randomInt(int range) {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    srand(tv.tv_usec);
+    return random(range);
+}
+
+float randomFloat() { return randomInt(1000000) * 1.0 / 1000000; }

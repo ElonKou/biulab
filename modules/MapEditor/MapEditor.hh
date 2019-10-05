@@ -2,7 +2,8 @@
 #ifndef EDITOR_MAP_H_
 #define EDITOR_MAP_H_
 
-#include "core.hh"
+#include "RobbieMap.hh"
+#include "Vec.hh"
 
 enum ToolsType { T_NONE, T_EDGE, T_OUT, T_EMPTY, T_RUBBISH };
 enum SelectionsType { S_NONE, S_POINT, S_LINE, S_RECT, S_BLOCK, S_ALL };
@@ -33,19 +34,19 @@ class MapEditor {
     inline int abs(int x);
     inline int max(int x, int y);
     inline int min(int x, int y);
-    void checkAndSetElem(Map &mp, vec_2i pos);
+    void checkAndSetElem(RobbieMap &mp, vec_2i pos);
 
-    void drawLine(Map &mp, vec_2i pos_x, vec_2i pos_y);
-    void drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y);
-    void drawPoint(Map &mp, vec_2i pos);
-    void drawBlock(Map &mp, vec_2i pos);
-    void drawAll(Map &mp, vec_2i pos);
+    void drawLine(RobbieMap &mp, vec_2i pos_x, vec_2i pos_y);
+    void drawRect(RobbieMap &mp, vec_2i pos_x, vec_2i pos_y);
+    void drawPoint(RobbieMap &mp, vec_2i pos);
+    void drawBlock(RobbieMap &mp, vec_2i pos);
+    void drawAll(RobbieMap &mp, vec_2i pos);
 
-    void updateMap(Map &mp);
+    void updateMap(RobbieMap &mp);
     void setTools(ToolsType tool);
     void setSelection(SelectionsType slect);
-    void resize(Map &mp);
-    void modifiedMap(Map &mp, vec_2i pos);
+    void resize(RobbieMap &mp);
+    void modifiedMap(RobbieMap &mp, vec_2i pos);
 };
 
 #endif

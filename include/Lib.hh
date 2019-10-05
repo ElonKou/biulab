@@ -1,4 +1,7 @@
-// Define color for show text.
+#pragma once
+#ifndef LIB_H_
+#define LIB_H_
+
 #ifndef COLOR_PRINT
 #define COLOR_PRINT
 #define NONE "\e[0m"
@@ -31,10 +34,12 @@
 
 #include <dirent.h>
 #include <unistd.h>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
+
 using namespace std;
+#define random(x) (rand() % x);
 
 char *getChar(string str);
 void printOk(string str);
@@ -62,3 +67,8 @@ vector<string> getFiles(string dir);
 vector<string> split(const string &s, const string &seperator);
 string &replace_all(string &str, const string &old_value,
                     const string &new_value);
+
+int randomInt(int range);
+float randomFloat();
+
+#endif

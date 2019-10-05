@@ -6,11 +6,11 @@
 *  Date     : 2019年09月24日 星期二 22时56分48秒
 ================================================================*/
 
-#include "editor_map.hh"
+#include "MapEditor.hh"
 #include <iostream>
 #include <vector>
+#include "RobbieConfig.hh"
 #include "cmath"
-#include "core.hh"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ inline int MapEditor::max(int x, int y) { return x > y ? x : y; }
 
 inline int MapEditor::min(int x, int y) { return x < y ? x : y; }
 
-void MapEditor::checkAndSetElem(Map &mp, vec_2i pos) {
+void MapEditor::checkAndSetElem(RobbieMap &mp, vec_2i pos) {
     if (tools == T_EDGE) {
         mp.setElem(pos, EDGE);
     } else if (tools == T_EMPTY) {
@@ -41,7 +41,7 @@ void MapEditor::checkAndSetElem(Map &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::drawLine(Map &mp, vec_2i start, vec_2i end) {
+void MapEditor::drawLine(RobbieMap &mp, vec_2i start, vec_2i end) {
     vec_2i pos = start;
     int direction_x = end.x - start.x;
     int direction_y = end.y - start.y;
@@ -66,7 +66,7 @@ void MapEditor::drawLine(Map &mp, vec_2i start, vec_2i end) {
     }
 }
 
-void MapEditor::drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y) {
+void MapEditor::drawRect(RobbieMap &mp, vec_2i pos_x, vec_2i pos_y) {
     int min_x = min(pos_x.x, pos_y.x);
     int max_x = max(pos_x.x, pos_y.x);
     int min_y = min(pos_x.y, pos_y.y);
@@ -79,9 +79,11 @@ void MapEditor::drawRect(Map &mp, vec_2i pos_x, vec_2i pos_y) {
     }
 }
 
-void MapEditor::drawPoint(Map &mp, vec_2i pos) { checkAndSetElem(mp, pos); }
+void MapEditor::drawPoint(RobbieMap &mp, vec_2i pos) {
+    checkAndSetElem(mp, pos);
+}
 
-void MapEditor::drawBlock(Map &mp, vec_2i pos) {
+void MapEditor::drawBlock(RobbieMap &mp, vec_2i pos) {
     std::vector<vec_2i> cache;
     cache.push_back(pos);
     int select_elem = mp.getElem(pos);
@@ -114,7 +116,7 @@ void MapEditor::drawBlock(Map &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::drawAll(Map &mp, vec_2i pos) {
+void MapEditor::drawAll(RobbieMap &mp, vec_2i pos) {
     for (int i = 0; i < mp.size.y; i++) {
         for (int j = 0; j < mp.size.y; j++) {
             checkAndSetElem(mp, vec_2i(j, i));
@@ -122,15 +124,17 @@ void MapEditor::drawAll(Map &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::updateMap(Map &mp) { mp.updateSize(vec_2i(width, height)); }
+void MapEditor::updateMap(RobbieMap &mp) {
+    mp.updateSize(vec_2i(width, height));
+}
 
 void MapEditor::setTools(ToolsType tool) { tools = tool; }
 
 void MapEditor::setSelection(SelectionsType slect) { selections = slect; }
 
-void MapEditor::resize(Map &mp) {}
+void MapEditor::resize(RobbieMap &mp) {}
 
-void MapEditor::modifiedMap(Map &mp, vec_2i pos) { 
+void MapEditor::modifiedMap(RobbieMap &mp, vec_2i pos) {
     if (tools != T_NONE && selections != S_NONE) {
         // Select two pos.
         if (selections == S_RECT) {

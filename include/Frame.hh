@@ -1,11 +1,12 @@
+#pragma once
 #ifndef INIT_WINDOW
 #define INIT_WINDOW
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include "core.hh"
-#include "editor_map.hh"
+#include "MapEditor.hh"
+#include "RobbieController.hh"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -20,7 +21,7 @@ class windowView {
     GLFWwindow* window;
     Controller* con;
     MapEditor* mapEditor;
-    Map* map;
+    RobbieMap* map;
     // inspector
     string ins_robbie_path;
     string ins_map_path;
@@ -58,7 +59,7 @@ class windowView {
     void setDarkTheme();
     void setNewTheme();
     void setController(Controller* con_ptr);
-    void setMap(Map* map);
+    void setMap(RobbieMap* map);
 
     void showMenuFile();
     void showMainMenuBar();

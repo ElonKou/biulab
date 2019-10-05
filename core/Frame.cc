@@ -1,4 +1,12 @@
-#include "frame.hh"
+/*================================================================
+*  Copyright (C)2019 All rights reserved.
+*  FileName : Frame.cc
+*  Author   : elonkou
+*  Email    : elonkou@ktime.cc
+*  Date     : 2019年10月02日 星期三 11时40分13秒
+================================================================*/
+
+#include "Frame.hh"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -6,8 +14,7 @@
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
 #include "../imgui/imgui_internal.h"
-#include "core.hh"
-#include "lib.hh"
+#include "Lib.hh"
 
 using namespace std;
 
@@ -18,9 +25,9 @@ bool windowView::show_main_menu_bar = true;
 bool windowView::show_overlay_bar = true;
 bool windowView::show_control_window = true;
 bool windowView::show_display_window = true;
-bool windowView::show_graph_window = true;
+bool windowView::show_graph_window = false;
 bool windowView::show_editor_window = true;
-bool windowView::show_node_window = true;
+bool windowView::show_node_window = false;
 bool windowView::show_inspector_window = true;
 
 ImGuiDockNodeFlags windowView::dockspace_flags =
@@ -32,9 +39,10 @@ windowView::windowView() {
     loadFont();
     setGL(window);
     setNewTheme();
-    ins_robbie_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/results";
+    ins_robbie_path =
+        "/home/elonkou/ELONKOU/03.GENETIC/genetic/resources/results";
     ins_select_robbie = " ";
-    ins_map_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/maps";
+    ins_map_path = "/home/elonkou/ELONKOU/03.GENETIC/genetic/resources/maps";
     ins_select_map = " ";
     has_map = false;
     map_changed = false;
@@ -239,7 +247,7 @@ void windowView::setNewTheme() {
 
 void windowView::setController(Controller* con_ptr) { con = con_ptr; }
 
-void windowView::setMap(Map* mp) {
+void windowView::setMap(RobbieMap* mp) {
     map = mp;
     has_map = true;
 }
@@ -621,7 +629,8 @@ void windowView::showEditor() {
                 if (ImGui::Button("Create Map")) {
                     if (!has_create_map) {
                         has_create_map = true;
-                        Map* empty_map = new Map(vec_2i(MAP_WIDTH, MAP_HEIGHT));
+                        RobbieMap* empty_map =
+                            new RobbieMap(vec_2i(MAP_WIDTH, MAP_HEIGHT));
                         setMap(empty_map);
                     }
                 }
@@ -765,6 +774,7 @@ void windowView::showControlWindow() {
 
     ImGui::BeginChild("item view",
                       ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Controller")) {
         ImGui::SliderInt("loop cnt", &con->loop_controller, 1, 40000);
         ImGui::SameLine();
@@ -778,18 +788,19 @@ void windowView::showControlWindow() {
         ImGui::SameLine();
         showHelpMarker("max_histyory.");
 
-        ImGui::InputText("Save path", con->robbie_path,
+        ImGui::InputText("robbie path", con->robbie_path,
                          IM_ARRAYSIZE(con->robbie_path));
         ImGui::SameLine();
-        showHelpMarker("save modle.");
-        ImGui::InputText("load path", con->robbie_path,
-                         IM_ARRAYSIZE(con->robbie_path));
+        showHelpMarker("save/load modle.");
+        ImGui::InputText("map path", con->map_path,
+                         IM_ARRAYSIZE(con->map_path));
         ImGui::SameLine();
-        showHelpMarker("load modle.");
+        showHelpMarker("save/load map.");
 
         ImGui::Checkbox("Save Gene", &con->save_run);
         ImGui::TreePop();
     }
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Robbie")) {
         ImGui::SliderFloat("mutate rate", &con->mutate_rate, 0.0, 0.1);
         ImGui::SameLine();
@@ -800,11 +811,15 @@ void windowView::showControlWindow() {
         showHelpMarker("Robbies count for erery generation.");
         ImGui::TreePop();
     }
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Map")) {
-        ImGui::InputInt("Width", &con->map_width, 1, 2);
-        ImGui::InputInt("Height", &con->map_height, 1, 2);
-        ImGui::SameLine();
-        showHelpMarker("Map width and height.");
+        vector<string> vec_maps = getFiles(ins_map_path);
+        const char* items[vec_maps.size()];
+        for (int i = 0; i < vec_maps.size(); i++) {
+            items[i] = vec_maps[i].c_str();
+        }
+        static int item_current = 0;
+        ImGui::Combo("Select Map", &item_current, items, vec_maps.size());
         ImGui::TreePop();
     }
     ImGui::EndChild();
@@ -946,7 +961,7 @@ void windowView::checkState() {
         if (has_map) {
             map = nullptr;
         }
-        Map* mp = new Map();
+        RobbieMap* mp = new RobbieMap();
         // mp->init();
         if (ins_select_map != " ") {
             mp->loadMap(ins_map_path + "/" + ins_select_map);
