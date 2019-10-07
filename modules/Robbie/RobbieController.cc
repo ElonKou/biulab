@@ -17,7 +17,7 @@
 #include "Robbie.hh"
 using namespace std;
 
-Controller::Controller()
+RobbieController::RobbieController()
     : loop_controller(LOOP_CONTROLLER),
       loop_map(LOOP_MAP),
       robbie_cnt(ROBBIE_CNT),
@@ -38,13 +38,13 @@ Controller::Controller()
     strcpy(map_path, default_map_path.c_str());
     strcpy(map_name, default_map_name.c_str());
 }
-Controller::Controller(string save_p) {
-    Controller();
+RobbieController::RobbieController(string save_p) {
+    RobbieController();
     strcpy(robbie_path, save_p.c_str());
 }
-Controller::~Controller() {}
+RobbieController::~RobbieController() {}
 
-void Controller::init() {
+void RobbieController::init() {
     // init controller
     float res[robbie_cnt];
     float res_ori[robbie_cnt];
@@ -55,7 +55,7 @@ void Controller::init() {
     }
 }
 
-void Controller::train() {
+void RobbieController::train() {
     for (int k = 0; k < loop_controller; k++) {
         for (int i = 0; i < robbie_cnt; i++) {
             robbies[i].playOne(loop_map);
@@ -109,13 +109,13 @@ void Controller::train() {
     }
 }
 
-void Controller::print_str() {
+void RobbieController::print_str() {
     cout << "   0  " << endl;
     cout << " 3 4 2" << endl;
     cout << "   1  " << endl;
 }
 
-void Controller::playScreen(Robbie &rob, RobbieMap &map) {
+void RobbieController::playScreen(Robbie &rob, RobbieMap &map) {
     PlayActions act;
     for (int i = 0; i < LOOP_CNT; i++) {
         print_str();
@@ -148,7 +148,7 @@ void Controller::playScreen(Robbie &rob, RobbieMap &map) {
     // map.cleanTarget();
 }
 
-Robbie Controller::loadRobbie(string robbie_path) {
+Robbie RobbieController::loadRobbie(string robbie_path) {
     Robbie rob;
     ifstream fp;
     fp.open(robbie_path);
@@ -163,7 +163,7 @@ Robbie Controller::loadRobbie(string robbie_path) {
     fp.close();
     return rob;
 }
-void Controller::saveRobbie(Robbie &rob, string robbie_path) {
+void RobbieController::saveRobbie(Robbie &rob, string robbie_path) {
     int score = int(rob.averScore);
     if (robbie_path != "") {
         robbie_path += to_string(score) + ".txt";
@@ -180,7 +180,7 @@ void Controller::saveRobbie(Robbie &rob, string robbie_path) {
     }
 }
 
-int Controller::getIndex(float random_index) {
+int RobbieController::getIndex(float random_index) {
     int i = 0;
     while (scores_tf[i] < random_index) {
         i++;
@@ -188,7 +188,7 @@ int Controller::getIndex(float random_index) {
     return i;
 }
 
-int Controller::showHisgram(int num) {
+int RobbieController::showHisgram(int num) {
     int minIndex = 0;
     int maxIndex = 0;
     float minData = 1000;

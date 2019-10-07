@@ -9,16 +9,16 @@
 #include "Vec.hh"
 using namespace std;
 
-class Controller {
+class RobbieController {
    public:
     struct Result {
         int score;
         int robbie_id;
         int map_id;
     };
-    Controller();
-    Controller(string save_path);
-    ~Controller();
+    RobbieController();
+    RobbieController(string save_path);
+    ~RobbieController();
     int loop_controller;
     int loop_map;
     int robbie_cnt;

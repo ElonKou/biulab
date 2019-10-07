@@ -1,11 +1,11 @@
 .PHONY:clean cleanall
 CC = g++
-EXE = genetic
+EXE = biulab
 
 GUIOBJ = imgui.o imgui_demo.o imgui_draw.o imgui_widgets.o imgui_impl_glfw.o imgui_impl_opengl3.o
-COREOBJ = Frame.o Main.o Vec.o Lib.o ControllerBase.o MapBase.o
+COREOBJ = WindowView.o Main.o Vec.o Lib.o ControllerBase.o MapBase.o ModulesManager.o Lab.o
 MODULES_ROBBIE_OBJ = Robbie.o RobbieController.o RobbieMap.o RobbieConfig.o
-MODULES_MAPEDITOR_OBJ = MapEditor.o
+MODULES_MAPEDITOR_OBJ = MapEditor.o MapView.o
 
 
 GUIOBJS = $(addprefix imgui/, $(GUIOBJ))

@@ -16,10 +16,13 @@
 
 using namespace std;
 
-class windowView {
+class WindowView {
+   private:
+    GLFWwindow* glfwWindow;
+
    public:
     GLFWwindow* window;
-    Controller* con;
+    RobbieController* con;
     MapEditor* mapEditor;
     RobbieMap* map;
     // inspector
@@ -32,23 +35,23 @@ class windowView {
     bool has_rob;
     bool rob_changed;
 
-    static bool show_dock_sapce;
-    static bool show_main_window;
-    static bool show_demo_window;
-    static bool show_main_menu_bar;
-    static bool show_overlay_bar;
-    static bool show_control_window;
-    static bool show_display_window;
-    static bool show_graph_window;
-    static bool show_editor_window;
-    static bool show_node_window;
-    static bool show_inspector_window;
+   //  static bool show_dock_sapce;
+   //  static bool show_main_window;
+   //  static bool show_demo_window;
+   //  static bool show_main_menu_bar;
+   //  static bool show_overlay_bar;
+   //  static bool show_control_window;
+   //  static bool show_display_window;
+   //  static bool show_graph_window;
+   //  static bool show_editor_window;
+   //  static bool show_node_window;
+   //  static bool show_inspector_window;
 
     static ImGuiDockNodeFlags dockspace_flags;
 
-    windowView();
-    windowView(Controller* con_ptr);
-    ~windowView();
+    WindowView();
+    WindowView(RobbieController* con_ptr);
+    ~WindowView();
 
     GLFWwindow* initWindow();
     void drawWindow();
@@ -58,7 +61,7 @@ class windowView {
     void setWhiteTheme();
     void setDarkTheme();
     void setNewTheme();
-    void setController(Controller* con_ptr);
+    void setController(RobbieController* con_ptr);
     void setMap(RobbieMap* map);
 
     void showMenuFile();
