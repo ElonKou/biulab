@@ -2,7 +2,7 @@
 #ifndef ROBBIE_CONFIG_H_
 #define ROBBIE_CONFIG_H_
 
-#include "Vec.hh"
+#include "BiuTypes.hh"
 
 #define START_X 6  // 起始位置
 #define START_Y 6  // 起始位置

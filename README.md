@@ -39,8 +39,28 @@ Algorithm:
 - [ ] Robbie run on map.
 
 Frame:
-- [ ] separate all the module from project.
-- [ ] 
+- [x] separate all the module from project.
+- [ ] load the module by plugin.
+- [x] tets for build plugin frame.
+- [ ] build Window/Map/Controller/Core/base class.
+- [ ] create all the windows base class.
+- [ ] create the simplest module.
+- [ ] modified the Makefile of whole project.
+- [ ] add submodule Makefile/CmakeLists.
 
+Target:
+- [ ] run the MapEditor module.
+- [ ] run the LifeGame module.
+- [ ] run the genetic module.
 
+## architecture
+
+### core class
+- [ ] biulab
+
+- [ ] dockspace
+- [ ] window
+- [ ] controller
+
+- [ ] Inspector
 

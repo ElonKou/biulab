@@ -6,7 +6,7 @@
 #include "Robbie.hh"
 #include "RobbieConfig.hh"
 #include "RobbieMap.hh"
-#include "Vec.hh"
+#include "BiuTypes.hh"
 using namespace std;
 
 class RobbieController {

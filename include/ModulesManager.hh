@@ -2,16 +2,23 @@
 #ifndef MODULES_MANAGER_H_
 #define MODULES_MANAGER_H_
 
-#include "MapModule.hh"
-#include "RobbieModule.hh"
+namespace BiuLab {
+namespace Modules {
 
 class ModulesManager {
    private:
    public:
-    MapModule mapModule;
-    RobbieModule robbieModule;
+    void LoadModule();
+
+    void UnloadModule();
+
     ModulesManager();
+
     ~ModulesManager();
 };
+
+}  // namespace Modules
+
+}  // namespace BiuLab
 
 #endif

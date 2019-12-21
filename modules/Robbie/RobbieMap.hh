@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "RobbieConfig.hh"
-#include "Vec.hh"
+#include "BiuTypes.hh"
 
 using namespace std;
 

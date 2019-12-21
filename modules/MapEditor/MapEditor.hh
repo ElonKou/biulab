@@ -3,7 +3,7 @@
 #define EDITOR_MAP_H_
 
 #include "RobbieMap.hh"
-#include "Vec.hh"
+#include "BiuTypes.hh"
 
 enum ToolsType { T_NONE, T_EDGE, T_OUT, T_EMPTY, T_RUBBISH };
 enum SelectionsType { S_NONE, S_POINT, S_LINE, S_RECT, S_BLOCK, S_ALL };

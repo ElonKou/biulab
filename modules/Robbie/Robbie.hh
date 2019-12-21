@@ -4,7 +4,7 @@
 
 #include "RobbieConfig.hh"
 #include "RobbieMap.hh"
-#include "Vec.hh"
+#include "BiuTypes.hh"
 
 class Robbie {
    public:

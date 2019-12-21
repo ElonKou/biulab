@@ -1,0 +1,3 @@
+/home/elonkou/ELONKOU/03.GENETIC/genetic/build/CMakeFiles/rebuild_cache.dir
+/home/elonkou/ELONKOU/03.GENETIC/genetic/build/CMakeFiles/edit_cache.dir
+/home/elonkou/ELONKOU/03.GENETIC/genetic/build/CMakeFiles/biulab.dir
