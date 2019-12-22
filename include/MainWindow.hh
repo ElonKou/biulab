@@ -5,13 +5,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include "MainWindow.hh"
 #include "BiuLab.hh"
+#include "MainWindow.hh"
+#include "Menu.hh"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "imgui_internal.h"
 
 using namespace std;
+using namespace BiuLab::Widget;
 
 namespace BiuLab {
 namespace Window {
@@ -20,11 +23,21 @@ class MainWindow {
    private:
     GLFWwindow* window;
 
-    int width;
+    Menu menu;
 
-    int height;
+    struct WindowInfo {
+        int width;
 
-    string title;
+        int height;
+
+        float font_size;
+
+        string title;
+
+        string fonts_path;
+
+        ImVec4 background_color;
+    } main_window_info;
 
    public:
     MainWindow();
@@ -37,15 +50,18 @@ class MainWindow {
 
     void startWindow();
 
-    void loadFont();
-
     void setGL(GLFWwindow* window);
+
+    void loadFont();
 
     void showDcokSpace();
 
     void showDisabledMessage();
 
     void setDarkTheme();
+
+    static void key_back(GLFWwindow* window, int key, int scanmode, int action,
+                         int mode);
 };
 
 }  // namespace Window

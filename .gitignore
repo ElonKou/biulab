@@ -1,4 +1,4 @@
-genetic
+biulab
+build/
 *.o
 .vscode
-#results

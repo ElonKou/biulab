@@ -75,11 +75,11 @@ void Menu::show() {
             }
             if (ImGui::MenuItem("Cut", "CTRL+X")) {
             }
-        }
-        if (ImGui::MenuItem("Paste", "CTRL+V")) {
+            if (ImGui::MenuItem("Paste", "CTRL+V")) {
+            }
+            ImGui::EndMenu();
         }
     }
-    ImGui::EndMenu();
 
     if (ImGui::BeginMenu("View")) {
         static bool tab_menu_button;

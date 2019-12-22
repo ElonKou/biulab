@@ -13,21 +13,21 @@
 // windows
 
 namespace BiuLab {
-
-static bool show_dock_sapce;
-static bool show_main_window;
-static bool show_demo_window;
-static bool show_main_menu_bar;
-static bool show_overlay_bar;
-static bool show_control_window;
-static bool show_display_window;
-static bool show_graph_window;
-static bool show_editor_window;
-static bool show_node_window;
-static bool show_inspector_window;
-static ImGuiDockNodeFlags dockspace_flag = ImGuiDockNodeFlags_None |
-                                    ImGuiDockNodeFlags_PassthruCentralNode |
-                                    ImGuiDockNodeFlags_NoWinsdowMenuButton;
+static bool show_dock_sapce = true;
+static bool show_main_window = true;
+static bool show_demo_window = false;
+static bool show_main_menu_bar = true;
+static bool show_overlay_bar = true;
+static bool show_control_window = true;
+static bool show_display_window = true;
+static bool show_graph_window = true;
+static bool show_editor_window = true;
+static bool show_node_window = false;
+static bool show_inspector_window = true;
+// static ImGuiDockNodeFlags dockspace_flag;
+static ImGuiDockNodeFlags dockspace_flag =
+    ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode |
+    ImGuiDockNodeFlags_NoWindowMenuButton;
 
 }  // namespace BiuLab
 

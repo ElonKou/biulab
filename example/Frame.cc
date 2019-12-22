@@ -393,6 +393,7 @@ void windowView::showHelpMarker(const char* desc) {
     }
 }
 
+/* show window */
 void windowView::showMenuFile() {
     if (ImGui::MenuItem("New")) {
     }

@@ -12,6 +12,9 @@ namespace BiuLab {
 
 class Lab {
    private:
+    string root;
+    int version;
+
    public:
     MainWindow window;
 
@@ -20,6 +23,8 @@ class Lab {
     Lab();
 
     ~Lab();
+
+    void initLab();
 
     void start();
 };

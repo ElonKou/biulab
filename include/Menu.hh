@@ -10,14 +10,14 @@ namespace Widget {
 
 class Menu : public Widget {
    private:
-    void showMenuFile();
-
    public:
     Menu();
 
     ~Menu();
 
     void show();
+
+    void showMenuFile();
 };
 
 }  // namespace Widget

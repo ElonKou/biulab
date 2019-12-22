@@ -13,16 +13,18 @@ using namespace std;
 
 namespace BiuLab {
 
-Lab::Lab() {}
+Lab::Lab() { initLab(); }
 
 Lab::~Lab() {}
 
+void Lab::initLab() {
+    root = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
+    version = 0;
+}
+
 void Lab::start() {
-    // WindowView view;
-    // RobbieController con;
-    // view.setController(&con);
-    // view.startWindow();
     cout << "biulab is running." << endl;
+    window.startWindow();
 }
 
 }  // namespace BiuLab
