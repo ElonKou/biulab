@@ -12,24 +12,18 @@
 
 // windows
 
-namespace BiuLab {
-static bool show_dock_sapce = true;
-static bool show_main_window = true;
-static bool show_demo_window = false;
-static bool show_main_menu_bar = true;
-static bool show_overlay_bar = true;
-static bool show_control_window = true;
-static bool show_display_window = true;
-static bool show_graph_window = true;
-static bool show_editor_window = true;
-static bool show_node_window = false;
-static bool show_inspector_window = true;
-// static ImGuiDockNodeFlags dockspace_flag;
-static ImGuiDockNodeFlags dockspace_flag =
-    ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode |
-    ImGuiDockNodeFlags_NoWindowMenuButton;
-
-}  // namespace BiuLab
+extern bool show_dock_sapce;
+extern bool show_main_window;
+extern bool show_demo_window;
+extern bool show_main_menu_bar;
+extern bool show_overlay_bar;
+extern bool show_control_window;
+extern bool show_display_window;
+extern bool show_graph_window;
+extern bool show_editor_window;
+extern bool show_node_window;
+extern bool show_inspector_window;
+extern ImGuiDockNodeFlags dockspace_flag;
 
 // Controller
 

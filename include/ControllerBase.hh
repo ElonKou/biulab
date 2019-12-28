@@ -1,5 +1,6 @@
 #pragma once
 #ifndef CONTROLLER_BASE_H_
+#define CONTROLLER_BASE_H_
 
 class ControllerBase {
    private:
@@ -8,5 +9,4 @@ class ControllerBase {
     ~ControllerBase();
 };
 
-#define CONTROLLER_BASE_H_
 #endif

@@ -1,4 +1,4 @@
-#include "DynamicClass.h"
+#include "DynamicClass.hh"
 
 extern "C" {
 void *createByClassName(const char *strClassName) {

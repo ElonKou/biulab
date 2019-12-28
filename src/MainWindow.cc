@@ -8,15 +8,19 @@
 
 #include "MainWindow.hh"
 
-using namespace BiuLab::Window;
-using namespace BiuLab;
-
 MainWindow::MainWindow() {
     main_window_info.fonts_path = "../resources/fonts/YaHei.Consolas.1.12.ttf";
     main_window_info.font_size = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
 
     window = initWindow();
+
+    pluginhelper.Load("/home/elonkou/ELONKOU/03.BIULAB/biulab/install/lib",
+                      "*.so");
+    // pluginhelper.Load("/home/elonkou/ELONKOU/03.BIULAB/biulab/modules/BiulabWidget",
+    //                   "*.so");
+    ov_window = (WindowBase*)pluginhelper.Create("OverviewWindow");
+
     loadFont();
     setGL(window);
     setDarkTheme();
@@ -59,9 +63,10 @@ void MainWindow::drawWindow() {
     // if (show_demo_window) {
     //     ImGui::ShowDemoWindow(&show_demo_window);
     // }
-    // if (show_overlay_bar) {
-    //     showOverlay();
-    // }
+    cout << "dasda:" << show_overlay_bar << endl;
+    if (show_overlay_bar && ov_window != 0) {
+        ov_window->show();
+    }
     // if (show_control_window) {
     //     showControlWindow();
     // }

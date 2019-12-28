@@ -8,8 +8,6 @@
 
 #include "Lab.hh"
 
-using namespace BiuLab;
-
 int main() {
     Lab lab;
     lab.start();

@@ -9,8 +9,6 @@
 #include "ModulesManager.hh"
 #include <iostream>
 
-using namespace BiuLab::Modules;
-
 ModulesManager::ModulesManager() {}
 
 ModulesManager::~ModulesManager() {}

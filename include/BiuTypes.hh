@@ -1,6 +1,6 @@
 #pragma once
-#ifndef VEC_H_
-#define VEC_H_
+#ifndef BIU_TYPES_H_
+#define BIU_TYPES_H_
 
 typedef union vec_2i {
     struct {

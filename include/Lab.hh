@@ -5,11 +5,6 @@
 #include "MainWindow.hh"
 #include "ModulesManager.hh"
 
-using namespace BiuLab::Window;
-using namespace BiuLab::Modules;
-
-namespace BiuLab {
-
 class Lab {
    private:
     string root;
@@ -28,7 +23,5 @@ class Lab {
 
     void start();
 };
-
-}  // namespace BiuLab
 
 #endif

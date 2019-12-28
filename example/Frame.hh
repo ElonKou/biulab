@@ -66,6 +66,7 @@ class windowView {
     void showControlWindow();
     void showDisplayWindow();
     void showNodeWindow();
+    /* overview */
     void showOverlay();
     void showInspector();
     void showGraph();

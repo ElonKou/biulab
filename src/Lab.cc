@@ -11,8 +11,6 @@
 
 using namespace std;
 
-namespace BiuLab {
-
 Lab::Lab() { initLab(); }
 
 Lab::~Lab() {}
@@ -26,5 +24,3 @@ void Lab::start() {
     cout << "biulab is running." << endl;
     window.startWindow();
 }
-
-}  // namespace BiuLab

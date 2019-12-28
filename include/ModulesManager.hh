@@ -2,9 +2,6 @@
 #ifndef MODULES_MANAGER_H_
 #define MODULES_MANAGER_H_
 
-namespace BiuLab {
-namespace Modules {
-
 class ModulesManager {
    private:
    public:
@@ -16,9 +13,5 @@ class ModulesManager {
 
     ~ModulesManager();
 };
-
-}  // namespace Modules
-
-}  // namespace BiuLab
 
 #endif

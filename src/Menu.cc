@@ -7,9 +7,9 @@
 ================================================================*/
 
 #include "Menu.hh"
+#include "DynamicClass.hh"
 
-namespace BiuLab {
-namespace Widget {
+DYN_DECLARE(Menu);
 
 Menu::Menu() {}
 
@@ -90,7 +90,7 @@ void Menu::show() {
         if (ImGui::MenuItem("Display")) {
             show_display_window = !show_display_window;
         }
-        if (ImGui::MenuItem("Status")) {
+        if (ImGui::MenuItem("Overview")) {
             show_overlay_bar = !show_overlay_bar;
         }
         if (ImGui::MenuItem("Node view")) {
@@ -137,6 +137,3 @@ void Menu::show() {
     }
     ImGui::EndMainMenuBar();
 }
-
-}  // namespace Widget
-}  // namespace BiuLab
