@@ -16,6 +16,7 @@ sudo apt-get  install libglew-dev
 # 2.2 build BiuLab (The default install path is install/bin on your source dir, you can change it in CMakeLists.txt)
 cd biulab
 mkdir build
+cd build
 cmake ..
 make
 make installl
@@ -23,6 +24,7 @@ make installl
 # 2.3 build BiuLab (The default install path is install/bin on your source dir, you can change it in modules/CMakeLists.txt)
 cd modules/
 mkdir build
+cd build
 cmake ..
 make
 make installl
