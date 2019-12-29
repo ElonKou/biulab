@@ -1,5 +1,5 @@
 biulab
-install
+install/
 build/
 *.o
 .vscode
