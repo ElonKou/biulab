@@ -1,8 +1,11 @@
-# genetic
+# BiuLab
 
-## 1.robby robot introduce
+## 1.BiuLab introduce
 
-This is example code for test *Complex* book.
+This is a platform for doing interesting experiments. 
+The BiuLab was designed based on plugin architecture, you can create your own modules by c/c++/cuda, then controll it by your display window.
+
+![text](./resources/images/biulab_show.png)
 
 ## 2.install
 ```bash
@@ -10,12 +13,23 @@ This is example code for test *Complex* book.
 sudo apt-get install libglfw3 libglfw3-dev libglfw3-doc
 sudo apt-get  install libglew-dev
 
-# 2.2 build
-cd genetic
+# 2.2 build BiuLab (The default install path is install/bin on your source dir, you can change it in CMakeLists.txt)
+cd biulab
+mkdir build
+cmake ..
 make
+make installl
 
-# 2.3 run
-./genetic
+# 2.3 build BiuLab (The default install path is install/bin on your source dir, you can change it in modules/CMakeLists.txt)
+cd modules/
+mkdir build
+cmake ..
+make
+make installl
+
+# 2.4 run biulab
+cd install/bin
+./biulab
 ```
 
 ## 3.TODO
@@ -41,7 +55,7 @@ Algorithm:
 Frame:
 - [x] separate all the module from project.
 - [ ] load the module by plugin.
-- [x] tets for build plugin frame.
+- [x] test for build plugin frame.
 - [ ] build Window/Map/Controller/Core/base class.
 - [ ] create all the windows base class.
 - [ ] create the simplest module.
@@ -54,13 +68,14 @@ Target:
 - [ ] run the genetic module.
 
 ## architecture
+- [x] Dynamics lib
 
 ### core class
-- [ ] biulab
+- [x] biulab
+- [x] Inspector
+- [x] dockspace
+- [x] window
 
-- [ ] dockspace
-- [ ] window
 - [ ] controller
 
-- [ ] Inspector
 

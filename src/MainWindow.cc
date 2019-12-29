@@ -34,7 +34,7 @@ GLFWwindow* MainWindow::initWindow() {
     glEnable(GL_MULTISAMPLE);
     // glEnable(GL_DEPTH_TEST);
     // create window
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Genetic", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab v0.3", NULL, NULL);
     glfwMakeContextCurrent(window);
     // callback function
     glfwSetKeyCallback(window, key_back);
