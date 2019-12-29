@@ -12,3 +12,19 @@
 ModulesManager::ModulesManager() {}
 
 ModulesManager::~ModulesManager() {}
+
+void ModulesManager::LoadModule() {
+    ModuleBase *module;
+    pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
+
+    // module = (ModuleBase *)pluginhelper.Create("SimpleMapModule");
+    // modules.push_back(module);
+    module = (ModuleBase *)pluginhelper.Create("MapEditorModule");
+    modules.push_back(module);
+}
+
+void ModulesManager::UpdateModule() {
+    for (size_t i = 0; i < modules.size(); i++) {
+        modules[i]->UpdateModule();
+    }
+}

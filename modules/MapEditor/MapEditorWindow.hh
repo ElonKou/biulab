@@ -4,11 +4,11 @@
 
 #include "WindowBase.hh"
 
-class MapView : public WindowBase {
+class MapEditorWindow : public WindowBase {
    public:
-    MapView();
+    MapEditorWindow();
 
-    ~MapView();
+    ~MapEditorWindow();
 
     virtual void show();
 };

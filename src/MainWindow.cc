@@ -15,11 +15,7 @@ MainWindow::MainWindow() {
 
     window = initWindow();
 
-    pluginhelper.Load("/home/elonkou/ELONKOU/03.BIULAB/biulab/install/lib",
-                      "*.so");
-    overview_window = (WindowBase*)pluginhelper.Create("OverviewWindow");
-    inspect_window = (WindowBase*)pluginhelper.Create("InspectWindow");
-    simmap_window = (WindowBase*)pluginhelper.Create("SimpleMapWindow");
+    manager.LoadModule();
 
     loadFont();
     setGL(window);
@@ -60,12 +56,23 @@ void MainWindow::drawWindow() {
     if (show_main_menu_bar) {
         menu.show();
     }
+    manager.UpdateModule();
+    // if (show_overlay_bar && overview_window != 0) {
+    //     overview_window->show();
+    // }
+    // if (show_inspector_window) {
+    //     inspect_window->show();
+    // }
+    // if (show_mapeditor_window) {
+    //     mapeditor_window->show();
+    // }
+    // if (show_simplemap_window) {
+    //     simmap_window->show();
+    // }
+
     // if (show_demo_window) {
     //     ImGui::ShowDemoWindow(&show_demo_window);
     // }
-    if (show_overlay_bar && overview_window != 0) {
-        overview_window->show();
-    }
     // if (show_control_window) {
     //     showControlWindow();
     // }
@@ -74,15 +81,6 @@ void MainWindow::drawWindow() {
     // }
     // if (show_display_window) {
     //     showDisplayWindow();
-    // }
-    if (show_inspector_window) {
-        inspect_window->show();
-    }
-    // if (show_mapeditor_window) {
-    //     mpe_window->show();
-    // }
-    // if (show_simplemap_window) {
-    //     simmap_window->show();
     // }
     // if (show_graph_window) {
     //     showGraph();

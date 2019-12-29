@@ -7,19 +7,22 @@ aux_source_directory(../../lib/imgui MODULES_SOURCE_DIR)
 
 aux_source_directory(../../lib/tools MODULES_SOURCE_DIR)
 
+link_libraries(simplemap biulabwidget)
+
 add_library(mapeditor SHARED ${MODULES_SOURCE_DIR})
 
 include_directories(
     include
-    ../Robbie
+    ../SimpleMap
+    ../BiulabWidget
 )
 
 # [install]
 install(TARGETS mapeditor
     RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
+    LIBRARY DESTINATION bin
     PERMISSIONS OWNER_WRITE OWNER_EXECUTE OWNER_READ GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-    ARCHIVE DESTINATION lib
+    ARCHIVE DESTINATION bin
 )
 
 install(DIRECTORY .

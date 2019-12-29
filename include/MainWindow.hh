@@ -8,9 +8,10 @@
 #include "BiuLab.hh"
 #include "MainWindow.hh"
 #include "Menu.hh"
+#include "ModulesManager.hh"
 #include "PluginHelper.hh"
-#include "WindowBase.hh"
 #include "imgui.h"
+#include "WindowBase.hh"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
@@ -24,10 +25,12 @@ class MainWindow {
 
     Menu menu;
 
-    WindowBase* overview_window;
-    WindowBase* inspect_window;
+    ModulesManager manager;
+
+    // WindowBase* overview_window;
+    // WindowBase* inspect_window;
     // WindowBase* mapeditor_window;
-    WindowBase* simmap_window;
+    // WindowBase* simmap_window;
 
     CPluginHelper pluginhelper;
 

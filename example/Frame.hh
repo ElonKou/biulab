@@ -64,7 +64,7 @@ class windowView {
     //  void showMenuFile();
     //  void showMainMenuBar();
     void showControlWindow();
-    void showDisplayWindow();
+    // void showDisplayWindow();
     void showNodeWindow();
     //  void showOverlay();
    //  void showInspector();

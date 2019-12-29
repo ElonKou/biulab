@@ -12,14 +12,15 @@ add_library(simplemap SHARED ${MODULES_SOURCE_DIR})
 include_directories(
     include
     ./
+    ../../include
 )
 
 # [install]
 install(TARGETS simplemap
     RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
+    LIBRARY DESTINATION bin
     PERMISSIONS OWNER_WRITE OWNER_EXECUTE OWNER_READ GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-    ARCHIVE DESTINATION lib
+    ARCHIVE DESTINATION bin
 )
 
 install(DIRECTORY .

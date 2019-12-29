@@ -13,13 +13,20 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/lib/imgui
 )
 
+# [config]
+set(BIULAB_INSTALL_PATH ${PROJECT_SOURCE_DIR}/install)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/BiuLabConfig.hh.in"
+    "${PROJECT_SOURCE_DIR}/include/BiuLabConfig.hh"
+)
+
 # [build]
 add_executable(biulab ${BIULAB_SRC})
 
 target_link_libraries(biulab glfw dl GLEW GL)
 
 # [install]
-set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
+set(CMAKE_INSTALL_PREFIX ${BIULAB_INSTALL_PATH})
 
 install(TARGETS ${PROJECT_NAME}
        RUNTIME DESTINATION bin

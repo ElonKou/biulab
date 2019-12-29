@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.1)
 add_definitions(-std=c++11)
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../install)
 
@@ -13,11 +13,11 @@ include_directories(
 
 add_subdirectory(BiulabWidget)
 
-# add_subdirectory(Robbie)
-
-# add_subdirectory(MapEditor)
-
 add_subdirectory(SimpleMap)
+
+add_subdirectory(MapEditor)
+
+# add_subdirectory(Robbie)
 
 # [install]
 # install(DIRECTORY BiulabWidget  
