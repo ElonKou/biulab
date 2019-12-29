@@ -88,7 +88,7 @@ void Menu::show() {
             show_control_window = !show_control_window;
         }
         if (ImGui::MenuItem("Display")) {
-            show_display_window = !show_display_window;
+            show_simplemap_window = !show_simplemap_window;
         }
         if (ImGui::MenuItem("Overview")) {
             show_overlay_bar = !show_overlay_bar;

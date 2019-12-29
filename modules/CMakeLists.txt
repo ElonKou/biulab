@@ -4,6 +4,7 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../install)
 
 # [build]
 include_directories(
+    ./
     ../include
     ../lib/imgui
     ../lib/tools
@@ -11,6 +12,12 @@ include_directories(
 )
 
 add_subdirectory(BiulabWidget)
+
+# add_subdirectory(Robbie)
+
+# add_subdirectory(MapEditor)
+
+add_subdirectory(SimpleMap)
 
 # [install]
 # install(DIRECTORY BiulabWidget  

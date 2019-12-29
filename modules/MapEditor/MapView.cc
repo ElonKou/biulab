@@ -8,8 +8,17 @@
 
 #include "MapView.hh"
 #include <iostream>
+#include "DynamicClass.hh"
+
 using namespace std;
+
+DYN_DECLARE(MapView);
 
 MapView::MapView() {}
 
 MapView::~MapView() {}
+
+void MapView::show() {
+    std::cout << "MapView is running..." << std::endl;
+    std::cout << "MapView is running..." << std::endl;
+}

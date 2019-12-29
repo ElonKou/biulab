@@ -24,7 +24,10 @@ class MainWindow {
 
     Menu menu;
 
-    WindowBase* ov_window;
+    WindowBase* overview_window;
+    WindowBase* inspect_window;
+    // WindowBase* mapeditor_window;
+    WindowBase* simmap_window;
 
     CPluginHelper pluginhelper;
 

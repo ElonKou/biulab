@@ -51,35 +51,35 @@ class windowView {
     ~windowView();
 
     GLFWwindow* initWindow();
-    void drawWindow();
-    void startWindow();
-    void loadFont();
-    void setGL(GLFWwindow* window);
-    void setWhiteTheme();
-    void setDarkTheme();
-    void setNewTheme();
-    void setController(Controller* con_ptr);
+    //  void drawWindow();
+    //  void startWindow();
+    //  void loadFont();
+    //  void setGL(GLFWwindow* window);
+    //  void setWhiteTheme();
+    //  void setDarkTheme();
+    //  void setNewTheme();
+    //  void setController(Controller* con_ptr);
     void setMap(RobbieMap* map);
 
-    void showMenuFile();
-    void showMainMenuBar();
+    //  void showMenuFile();
+    //  void showMainMenuBar();
     void showControlWindow();
     void showDisplayWindow();
     void showNodeWindow();
-    /* overview */
-    void showOverlay();
-    void showInspector();
+    //  void showOverlay();
+   //  void showInspector();
     void showGraph();
+    /* Editor */
     void showEditor();
     //  void showMainWindow();
 
-    void showDcokSpace();
-    void showDisabledMessage();
-    void showHelpMarker(const char* desc);
+    //  void showDcokSpace();
+    //  void showDisabledMessage();
+    //  void showHelpMarker(const char* desc);
 
     void checkState();
-    static void key_back(GLFWwindow* window, int key, int scanmode, int action,
-                         int mode);
+    //  static void key_back(GLFWwindow* window, int key, int scanmode, int
+    //  action, int mode);
 };
 
 #endif

@@ -2,9 +2,7 @@
 #ifndef MAP_CONFIG_H_
 #define MAP_CONFIG_H_
 
-#include "ConfigBase.hh"
-
-class MapConfig : virtual public ConfigBase {
+class MapConfig {
    private:
    public:
     static bool show_overlay_bar;
