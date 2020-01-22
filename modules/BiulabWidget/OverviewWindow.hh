@@ -5,7 +5,7 @@
 #include "WindowBase.hh"
 
 class OverviewWindow : public WindowBase {
-   public:
+  public:
     OverviewWindow();
 
     ~OverviewWindow();

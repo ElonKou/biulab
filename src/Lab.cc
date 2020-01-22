@@ -16,7 +16,7 @@ Lab::Lab() { initLab(); }
 Lab::~Lab() {}
 
 void Lab::initLab() {
-    root = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
+    root    = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
     version = 0;
 }
 

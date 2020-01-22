@@ -7,8 +7,8 @@
 ================================================================*/
 
 #include "OverviewWindow.hh"
-#include <iostream>
 #include "DynamicClass.hh"
+#include <iostream>
 
 using namespace std;
 

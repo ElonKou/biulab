@@ -2,13 +2,13 @@
 #ifndef WIDGHT_BASE_H_
 #define WIDGHT_BASE_H_
 
-#include <string>
 #include "BiuLab.hh"
+#include <string>
 
 using namespace std;
 
 class WidgetBase {
-   public:
+  public:
     WidgetBase() {}
 
     ~WidgetBase() {}

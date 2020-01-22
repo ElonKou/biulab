@@ -8,10 +8,10 @@
 #include "WindowBase.hh"
 
 class SimpleMapModule : ModuleBase {
-   private:
+  private:
     SimpleMapWindow window;
 
-   public:
+  public:
     SimpleMapModule();
 
     ~SimpleMapModule();

@@ -2,15 +2,15 @@
 #ifndef ROBBIE_CONTROLLER_H_
 #define ROBBIE_CONTROLLER_H_
 
-#include <string>
+#include "BiuLabTypes.hh"
 #include "Robbie.hh"
 #include "RobbieConfig.hh"
-#include "RobbieMap.hh"
-#include "BiuTypes.hh"
+#include "SimpleMap.hh"
+#include <string>
 using namespace std;
 
 class RobbieController {
-   public:
+  public:
     struct Result {
         int score;
         int robbie_id;
@@ -19,15 +19,15 @@ class RobbieController {
     RobbieController();
     RobbieController(string save_path);
     ~RobbieController();
-    int loop_controller;
-    int loop_map;
-    int robbie_cnt;
+    int   loop_controller;
+    int   loop_map;
+    int   robbie_cnt;
     float mutate_rate;
     float max_histyory;
-    char robbie_path[255];
-    char robbie_name[255];
-    char map_path[255];
-    char map_name[128];
+    char  robbie_path[255];
+    char  robbie_name[255];
+    char  map_path[255];
+    char  map_name[128];
     // Map map;
     int map_width;
     int map_height;
@@ -39,19 +39,19 @@ class RobbieController {
 
     Robbie robbies[ROBBIE_CNT];
     Robbie robbies_temp[ROBBIE_CNT];
-    float scores[ROBBIE_CNT];
-    float scores_tf[ROBBIE_CNT];
+    float  scores[ROBBIE_CNT];
+    float  scores_tf[ROBBIE_CNT];
     // void play(Robbie r, Map &m);
-    void init();
-    void train();
-    void print_str();
-    void playScreen(Robbie &rob, RobbieMap &map);
+    void   init();
+    void   train();
+    void   print_str();
+    void   playScreen(Robbie& rob, RobbieMap& map);
     Robbie loadRobbie(string robbie_path);
-    void saveRobbie(Robbie &rob, string robbie_path);
-    void addRobbie();
-    void setMap(RobbieMap *map);
-    int showHisgram(int num);
-    int getIndex(float random_index);
+    void   saveRobbie(Robbie& rob, string robbie_path);
+    void   addRobbie();
+    void   setMap(RobbieMap* map);
+    int    showHisgram(int num);
+    int    getIndex(float random_index);
 
     void playOne();
 };

@@ -7,57 +7,69 @@
 ================================================================*/
 
 #include "MapEditorWindow.hh"
-#include <iostream>
 #include "DynamicClass.hh"
+#include "MapEditorModule.hh"
+#include <iostream>
 
 using namespace std;
 
 DYN_DECLARE(MapEditorWindow);
 
-MapEditorWindow::MapEditorWindow() {}
+MapEditorWindow::MapEditorWindow() {
+    has_map        = false;
+    has_create_map = false;
+    has_saved_map  = false;
+    map_changed    = false;
+    simple_map     = nullptr;
+    map_editor     = nullptr;
+}
 
 MapEditorWindow::~MapEditorWindow() {}
 
 void MapEditorWindow::show() {
+    if (!map_editor) {
+        return;
+    }
     if (ImGui::Begin("Editor", &show_editor_window, 0)) {
         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNode("Map editor")) {
             // Base
             {
-                static bool has_create_map = false;
-                static bool has_saved_map = false;
-                if (ImGui::Button("Create Map")) {
-                    // if (!has_create_map) {
-                    //     has_create_map = true;
-                    //     SimpleMap* empty_map =
-                    //         new SimpleMap(vec_2i(MAP_WIDTH, MAP_HEIGHT));
-                    //     setMap(empty_map);
-                    // }
+                if (ImGui::Button("Random")) {
+                    if (has_map) {
+                        simple_map->RandomMap();
+                    }
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Create")) {
+                    if (!has_create_map) {
+                        has_create_map = true;
+                        has_map        = true;
+                        simple_map->init();
+                    }
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Save")) {
-                    // if (has_map) {
-                    //     string full_path =
-                    //         string(con->map_path) + "/" + string(con->map_name);
-                    //     map->saveMap(full_path);
-                    //     has_map = false;
-                    //     has_create_map = false;
-                    // }
+                    if (has_map) {
+                        cout << "save" << endl;
+                        // string full_path = string(con->map_path) + "/" + string(con->map_name);
+                        // map->saveMap(full_path);
+                        has_map        = false;
+                        has_create_map = false;
+                    }
                 }
-                // ImGui::BulletText("Base:");
-                // ImGui::InputText("Save name", con->map_name,
-                //                  IM_ARRAYSIZE(con->map_name));
-                // if (ImGui::InputInt("Width", &mapEditor->width, 1, 2)) {
-                //     mapEditor->updateMap(*map);
+                // ImGui::InputText("Save name", temp_name, IM_ARRAYSIZE(temp_name));
+                // map_name = simple_map->map_name = string(temp_name);
+                // if (ImGui::InputInt("Width", &map_editor->width, 1, 2)) {
+                //     map_editor->updateMap(*simple_map);
                 // }
-                // if (ImGui::InputInt("Height", &mapEditor->height, 1, 2)) {
-                //     mapEditor->updateMap(*map);
+                // if (ImGui::InputInt("Height", &map_editor->height, 1, 2)) {
+                //     map_editor->updateMap(*simple_map);
                 // }
             }
-            ImGui::Separator();
+            // ImGui::Separator();
             // Tools
             // {
-            //     ImGui::BulletText("Tools:");
             //     ImGui::PushID(0);
             //     ImGui::PushStyleColor(ImGuiCol_Button,
             //                           (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.6f));
@@ -66,7 +78,7 @@ void MapEditorWindow::show() {
             //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
             //                           (ImVec4)ImColor::HSV(0.9f, 0.5f, 0.8f));
             //     if (ImGui::Button("None")) {
-            //         mapEditor->setTools(T_NONE);
+            //         map_editor->setTools(T_NONE);
             //     }
             //     ImGui::PopStyleColor(3);
             //     ImGui::PopID();
@@ -81,7 +93,7 @@ void MapEditorWindow::show() {
             //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
             //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.8f));
             //     if (ImGui::Button("Edge")) {
-            //         mapEditor->setTools(T_EDGE);
+            //         map_editor->setTools(T_EDGE);
             //     }
             //     ImGui::PopStyleColor(3);
             //     ImGui::PopID();
@@ -96,7 +108,7 @@ void MapEditorWindow::show() {
             //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
             //                           (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.9f));
             //     if (ImGui::Button("Rubbish")) {
-            //         mapEditor->setTools(T_RUBBISH);
+            //         map_editor->setTools(T_RUBBISH);
             //     }
             //     ImGui::PopStyleColor(3);
             //     ImGui::PopID();
@@ -111,7 +123,7 @@ void MapEditorWindow::show() {
             //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
             //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.21f));
             //     if (ImGui::Button("Out")) {
-            //         mapEditor->setTools(T_OUT);
+            //         map_editor->setTools(T_OUT);
             //     }
             //     ImGui::PopStyleColor(3);
             //     ImGui::SameLine();
@@ -126,7 +138,7 @@ void MapEditorWindow::show() {
             //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
             //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.5f));
             //     if (ImGui::Button("Empty")) {
-            //         mapEditor->setTools(T_EMPTY);
+            //         map_editor->setTools(T_EMPTY);
             //     }
             //     ImGui::PopStyleColor(3);
             //     ImGui::PopID();
@@ -134,33 +146,43 @@ void MapEditorWindow::show() {
             // ImGui::Separator();
             // // Selections.
             // {
-            //     ImGui::BulletText("Selection:");
             //     if (ImGui::Button("None")) {
-            //         mapEditor->setSelection(S_NONE);
+            //         map_editor->setSelection(S_NONE);
             //     }
             //     ImGui::SameLine();
             //     if (ImGui::Button("Point")) {
-            //         mapEditor->setSelection(S_POINT);
+            //         map_editor->setSelection(S_POINT);
             //     }
             //     ImGui::SameLine();
             //     if (ImGui::Button("Line")) {
-            //         mapEditor->setSelection(S_LINE);
+            //         map_editor->setSelection(S_LINE);
             //     }
             //     ImGui::SameLine();
             //     if (ImGui::Button("Rect")) {
-            //         mapEditor->setSelection(S_RECT);
+            //         map_editor->setSelection(S_RECT);
             //     }
             //     ImGui::SameLine();
             //     if (ImGui::Button("Block")) {
-            //         mapEditor->setSelection(S_BLOCK);
+            //         map_editor->setSelection(S_BLOCK);
             //     }
             //     ImGui::SameLine();
             //     if (ImGui::Button("All")) {
-            //         mapEditor->setSelection(S_ALL);
+            //         map_editor->setSelection(S_ALL);
             //     }
             // }
             ImGui::TreePop();
         }
     }
     ImGui::End();
+}
+
+void MapEditorWindow::SetCores(MapEditor* map_editor_, SimpleMap* simple_map_) {
+    map_editor = map_editor_;
+    simple_map = simple_map_;
+    has_map    = true;
+}
+
+void MapEditorWindow::ClearCores() {
+    map_editor = nullptr;
+    simple_map = nullptr;
 }

@@ -9,10 +9,13 @@ aux_source_directory(../../lib/tools MODULES_SOURCE_DIR)
 
 add_library(simplemap SHARED ${MODULES_SOURCE_DIR})
 
+# link_libraries(mapeditor)
+
 include_directories(
     include
     ./
     ../../include
+    ../MapEditor
 )
 
 # [install]

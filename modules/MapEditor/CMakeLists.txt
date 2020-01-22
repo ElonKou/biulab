@@ -13,6 +13,7 @@ add_library(mapeditor SHARED ${MODULES_SOURCE_DIR})
 
 include_directories(
     include
+    .
     ../SimpleMap
     ../BiulabWidget
 )

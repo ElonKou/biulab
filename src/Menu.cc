@@ -46,7 +46,7 @@ void Menu::showMenuFile() {
         float sz = ImGui::GetTextLineHeight();
         for (int i = 0; i < ImGuiCol_COUNT; i++) {
             const char* name = ImGui::GetStyleColorName((ImGuiCol)i);
-            ImVec2 p = ImGui::GetCursorScreenPos();
+            ImVec2      p    = ImGui::GetCursorScreenPos();
             ImGui::GetWindowDrawList()->AddRectFilled(
                 p, ImVec2(p.x + sz, p.y + sz), ImGui::GetColorU32((ImGuiCol)i));
             ImGui::Dummy(ImVec2(sz, sz));

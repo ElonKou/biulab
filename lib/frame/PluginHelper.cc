@@ -52,8 +52,7 @@ void CPluginHelper::Load(const std::string& dir, const std::string& pattern) {
 
     int i;
     for (i = 0; i < soNameList.size(); i++) {
-        std::map<std::string, void*>::iterator itrSoName =
-            m_SoNameTable.find(soNameList[i]);
+        std::map<std::string, void*>::iterator itrSoName = m_SoNameTable.find(soNameList[i]);
 
         /* so-library has already loaded */
         if (itrSoName != m_SoNameTable.end()) {
@@ -80,8 +79,7 @@ void CPluginHelper::Unload(const std::string& dir, const std::string& pattern) {
 
     int i;
     for (i = 0; i < soNameList.size(); i++) {
-        std::map<std::string, void*>::iterator itrSoName =
-            m_SoNameTable.find(soNameList[i]);
+        std::map<std::string, void*>::iterator itrSoName = m_SoNameTable.find(soNameList[i]);
 
         if (itrSoName != m_SoNameTable.end()) {
             void* handle = itrSoName->second;
@@ -99,17 +97,15 @@ void CPluginHelper::Unload(const std::string& dir, const std::string& pattern) {
 }
 
 void* CPluginHelper::Create(const std::string& className) {
-    std::map<std::string, void*>::iterator itrClassName =
-        m_ClassNameTable.find(className);
+    std::map<std::string, void*>::iterator itrClassName = m_ClassNameTable.find(className);
 
     CreateOBJ_T* create = 0;
-    void* pObj = 0;
+    void*        pObj   = 0;
 
     /* class name found in ClassNameTable */
     if (itrClassName != m_ClassNameTable.end()) {
         if (0 != itrClassName->second) {
-            create =
-                (CreateOBJ_T*)dlsym(itrClassName->second, "createByClassName");
+            create = (CreateOBJ_T*)dlsym(itrClassName->second, "createByClassName");
 
             if (create) {
                 pObj = create(className.c_str());
@@ -118,13 +114,11 @@ void* CPluginHelper::Create(const std::string& className) {
     }
     /* class name not found in ClassNameTable */
     else {
-        std::map<std::string, void*>::iterator itrSoName =
-            m_SoNameTable.begin();
+        std::map<std::string, void*>::iterator itrSoName = m_SoNameTable.begin();
 
         /* traverse through SoNameTable */
         for (; itrSoName != m_SoNameTable.end(); ++itrSoName) {
-            create =
-                (CreateOBJ_T*)dlsym(itrSoName->second, "createByClassName");
+            create = (CreateOBJ_T*)dlsym(itrSoName->second, "createByClassName");
 
             if (create) {
                 pObj = create(className.c_str());

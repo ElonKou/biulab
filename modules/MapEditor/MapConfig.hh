@@ -3,8 +3,8 @@
 #define MAP_CONFIG_H_
 
 class MapConfig {
-   private:
-   public:
+  private:
+  public:
     static bool show_overlay_bar;
     static bool show_control_window;
     static bool show_display_window;

@@ -5,7 +5,7 @@
 #include "WidgetBase.hh"
 
 class WindowBase : public WidgetBase {
-   public:
+  public:
     WindowBase() {}
 
     ~WindowBase() {}

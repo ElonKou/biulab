@@ -7,20 +7,20 @@
 ================================================================*/
 
 #include "Robbie.hh"
-#include <iostream>
 #include "Lib.hh"
 #include "RobbieConfig.hh"
 #include "RobbieMap.hh"
+#include <iostream>
 
 using namespace std;
 
 Robbie::Robbie() {
-    gene_len = GENE_LEN;
-    str_len = STR_CNT;
+    gene_len   = GENE_LEN;
+    str_len    = STR_CNT;
     mutate_all = MUTATE_ALL;
     mutate_val = MUTATE_VAL;
-    averScore = -1000.0;
-    score = 0;
+    averScore  = -1000.0;
+    score      = 0;
     init();
 }
 Robbie::~Robbie() {}
@@ -33,7 +33,7 @@ void Robbie::init() {
 void Robbie::randomPos() {
     start.x = START_X;
     start.y = START_Y;
-    pos = start;
+    pos     = start;
 }
 Robbie Robbie::clone() {
     Robbie r = Robbie();
@@ -65,11 +65,11 @@ void Robbie::print() {
 
 int Robbie::getScore() { return score; }
 
-void Robbie::clip(Robbie &other) {
+void Robbie::clip(Robbie& other) {
     int pos = randomInt(gene_len);
     for (int i = 0; i < pos; i++) {
-        int temp = genes[i];
-        genes[i] = other.genes[i];
+        int temp       = genes[i];
+        genes[i]       = other.genes[i];
         other.genes[i] = temp;
     }
 }
@@ -116,11 +116,11 @@ void Robbie::compare(Robbie other) {
     cout << endl;
 }
 
-void Robbie::play(RobbieMap &map) {
+void Robbie::play(RobbieMap& map) {
     // map.print(pos);
     for (int i = 0; i < LOOP_CNT; i++) {
         int result = 0;
-        int hash = map.getHash(pos);
+        int hash   = map.getHash(pos);
         int action = getAction(hash);
         // pos.print();
         // map.print(pos);
@@ -128,14 +128,14 @@ void Robbie::play(RobbieMap &map) {
             action = randomInt(STR_CNT);
         }
         switch (action) {
-            case WAIT:
-                break;
-            case PICK:
-                result = pick(action, map);
-                break;
-            default:
-                result = move(action, map);
-                break;
+        case WAIT:
+            break;
+        case PICK:
+            result = pick(action, map);
+            break;
+        default:
+            result = move(action, map);
+            break;
         }
         // cout << "=" << result << " ";
         // cout << "=" << action << " ";
@@ -155,10 +155,10 @@ void Robbie::playOne(int cnt) {
     averScore = res * 1.0 / cnt;
 }
 
-int Robbie::move(int action, RobbieMap &map) {
+int Robbie::move(int action, RobbieMap& map) {
     vec_2i offset = vec_2i(strategy[action].wmove, strategy[action].hmove);
-    vec_2i now = pos + offset;
-    int val = map.getValue(now);
+    vec_2i now    = pos + offset;
+    int    val    = map.getValue(now);
     if (val != EDGE) {
         pos = now;
         return action;
@@ -168,7 +168,7 @@ int Robbie::move(int action, RobbieMap &map) {
     }
 }
 
-int Robbie::pick(int action, RobbieMap &map) {
+int Robbie::pick(int action, RobbieMap& map) {
     int val = map.getValue(pos);
     if (val == RUBBISH) {
         map.setTarget(pos, EMPTY);

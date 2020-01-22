@@ -5,8 +5,8 @@
 #include "WidgetBase.hh"
 
 class Menu : public WidgetBase {
-   private:
-   public:
+  private:
+  public:
     Menu();
 
     ~Menu();

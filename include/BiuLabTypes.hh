@@ -11,7 +11,7 @@ typedef union vec_2i {
     vec_2i();
     vec_2i(int a, int b);
     vec_2i operator+(vec_2i other);
-    void print();
+    void   print();
 } vec_2i;
 
 #endif

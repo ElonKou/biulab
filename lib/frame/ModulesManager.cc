@@ -9,17 +9,19 @@
 #include "ModulesManager.hh"
 #include <iostream>
 
-ModulesManager::ModulesManager() {}
+ModulesManager::ModulesManager() {
+    data_manager = new DataManager();
+}
 
 ModulesManager::~ModulesManager() {}
 
 void ModulesManager::LoadModule() {
-    ModuleBase *module;
+    ModuleBase* module;
     pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
 
-    // module = (ModuleBase *)pluginhelper.Create("SimpleMapModule");
-    // modules.push_back(module);
-    module = (ModuleBase *)pluginhelper.Create("MapEditorModule");
+    module = (ModuleBase*)pluginhelper.Create("MapEditorModule");
+    module->SetEnvironment(data_manager);
+    module->Init();
     modules.push_back(module);
 }
 

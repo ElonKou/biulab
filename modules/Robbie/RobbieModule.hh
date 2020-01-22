@@ -6,7 +6,7 @@
 #include "RobbieMap.hh"
 
 class RobbieModule {
-   public:
+  public:
     RobbieController con;
 
     RobbieMap map;

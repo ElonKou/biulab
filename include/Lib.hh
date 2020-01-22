@@ -33,42 +33,42 @@
 #endif
 
 #include <dirent.h>
-#include <unistd.h>
 #include <sstream>
 #include <string>
+#include <unistd.h>
 #include <vector>
 
 using namespace std;
 #define random(x) (rand() % x);
 
-char *getChar(string str);
-void printOk(string str);
-void printOk(int str);
-void printWaning(string str);
-void printWaning(int str);
-void printSucceed(string str);
-void printSucceed(int str);
-void printError(string str);
-void printError(int str);
-void printSome(string str);
-void printSome(int str);
+char* getChar(string str);
+void  printOk(string str);
+void  printOk(int str);
+void  printWaning(string str);
+void  printWaning(int str);
+void  printSucceed(string str);
+void  printSucceed(int str);
+void  printError(string str);
+void  printError(int str);
+void  printSome(string str);
+void  printSome(int str);
 
 // File tools
 
 template <class Type>
-Type stringToNum(const std::string &str) {
+Type stringToNum(const std::string& str) {
     istringstream iss(str);
-    Type num;
+    Type          num;
     iss >> num;
     return num;
 }
 
 vector<string> getFiles(string dir);
-vector<string> split(const string &s, const string &seperator);
-string &replace_all(string &str, const string &old_value,
-                    const string &new_value);
+vector<string> split(const string& s, const string& seperator);
+string&        replace_all(string& str, const string& old_value,
+                           const string& new_value);
 
-int randomInt(int range);
+int   randomInt(int range);
 float randomFloat();
 
 #endif

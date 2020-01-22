@@ -2,30 +2,29 @@
 #ifndef MAIN_WINDOW_H_
 #define MAIN_WINDOW_H_
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <string>
 #include "BiuLab.hh"
 #include "MainWindow.hh"
 #include "Menu.hh"
 #include "ModulesManager.hh"
 #include "PluginHelper.hh"
-#include "imgui.h"
 #include "WindowBase.hh"
+#include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <string>
 
 using namespace std;
-// using namespace BiuLab::Widget;
 
 class MainWindow {
-   private:
+  private:
     GLFWwindow* window;
 
     Menu menu;
 
-    ModulesManager manager;
+    ModulesManager modules_manager;
 
     // WindowBase* overview_window;
     // WindowBase* inspect_window;
@@ -48,7 +47,7 @@ class MainWindow {
         ImVec4 background_color;
     } main_window_info;
 
-   public:
+  public:
     MainWindow();
 
     ~MainWindow();

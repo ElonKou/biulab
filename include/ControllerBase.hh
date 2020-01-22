@@ -3,8 +3,8 @@
 #define CONTROLLER_BASE_H_
 
 class ControllerBase {
-   private:
-   public:
+  private:
+  public:
     ControllerBase();
     ~ControllerBase();
 };

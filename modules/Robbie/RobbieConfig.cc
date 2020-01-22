@@ -9,5 +9,8 @@
 #include "RobbieConfig.hh"
 
 Strategy::Strategy() {}
-Strategy::Strategy(int k, int w, int h) : key(k), wmove(w), hmove(h) {}
+Strategy::Strategy(int k, int w, int h)
+    : key(k)
+    , wmove(w)
+    , hmove(h) {}
 Strategy::~Strategy() {}

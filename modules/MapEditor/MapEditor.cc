@@ -7,18 +7,18 @@
 ================================================================*/
 
 #include "MapEditor.hh"
+#include "cmath"
 #include <iostream>
 #include <vector>
-#include "cmath"
 
 using namespace std;
 
 MapEditor::MapEditor()
-    : width(MAP_WIDTH),
-      height(MAP_HEIGHT),
-      tools(T_NONE),
-      selections(S_NONE),
-      selectPosCnt(0) {}
+    : width(MAP_WIDTH)
+    , height(MAP_HEIGHT)
+    , tools(T_NONE)
+    , selections(S_NONE)
+    , selectPosCnt(0) {}
 
 MapEditor::~MapEditor() {}
 
@@ -28,7 +28,7 @@ inline int MapEditor::max(int x, int y) { return x > y ? x : y; }
 
 inline int MapEditor::min(int x, int y) { return x < y ? x : y; }
 
-void MapEditor::checkAndSetElem(SimpleMap &mp, vec_2i pos) {
+void MapEditor::checkAndSetElem(SimpleMap& mp, vec_2i pos) {
     if (tools == T_EDGE) {
         mp.setElem(pos, MAP_EDGE);
     } else if (tools == T_EMPTY) {
@@ -40,15 +40,15 @@ void MapEditor::checkAndSetElem(SimpleMap &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::drawLine(SimpleMap &mp, vec_2i start, vec_2i end) {
-    vec_2i pos = start;
-    int direction_x = end.x - start.x;
-    int direction_y = end.y - start.y;
-    int delta_x = fabs(direction_x);
-    int delta_y = fabs(direction_y);
-    int max_xy = ((delta_x > delta_y) ? delta_x : delta_y);
-    int cnt_x = -(max_xy / 2);
-    int cnt_y = cnt_x;
+void MapEditor::drawLine(SimpleMap& mp, vec_2i start, vec_2i end) {
+    vec_2i pos         = start;
+    int    direction_x = end.x - start.x;
+    int    direction_y = end.y - start.y;
+    int    delta_x     = fabs(direction_x);
+    int    delta_y     = fabs(direction_y);
+    int    max_xy      = ((delta_x > delta_y) ? delta_x : delta_y);
+    int    cnt_x       = -(max_xy / 2);
+    int    cnt_y       = cnt_x;
     checkAndSetElem(mp, start);
     for (int i = 0; i < max_xy; ++i) {
         cnt_x += delta_x;
@@ -65,7 +65,7 @@ void MapEditor::drawLine(SimpleMap &mp, vec_2i start, vec_2i end) {
     }
 }
 
-void MapEditor::drawRect(SimpleMap &mp, vec_2i pos_x, vec_2i pos_y) {
+void MapEditor::drawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y) {
     int min_x = min(pos_x.x, pos_y.x);
     int max_x = max(pos_x.x, pos_y.x);
     int min_y = min(pos_x.y, pos_y.y);
@@ -78,11 +78,11 @@ void MapEditor::drawRect(SimpleMap &mp, vec_2i pos_x, vec_2i pos_y) {
     }
 }
 
-void MapEditor::drawPoint(SimpleMap &mp, vec_2i pos) {
+void MapEditor::drawPoint(SimpleMap& mp, vec_2i pos) {
     checkAndSetElem(mp, pos);
 }
 
-void MapEditor::drawBlock(SimpleMap &mp, vec_2i pos) {
+void MapEditor::drawBlock(SimpleMap& mp, vec_2i pos) {
     std::vector<vec_2i> cache;
     cache.push_back(pos);
     int select_elem = mp.getElem(pos);
@@ -115,7 +115,7 @@ void MapEditor::drawBlock(SimpleMap &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::drawAll(SimpleMap &mp, vec_2i pos) {
+void MapEditor::drawAll(SimpleMap& mp, vec_2i pos) {
     for (int i = 0; i < mp.size.y; i++) {
         for (int j = 0; j < mp.size.y; j++) {
             checkAndSetElem(mp, vec_2i(j, i));
@@ -123,7 +123,7 @@ void MapEditor::drawAll(SimpleMap &mp, vec_2i pos) {
     }
 }
 
-void MapEditor::updateMap(SimpleMap &mp) {
+void MapEditor::updateMap(SimpleMap& mp) {
     mp.updateSize(vec_2i(width, height));
 }
 
@@ -131,9 +131,9 @@ void MapEditor::setTools(ToolsType tool) { tools = tool; }
 
 void MapEditor::setSelection(SelectionsType slect) { selections = slect; }
 
-void MapEditor::resize(SimpleMap &mp) {}
+void MapEditor::resize(SimpleMap& mp) {}
 
-void MapEditor::modifiedMap(SimpleMap &mp, vec_2i pos) {
+void MapEditor::modifiedMap(SimpleMap& mp, vec_2i pos) {
     if (tools != T_NONE && selections != S_NONE) {
         // Select two pos.
         if (selections == S_RECT) {

@@ -1,8 +1,8 @@
 #ifndef __DYNAMIC_H__
 #define __DYNAMIC_H__
 
-#include <string.h>
 #include <cstdio>
+#include <string.h>
 #include <string>
 #include <typeinfo>
 
@@ -20,7 +20,7 @@ void* Create(const char* class_name);
 
 /* interface of class factory*/
 class CAbstractFactory {
-   public:
+  public:
     virtual void* Create(const char* class_name) = 0;
 };
 
@@ -29,18 +29,19 @@ class CFactoryList {
     friend void* Create(const char* class_name);
 
     static CFactoryList* _head;
-    CFactoryList* m_next;
-    CAbstractFactory* m_item;
+    CFactoryList*        m_next;
+    CAbstractFactory*    m_item;
 
-   public:
+  public:
     CFactoryList(CAbstractFactory* fact);
     virtual ~CFactoryList(void);
 };
 
 /* ctor of CFactoryList, add a class factory to list */
-inline CFactoryList::CFactoryList(CAbstractFactory* fact) : m_item(fact) {
+inline CFactoryList::CFactoryList(CAbstractFactory* fact)
+    : m_item(fact) {
     m_next = _head;
-    _head = this;
+    _head  = this;
 }
 
 #if defined(_MSC_VER)
@@ -52,12 +53,13 @@ inline CFactoryList::CFactoryList(CAbstractFactory* fact) : m_item(fact) {
 /* realization of class factory */
 template <class t>
 class CFactory : public CAbstractFactory {
-    static t _object;
+    static t     _object;
     CFactoryList m_item;
 
-   public:
+  public:
     /* add itself to list of class factory when constructed */
-    CFactory(void) : m_item(this) {}
+    CFactory(void)
+        : m_item(this) {}
 
     virtual ~CFactory() {}
 
@@ -80,5 +82,5 @@ class CFactory : public CAbstractFactory {
                    : 0;
     }
 };
-}  // namespace DYN_CLASS
+} // namespace DYN_CLASS
 #endif /* __DYNAMIC_H__ */

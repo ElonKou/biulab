@@ -2,24 +2,24 @@
 #define __PLUGINHELPER_H__
 
 #include <dlfcn.h>
-#include <stdio.h>
-#include <string.h>
 #include <iostream>
 #include <map>
+#include <stdio.h>
+#include <string.h>
 #include <string>
 #include <vector>
 
 #define BUF_SIZE 1024
 
 typedef void* CreateOBJ_T(const char* strClassName);
-typedef void DeleteOBJ_T(void* p);
+typedef void  DeleteOBJ_T(void* p);
 
 class CPluginHelper {
-   public:
+  public:
     CPluginHelper();
     ~CPluginHelper();
 
-   public:
+  public:
     /* load so-library file(s)
      *
      * @param dir:     path of so-library
@@ -46,7 +46,7 @@ class CPluginHelper {
      */
     void* Create(const std::string& className);
 
-   private:
+  private:
     /* get list of filename by pattern
      *
      * @param dir:     path of so-library
@@ -55,7 +55,7 @@ class CPluginHelper {
      * @return:        list of file name
      *
      */
-    std::vector<std::string> GetFileNameByPattern(std::string dir,
+    std::vector<std::string> GetFileNameByPattern(std::string        dir,
                                                   const std::string& pattern);
 
     /* a cache table mapping so-library file'name to its handle */

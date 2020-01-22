@@ -2,27 +2,27 @@
 #ifndef INSPECT_WINDOW_H_
 #define INSPECT_WINDOW_H_
 
+#include "WindowBase.hh"
 #include <unordered_map>
 #include <vector>
-#include "WindowBase.hh"
 
 typedef struct InspectItem {
-    int index;
-    string selected;
-    string title;
+    int            index;
+    string         selected;
+    string         title;
     vector<string> data;
 } InspectItem;
 
 typedef struct InspectList {
-    bool collapsed;
+    bool                collapsed;
     vector<InspectItem> items;
 } InspectList;
 
 class InspectWindow : public WindowBase {
-   private:
+  private:
     InspectList item_list;
 
-   public:
+  public:
     InspectWindow();
 
     ~InspectWindow();

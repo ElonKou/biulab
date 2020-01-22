@@ -2,19 +2,22 @@
 #ifndef MODULES_MANAGER_H_
 #define MODULES_MANAGER_H_
 
-#include <vector>
+#include "DataManager.hh"
 #include "ModuleBase.hh"
 #include "PluginHelper.hh"
+#include <vector>
 
 using namespace std;
 
 class ModulesManager {
-   private:
+  private:
     CPluginHelper pluginhelper;
 
-    vector<ModuleBase *> modules;
+    vector<ModuleBase*> modules;
 
-   public:
+  public:
+    DataManager *data_manager;
+
     void LoadModule();
 
     void UpdateModule();

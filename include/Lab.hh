@@ -6,11 +6,11 @@
 #include "ModulesManager.hh"
 
 class Lab {
-   private:
+  private:
     string root;
-    int version;
+    int    version;
 
-   public:
+  public:
     MainWindow window;
 
     ModulesManager manager;

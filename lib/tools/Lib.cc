@@ -7,19 +7,19 @@
 ================================================================*/
 
 #include "Lib.hh"
-#include <dirent.h>
-#include <sys/time.h>
 #include <cstdio>
+#include <dirent.h>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <sys/time.h>
 #include <vector>
 
 using namespace std;
 
-char *getChar(string str) {
-    char *dst = new char[255];
-    int i = 0;
+char* getChar(string str) {
+    char* dst = new char[255];
+    int   i   = 0;
     for (; i < str.length(); i++) {
         dst[i] = str[i];
     }
@@ -28,21 +28,21 @@ char *getChar(string str) {
 }
 
 void printOk(string str) {
-    char *dst = getChar(str);
+    char* dst = getChar(str);
     printf("%s", dst);
     delete dst;
 }
 void printOk(int str) { printf("%d", str); }
 
 void printWaning(string str) {
-    char *dst = getChar(str);
+    char* dst = getChar(str);
     printf(BROWN "%s" NONE, dst);
     delete dst;
 }
 void printWaning(int str) { printf(BROWN "%d" NONE, str); }
 
 void printSucceed(string str) {
-    char *dst = getChar(str);
+    char* dst = getChar(str);
     printf(GREEN "%s" NONE, dst);
     delete dst;
 }
@@ -50,14 +50,14 @@ void printSucceed(string str) {
 void printSucceed(int str) { printf(GREEN "%d" NONE, str); }
 
 void printError(string str) {
-    char *dst = getChar(str);
+    char* dst = getChar(str);
     printf(RED "%s" NONE, dst);
     delete dst;
 }
 void printError(int str) { printf(RED "%d" NONE, str); }
 
 void printSome(string str) {
-    char *dst = getChar(str);
+    char* dst = getChar(str);
     printf(PURPLE "%s" NONE, dst);
     delete dst;
 }
@@ -79,8 +79,8 @@ void printSome(int str) { printf(PURPLE "%d" NONE, str); }
 
 vector<string> getFiles(string dir) {
     vector<string> files;
-    DIR *dp = opendir(dir.c_str());
-    struct dirent *dirp;
+    DIR*           dp = opendir(dir.c_str());
+    struct dirent* dirp;
     while ((dirp = readdir(dp)) != NULL) {
         if (string(dirp->d_name) == "." || string(dirp->d_name) == "..") {
             continue;
@@ -91,10 +91,10 @@ vector<string> getFiles(string dir) {
     return files;
 }
 
-vector<string> split(const string &s, const string &seperator) {
-    std::vector<string> result;
+vector<string> split(const string& s, const string& seperator) {
+    std::vector<string>       result;
     typedef string::size_type string_size;
-    string_size i = 0;
+    string_size               i = 0;
 
     while (i != s.size()) {
         int flag = 0;
@@ -107,7 +107,7 @@ vector<string> split(const string &s, const string &seperator) {
                     break;
                 }
         }
-        flag = 0;
+        flag          = 0;
         string_size j = i;
         while (j != s.size() && flag == 0) {
             for (string_size x = 0; x < seperator.size(); ++x)
@@ -115,7 +115,8 @@ vector<string> split(const string &s, const string &seperator) {
                     flag = 1;
                     break;
                 }
-            if (flag == 0) ++j;
+            if (flag == 0)
+                ++j;
         }
         if (i != j) {
             result.push_back(s.substr(i, j - i));
@@ -124,8 +125,8 @@ vector<string> split(const string &s, const string &seperator) {
     }
     return result;
 }
-string &replace_all(string &str, const string &old_value,
-                    const string &new_value) {
+string& replace_all(string& str, const string& old_value,
+                    const string& new_value) {
     while (true) {
         string::size_type pos(0);
         if ((pos = str.find(old_value)) != string::npos)
