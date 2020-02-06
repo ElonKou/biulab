@@ -53,6 +53,7 @@ void MapEditorWindow::show() {
                     if (has_map) {
                         string map_name_ = string(temp_name);
                         string full_path;
+                        simple_map->map_name = temp_name;
                         if (map_name_.size() == 0) {
                             full_path = simple_map->path_name + "/maps/" + simple_map->map_name;
                         } else {

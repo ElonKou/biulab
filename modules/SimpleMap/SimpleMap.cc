@@ -218,7 +218,7 @@ void SimpleMap::saveMap(const string& save_path) {
         return;
     }
     fp << "version:0.1" << endl;
-    fp << "map_name:some.map" << endl;
+    fp << "map_name:" << map_name << endl;
     fp << "width:" << to_string(size.x) << endl;
     fp << "height:" << to_string(size.y) << endl;
     fp << "rubbish:" << to_string(20) << endl;
