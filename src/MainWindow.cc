@@ -6,10 +6,13 @@
 *  Date     : 2019年12月21日 星期六 17时59分01秒
 ================================================================*/
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "MainWindow.hh"
+#include "stb_image.h"
 
 MainWindow::MainWindow() {
-    main_window_info.fonts_path       = "../resources/fonts/YaHei.Consolas.1.12.ttf";
+    main_window_info.fonts_path       = BIULAB_INSTALL_PATH "/../resources/fonts/YaHei.Consolas.1.12.ttf";
     main_window_info.font_size        = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
 
@@ -32,7 +35,20 @@ GLFWwindow* MainWindow::initWindow() {
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glEnable(GL_MULTISAMPLE);
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab v0.3", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab " BIULAB_VERSION, NULL, NULL);
+    GLFWimage   images[2];
+    int         iw, ih, n;
+    string      icon_path       = BIULAB_INSTALL_PATH "/../resources/icons/icon.png";
+    string      icon_small_path = BIULAB_INSTALL_PATH "/../resources/icons/icon_small.png";
+    images[0].pixels            = stbi_load(icon_path.c_str(), &iw, &ih, &n, 4);
+    images[0].width             = iw;
+    images[0].height            = ih;
+    images[1].pixels            = stbi_load(icon_small_path.c_str(), &iw, &ih, &n, 4);
+    images[1].width             = iw;
+    images[1].height            = ih;
+    glfwSetWindowIcon(window, 2, images);
+    stbi_image_free(images[0].pixels);
+    stbi_image_free(images[1].pixels);
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_back);
     glewExperimental = GL_TRUE;
@@ -134,10 +150,10 @@ void MainWindow::setDarkTheme() {
     style->PopupBorderSize   = 0.0f;
     style->ChildBorderSize   = 0.0f;
     style->ChildRounding     = 0.0f;
-    style->ItemSpacing       = ImVec2(8, 4);
+    style->ItemSpacing       = ImVec2(6, 4);
     style->ItemInnerSpacing  = ImVec2(4, 4);
-    style->IndentSpacing     = 24.0f;
-    style->ScrollbarSize     = 12.0f;
+    style->IndentSpacing     = 16.0f;
+    style->ScrollbarSize     = 10.0f;
     style->ScrollbarRounding = 6.0f;
     style->GrabMinSize       = 8.0f;
     style->GrabRounding      = 2.0f;
@@ -164,6 +180,7 @@ void MainWindow::setDarkTheme() {
     colors[ImGuiCol_ScrollbarGrabHovered]  = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabActive]   = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
     colors[ImGuiCol_CheckMark]             = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    colors[ImGuiCol_CheckMark]             = ImVec4(0.88f, 0.88f, 0.88f, 1.00f);
     colors[ImGuiCol_SliderGrab]            = ImVec4(0.73f, 0.73f, 0.73f, 1.00f);
     colors[ImGuiCol_SliderGrabActive]      = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
     colors[ImGuiCol_Button]                = ImVec4(0.61f, 0.61f, 0.61f, 0.40f);

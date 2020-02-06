@@ -51,125 +51,76 @@ void MapEditorWindow::show() {
                 ImGui::SameLine();
                 if (ImGui::Button("Save")) {
                     if (has_map) {
-                        cout << "save" << endl;
-                        // string full_path = string(con->map_path) + "/" + string(con->map_name);
-                        // map->saveMap(full_path);
+                        string map_name_ = string(temp_name);
+                        string full_path;
+                        if (map_name_.size() == 0) {
+                            full_path = simple_map->path_name + "/maps/" + simple_map->map_name;
+                        } else {
+                            full_path = simple_map->path_name + "/maps/" + map_name_;
+                        }
+                        simple_map->saveMap(full_path);
                         has_map        = false;
                         has_create_map = false;
                     }
                 }
-                // ImGui::InputText("Save name", temp_name, IM_ARRAYSIZE(temp_name));
-                // map_name = simple_map->map_name = string(temp_name);
-                // if (ImGui::InputInt("Width", &map_editor->width, 1, 2)) {
-                //     map_editor->updateMap(*simple_map);
-                // }
-                // if (ImGui::InputInt("Height", &map_editor->height, 1, 2)) {
-                //     map_editor->updateMap(*simple_map);
-                // }
+                ImGui::InputText("Save name", temp_name, IM_ARRAYSIZE(temp_name));
+                if (ImGui::InputInt("Width", &map_editor->width, 1, 2)) {
+                    map_editor->updateMap(*simple_map);
+                }
+                if (ImGui::InputInt("Height", &map_editor->height, 1, 2)) {
+                    map_editor->updateMap(*simple_map);
+                }
             }
-            // ImGui::Separator();
             // Tools
-            // {
-            //     ImGui::PushID(0);
-            //     ImGui::PushStyleColor(ImGuiCol_Button,
-            //                           (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.6f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-            //                           (ImVec4)ImColor::HSV(0.7f, 0.5f, 0.7f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-            //                           (ImVec4)ImColor::HSV(0.9f, 0.5f, 0.8f));
-            //     if (ImGui::Button("None")) {
-            //         map_editor->setTools(T_NONE);
-            //     }
-            //     ImGui::PopStyleColor(3);
-            //     ImGui::PopID();
-            //     ImGui::SameLine();
-            //     // ############################
-
-            //     ImGui::PushID(1);
-            //     ImGui::PushStyleColor(ImGuiCol_Button,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.6f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.7f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.8f));
-            //     if (ImGui::Button("Edge")) {
-            //         map_editor->setTools(T_EDGE);
-            //     }
-            //     ImGui::PopStyleColor(3);
-            //     ImGui::PopID();
-            //     ImGui::SameLine();
-            //     // ############################
-
-            //     ImGui::PushID(2);
-            //     ImGui::PushStyleColor(ImGuiCol_Button,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.7f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.8f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.9f));
-            //     if (ImGui::Button("Rubbish")) {
-            //         map_editor->setTools(T_RUBBISH);
-            //     }
-            //     ImGui::PopStyleColor(3);
-            //     ImGui::PopID();
-            //     ImGui::SameLine();
-            //     // ############################
-
-            //     ImGui::PushID(3);
-            //     ImGui::PushStyleColor(ImGuiCol_Button,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.15f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.19f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.21f));
-            //     if (ImGui::Button("Out")) {
-            //         map_editor->setTools(T_OUT);
-            //     }
-            //     ImGui::PopStyleColor(3);
-            //     ImGui::SameLine();
-            //     // ############################
-
-            //     ImGui::PopID();
-            //     ImGui::PushID(4);
-            //     ImGui::PushStyleColor(ImGuiCol_Button,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.3f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.4f));
-            //     ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-            //                           (ImVec4)ImColor::HSV(0.0f, 0.0f, 0.5f));
-            //     if (ImGui::Button("Empty")) {
-            //         map_editor->setTools(T_EMPTY);
-            //     }
-            //     ImGui::PopStyleColor(3);
-            //     ImGui::PopID();
-            // }
-            // ImGui::Separator();
-            // // Selections.
-            // {
-            //     if (ImGui::Button("None")) {
-            //         map_editor->setSelection(S_NONE);
-            //     }
-            //     ImGui::SameLine();
-            //     if (ImGui::Button("Point")) {
-            //         map_editor->setSelection(S_POINT);
-            //     }
-            //     ImGui::SameLine();
-            //     if (ImGui::Button("Line")) {
-            //         map_editor->setSelection(S_LINE);
-            //     }
-            //     ImGui::SameLine();
-            //     if (ImGui::Button("Rect")) {
-            //         map_editor->setSelection(S_RECT);
-            //     }
-            //     ImGui::SameLine();
-            //     if (ImGui::Button("Block")) {
-            //         map_editor->setSelection(S_BLOCK);
-            //     }
-            //     ImGui::SameLine();
-            //     if (ImGui::Button("All")) {
-            //         map_editor->setSelection(S_ALL);
-            //     }
-            // }
+            {
+                static int tool_id = 0;
+                if (ImGui::RadioButton("None", &tool_id, 0)) {
+                    map_editor->setTools(T_NONE);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Edge", &tool_id, 1)) {
+                    map_editor->setTools(T_EDGE);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Rubbish", &tool_id, 2)) {
+                    map_editor->setTools(T_RUBBISH);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Out", &tool_id, 3)) {
+                    map_editor->setTools(T_OUT);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Empty", &tool_id, 4)) {
+                    map_editor->setTools(T_EMPTY);
+                }
+            }
+            // Selections.
+            {
+                static int selection_id = 0;
+                if (ImGui::RadioButton("None", &selection_id, 0)) {
+                    map_editor->setSelection(S_NONE);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Point", &selection_id, 1)) {
+                    map_editor->setSelection(S_POINT);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Line", &selection_id, 2)) {
+                    map_editor->setSelection(S_LINE);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Rect", &selection_id, 3)) {
+                    map_editor->setSelection(S_RECT);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("Block", &selection_id, 4)) {
+                    map_editor->setSelection(S_BLOCK);
+                }
+                ImGui::SameLine();
+                if (ImGui::RadioButton("All", &selection_id, 5)) {
+                    map_editor->setSelection(S_ALL);
+                }
+            }
             ImGui::TreePop();
         }
     }

@@ -7,9 +7,7 @@
 ================================================================*/
 
 #include "MapEditorModule.hh"
-#include "DataManager.hh"
 #include "DynamicClass.hh"
-#include <iostream>
 
 using namespace std;
 
@@ -21,6 +19,7 @@ MapEditorModule::MapEditorModule() {
     simple_map->init();
     map_editor_window.SetCores(map_editor, simple_map);
     simple_map_window.SetCores(map_editor, simple_map);
+    Init();
 }
 
 MapEditorModule::~MapEditorModule() {}
@@ -28,14 +27,38 @@ MapEditorModule::~MapEditorModule() {}
 void MapEditorModule::UpdateModule() {
     map_editor_window.show();
 
-    // simple_map_window.show();
+    simple_map_window.show();
 
-    // insepect_window.show();
+    insepect_window.show();
 
-    // overview_window.show();
+    overview_window.show();
 }
 
 void MapEditorModule::Init() {
-    data_manager->CreateDataBase("simple_map", (DataBase*)simple_map);
-    data_manager->CreateDataBase("map_editor", (DataBase*)map_editor);
+    InspectList    lists;
+    string         maps_path     = BIULAB_APPLICATION_PATH "/genetic/maps";
+    string         robbies_path  = BIULAB_APPLICATION_PATH "/genetic/robbies";
+    vector<string> maps_names    = getFiles(maps_path);
+    vector<string> robbies_names = getFiles(robbies_path);
+    InspectItem    maps_item;
+    InspectItem    robbies_item;
+    for (size_t i = 0; i < maps_names.size(); i++) {
+        vector<string> names = split(maps_names[i], "/");
+        maps_item.data.push_back(names[names.size() - 1]);
+        maps_item.index     = -1;
+        maps_item.selected  = "";
+        maps_item.title     = "maps";
+        maps_item.collapsed = false;
+    }
+    for (size_t i = 0; i < robbies_names.size(); i++) {
+        vector<string> names = split(robbies_names[i], "/");
+        robbies_item.data.push_back(names[names.size() - 1]);
+        robbies_item.index     = -1;
+        robbies_item.selected  = "";
+        robbies_item.title     = "robbies";
+        robbies_item.collapsed = false;
+    }
+    lists.items.push_back(maps_item);
+    lists.items.push_back(robbies_item);
+    insepect_window.updateInspectItemList(lists);
 }

@@ -21,7 +21,6 @@ void ModulesManager::LoadModule() {
 
     module = (ModuleBase*)pluginhelper.Create("MapEditorModule");
     module->SetEnvironment(data_manager);
-    module->Init();
     modules.push_back(module);
 }
 

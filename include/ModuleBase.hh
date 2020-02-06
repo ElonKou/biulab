@@ -14,11 +14,11 @@ class ModuleBase {
 
     ~ModuleBase() {}
 
-    void Init() {}
-
     void SetEnvironment(DataManager* data_manager_) {
         data_manager = data_manager_;
     }
+
+    void Init();
 
     virtual void UpdateModule() = 0;
 };

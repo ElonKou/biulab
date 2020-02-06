@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SIMPLE_MAP_VIEW_H_
-#define SIMPLE_MAP_VIEW_H_
+#ifndef SIMPLE_MAP_WINDOW_H_
+#define SIMPLE_MAP_WINDOW_H_
 
 #include "MapEditor.hh"
 #include "SimpleMap.hh"
@@ -18,11 +18,11 @@ class SimpleMapWindow : public WindowBase {
 
     ~SimpleMapWindow();
 
+    virtual void show();
+
     void SetCores(MapEditor* map_editor_, SimpleMap* simple_map_);
 
     void ClearCores();
-
-    virtual void show();
 };
 
 #endif

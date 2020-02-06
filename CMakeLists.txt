@@ -10,6 +10,7 @@ aux_source_directory(./lib/tools BIULAB_SRC)
 include_directories(
     include
     ${PROJECT_SOURCE_DIR}/lib/imgui
+    ${PROJECT_SOURCE_DIR}/lib/tools
 )
 
 # [config]

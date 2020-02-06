@@ -7,7 +7,6 @@
 ================================================================*/
 
 #include "MapEditor.hh"
-#include "cmath"
 #include <iostream>
 #include <vector>
 
@@ -21,12 +20,6 @@ MapEditor::MapEditor()
     , selectPosCnt(0) {}
 
 MapEditor::~MapEditor() {}
-
-inline int MapEditor::abs(int x) { return x > 0 ? x : -x; }
-
-inline int MapEditor::max(int x, int y) { return x > y ? x : y; }
-
-inline int MapEditor::min(int x, int y) { return x < y ? x : y; }
 
 void MapEditor::checkAndSetElem(SimpleMap& mp, vec_2i pos) {
     if (tools == T_EDGE) {
@@ -44,8 +37,8 @@ void MapEditor::drawLine(SimpleMap& mp, vec_2i start, vec_2i end) {
     vec_2i pos         = start;
     int    direction_x = end.x - start.x;
     int    direction_y = end.y - start.y;
-    int    delta_x     = fabs(direction_x);
-    int    delta_y     = fabs(direction_y);
+    int    delta_x     = ABS(direction_x);
+    int    delta_y     = ABS(direction_y);
     int    max_xy      = ((delta_x > delta_y) ? delta_x : delta_y);
     int    cnt_x       = -(max_xy / 2);
     int    cnt_y       = cnt_x;
@@ -66,10 +59,10 @@ void MapEditor::drawLine(SimpleMap& mp, vec_2i start, vec_2i end) {
 }
 
 void MapEditor::drawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y) {
-    int min_x = min(pos_x.x, pos_y.x);
-    int max_x = max(pos_x.x, pos_y.x);
-    int min_y = min(pos_x.y, pos_y.y);
-    int max_y = max(pos_x.y, pos_y.y);
+    int min_x = MIN(pos_x.x, pos_y.x);
+    int max_x = MAX(pos_x.x, pos_y.x);
+    int min_y = MIN(pos_x.y, pos_y.y);
+    int max_y = MAX(pos_x.y, pos_y.y);
     for (int i = min_y; i <= max_y; i++) {
         for (int j = min_x; j <= max_x; j++) {
             vec_2i rect_pos(j, i);

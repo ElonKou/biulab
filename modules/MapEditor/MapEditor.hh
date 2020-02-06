@@ -4,6 +4,7 @@
 
 #include "BiuLabTypes.hh"
 #include "DataBase.hh"
+#include "Lib.hh"
 #include "SimpleMap.hh"
 #include "SimpleMapConfig.hh"
 
@@ -48,10 +49,7 @@ class MapEditor : public DataBase {
 
     MapEditor();
     ~MapEditor();
-    inline int abs(int x);
-    inline int max(int x, int y);
-    inline int min(int x, int y);
-    void       checkAndSetElem(SimpleMap& mp, vec_2i pos);
+    void checkAndSetElem(SimpleMap& mp, vec_2i pos);
 
     void drawLine(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
     void drawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);

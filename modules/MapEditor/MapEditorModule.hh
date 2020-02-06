@@ -1,9 +1,8 @@
 #pragma once
-#ifndef MAP_MODULE_H_
-#define MAP_MODULE_H_
+#ifndef MAP_EDITOR_MODULE_H_
+#define MAP_EDITOR_MODULE_H_
 
 #include "InspectWindow.hh"
-#include "MapEditor.hh"
 #include "MapEditorWindow.hh"
 #include "ModuleBase.hh"
 #include "OverviewWindow.hh"
@@ -15,9 +14,9 @@ class MapEditorModule : public ModuleBase {
 
     SimpleMapWindow simple_map_window;
 
-    // OverviewWindow overview_window;
+    OverviewWindow overview_window;
 
-    // InspectWindow insepect_window;
+    InspectWindow insepect_window;
 
     MapEditor* map_editor;
 

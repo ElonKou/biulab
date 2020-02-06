@@ -2,6 +2,10 @@
 #ifndef LIB_H_
 #define LIB_H_
 
+#define ABS(x) (x > 0 ? x : -x)
+#define MAX(x, y) (x > y ? x : y)
+#define MIN(x, y) (x < y ? x : y)
+
 #ifndef COLOR_PRINT
 #define COLOR_PRINT
 #define NONE "\e[0m"

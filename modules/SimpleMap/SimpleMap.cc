@@ -17,10 +17,10 @@ using namespace std;
 SimpleMap::SimpleMap() {
     size        = {MAP_WIDTH, MAP_HEIGHT};
     rubbish_cnt = RUBBISH_CNT;
-    // Init the map
     map         = nullptr;
     target      = nullptr;
-    rubbish_cnt = RUBBISH_CNT;
+    map_name    = "std.map";
+    path_name   = BIULAB_APPLICATION_PATH"/genetic";
 }
 
 SimpleMap::SimpleMap(vec_2i map_size) {
@@ -28,11 +28,13 @@ SimpleMap::SimpleMap(vec_2i map_size) {
     map    = new int*[size.y];
     target = new int*[size.y];
     for (int i = 0; i < size.y; i++) {
-        map[i] = new int[size.x];
+        map[i]    = new int[size.x];
+        target[i] = new int[size.x];
     }
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
-            map[i][j] = MAP_EMPTY;
+            map[i][j]    = MAP_EMPTY;
+            target[i][j] = MAP_EMPTY;
         }
     }
 }
@@ -111,10 +113,27 @@ void SimpleMap::updateSize(vec_2i new_size) {
             map_temp[j][i] = map[j][i];
         }
     }
-
-    map = new int*[new_size.y];
+    if (map) {
+        for (int i = 0; i < size.y; i++) {
+            if (map[i]) {
+                delete map[i];
+            }
+        }
+    }
+    delete map;
+    if (target) {
+        for (int i = 0; i < size.y; i++) {
+            if (target[i]) {
+                delete target[i];
+            }
+        }
+    }
+    delete target;
+    map    = new int*[new_size.y];
+    target = new int*[new_size.y];
     for (int i = 0; i < new_size.y; i++) {
-        map[i] = new int[new_size.x];
+        map[i]    = new int[new_size.x];
+        target[i] = new int[new_size.x];
     }
     int min_x = size.x < new_size.x ? size.x : new_size.x;
     int min_y = size.y < new_size.y ? size.y : new_size.y;
@@ -123,9 +142,11 @@ void SimpleMap::updateSize(vec_2i new_size) {
     for (int i = 0; i < new_size.y; i++) {
         for (int j = 0; j < new_size.x; j++) {
             if (i < min_y && j < min_x) {
-                map[i][j] = map_temp[i][j];
+                map[i][j]    = map_temp[i][j];
+                target[i][j] = map_temp[i][j];
             } else {
-                map[i][j] = MAP_EMPTY;
+                map[i][j]    = MAP_EMPTY;
+                target[i][j] = MAP_EMPTY;
             }
         }
     }
@@ -190,7 +211,6 @@ void SimpleMap::loadMap(const string& load_path) {
 
 void SimpleMap::saveMap(const string& save_path) {
     cout << save_path << endl;
-    size.print();
     fstream fp;
     fp.open(save_path, ios::out | ios::trunc);
     if (!fp) {
