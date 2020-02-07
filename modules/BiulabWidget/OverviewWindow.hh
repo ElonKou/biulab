@@ -10,7 +10,7 @@ class OverviewWindow : public WindowBase {
 
     ~OverviewWindow();
 
-    virtual void show();
+    virtual void Show();
 };
 
 #endif

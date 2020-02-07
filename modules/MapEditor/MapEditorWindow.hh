@@ -22,11 +22,9 @@ class MapEditorWindow : public WindowBase {
 
     ~MapEditorWindow();
 
-    virtual void show();
+    virtual void Show();
 
-    void SetCores(MapEditor* map_editor_, SimpleMap* simple_map_);
-
-    void ClearCores();
+    void UpdateData();
 };
 
 #endif

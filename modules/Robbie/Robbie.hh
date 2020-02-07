@@ -19,23 +19,6 @@ class Robbie {
     int      mutate_all;
     int      mutate_val;
 
-    void   init();
-    void   randomPos();
-    void   clear();
-    void   clip(Robbie& other);
-    Robbie clip2(Robbie other, int pos);
-    void   clip3(Robbie other);
-    void   mutate();
-    void   compare(Robbie other);
-    int    move(int action, RobbieMap& map);
-    int    pick(int action, RobbieMap& map);
-    void   play(RobbieMap& map);
-    void   playOne(int cnt);
-    void   print();
-    int    getScore();
-    int    getAction(int hash);
-    void   save(string fileName);
-    void   load(string fileName);
     // robbie info
     int    id;
     int    score;
@@ -44,6 +27,40 @@ class Robbie {
     float  averScore;
     vec_2i pos;
     vec_2i start;
+
+    void Init();
+
+    void   RandomPos();
+    
+    void   Clear();
+    
+    void   Clip(Robbie& other);
+    
+    Robbie Clip2(Robbie other, int pos);
+    
+    void   Clip3(Robbie other);
+    
+    void   Mutate();
+    
+    void   Compare(Robbie other);
+    
+    int    Move(int action, RobbieMap& map);
+    
+    int    Pick(int action, RobbieMap& map);
+    
+    void   Play(RobbieMap& map);
+    
+    void   PlayOne(int cnt);
+    
+    void   Print();
+    
+    int    GetScore();
+    
+    int    GetAction(int hash);
+    
+    void   Save(string fileName);
+    
+    void   Load(string fileName);
 };
 
 #endif

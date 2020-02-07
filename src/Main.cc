@@ -10,6 +10,6 @@
 
 int main() {
     Lab lab;
-    lab.start();
+    lab.Start();
     return 0;
 }

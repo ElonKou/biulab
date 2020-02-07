@@ -15,7 +15,7 @@ InspectWindow::InspectWindow() {}
 
 InspectWindow::~InspectWindow() {}
 
-void InspectWindow::show() {
+void InspectWindow::Show() {
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
         for (size_t i = 0; i < item_list.items.size(); i++) {
             ImGui::SetNextItemOpen(item_list.items[i].collapsed, ImGuiCond_Once);
@@ -38,6 +38,6 @@ void InspectWindow::show() {
     ImGui::End();
 }
 
-void InspectWindow::updateInspectItemList(InspectList list) {
+void InspectWindow::UpdateInspectItemList(InspectList list) {
     item_list = list;
 }

@@ -16,8 +16,6 @@ class ModulesManager {
     vector<ModuleBase*> modules;
 
   public:
-    DataManager *data_manager;
-
     void LoadModule();
 
     void UpdateModule();

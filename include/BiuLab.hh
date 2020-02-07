@@ -3,6 +3,7 @@
 #define BIU_LAB_H_
 
 #include "BiuLabConfig.hh"
+#include "BiuLabTypes.hh"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"

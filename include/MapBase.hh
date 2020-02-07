@@ -2,7 +2,7 @@
 #ifndef MAP_BASE_H_
 #define MAP_BASE_H_
 
-#include "BiuLabTypes.hh"
+#include "CoreBase.hh"
 #include <string>
 
 using namespace std;
@@ -15,19 +15,19 @@ enum MapType { MAP_NONE,
 
 enum PathType { PATH_EMPTY };
 
-class MapBase {
+class MapBase : public CoreBase {
   public:
-    MapBase();
+    MapBase(){}
 
-    ~MapBase();
+    ~MapBase(){}
 
-    virtual int getElem(vec_2i pos) = 0;
+    virtual int GetElem(vec_2i pos) = 0;
 
-    virtual void setElem(vec_2i pos, int key) = 0;
+    virtual void SetElem(vec_2i pos, int key) = 0;
 
-    virtual void loadMap(const string& load_path) = 0;
+    virtual void LoadMap(const string& load_path) = 0;
 
-    virtual void saveMap(const string& save_path) = 0;
+    virtual void SaveMap(const string& save_path) = 0;
 };
 
 #endif

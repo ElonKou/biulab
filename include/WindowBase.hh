@@ -10,7 +10,7 @@ class WindowBase : public WidgetBase {
 
     ~WindowBase() {}
 
-    virtual void show() = 0;
+    virtual void Show() = 0;
 };
 
 #endif

@@ -10,7 +10,6 @@
 #include <iostream>
 
 ModulesManager::ModulesManager() {
-    data_manager = new DataManager();
 }
 
 ModulesManager::~ModulesManager() {}
@@ -20,8 +19,8 @@ void ModulesManager::LoadModule() {
     pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
 
     module = (ModuleBase*)pluginhelper.Create("MapEditorModule");
-    module->SetEnvironment(data_manager);
     modules.push_back(module);
+    data_manager->CreateDataBase("MapEditorModule", module);
 }
 
 void ModulesManager::UpdateModule() {

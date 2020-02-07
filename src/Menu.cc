@@ -15,7 +15,7 @@ Menu::Menu() {}
 
 Menu::~Menu() {}
 
-void Menu::showMenuFile() {
+void Menu::ShowMenuFile() {
     if (ImGui::MenuItem("New")) {
     }
     if (ImGui::MenuItem("Open", "Ctrl+O")) {
@@ -59,10 +59,10 @@ void Menu::showMenuFile() {
     }
 }
 
-void Menu::show() {
+void Menu::Show() {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
-            showMenuFile();
+            ShowMenuFile();
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit")) {

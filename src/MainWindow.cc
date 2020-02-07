@@ -16,18 +16,18 @@ MainWindow::MainWindow() {
     main_window_info.font_size        = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
 
-    window = initWindow();
+    window = InitWindow();
 
     modules_manager.LoadModule();
 
-    loadFont();
-    setGL(window);
-    setDarkTheme();
+    LoadFont();
+    SetGL(window);
+    SetDarkTheme();
 }
 
 MainWindow::~MainWindow() {}
 
-GLFWwindow* MainWindow::initWindow() {
+GLFWwindow* MainWindow::InitWindow() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -35,7 +35,7 @@ GLFWwindow* MainWindow::initWindow() {
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glEnable(GL_MULTISAMPLE);
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab " BIULAB_VERSION, NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab " BIULAB_VERSION " © elonkou", NULL, NULL);
     GLFWimage   images[2];
     int         iw, ih, n;
     string      icon_path       = BIULAB_INSTALL_PATH "/../resources/icons/icon.png";
@@ -50,7 +50,7 @@ GLFWwindow* MainWindow::initWindow() {
     stbi_image_free(images[0].pixels);
     stbi_image_free(images[1].pixels);
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window, key_back);
+    glfwSetKeyCallback(window, OnKeyBack);
     glewExperimental = GL_TRUE;
     glewInit();
     int height, width;
@@ -59,56 +59,25 @@ GLFWwindow* MainWindow::initWindow() {
     return window;
 }
 
-void MainWindow::drawWindow() {
+void MainWindow::DrawWindow() {
     // checkState();
     if (show_dock_sapce) {
-        showDcokSpace();
+        ShowDcokSpace();
     }
     if (show_main_menu_bar) {
-        menu.show();
+        menu.Show();
     }
     modules_manager.UpdateModule();
-    // if (show_overlay_bar && overview_window != 0) {
-    //     overview_window->show();
-    // }
-    // if (show_inspector_window) {
-    //     inspect_window->show();
-    // }
-    // if (show_mapeditor_window) {
-    //     mapeditor_window->show();
-    // }
-    // if (show_simplemap_window) {
-    //     simmap_window->show();
-    // }
-
-    // if (show_demo_window) {
-    //     ImGui::ShowDemoWindow(&show_demo_window);
-    // }
-    // if (show_control_window) {
-    //     showControlWindow();
-    // }
-    // if (show_node_window) {
-    //     showNodeWindow();
-    // }
-    // if (show_display_window) {
-    //     showDisplayWindow();
-    // }
-    // if (show_graph_window) {
-    //     showGraph();
-    // }
-    // if (show_editor_window) {
-    //     showEditor();
-    // }
 }
 
-void MainWindow::startWindow() {
+void MainWindow::StartWindow() {
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwPollEvents();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        drawWindow();
+        DrawWindow();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
@@ -118,14 +87,14 @@ void MainWindow::startWindow() {
     glfwTerminate();
 }
 
-void MainWindow::setGL(GLFWwindow* window) {
+void MainWindow::SetGL(GLFWwindow* window) {
     glClearColor(0.12, 0.12, 0.12, 1.0);
     const char* glsl_version = "#version 130";
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
-void MainWindow::loadFont() {
+void MainWindow::LoadFont() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -137,7 +106,7 @@ void MainWindow::loadFont() {
     io.Fonts->Fonts[0]->DisplayOffset = ImVec2(0, -1);
 }
 
-void MainWindow::setDarkTheme() {
+void MainWindow::SetDarkTheme() {
     ImGuiStyle* style  = &ImGui::GetStyle();
     ImVec4*     colors = style->Colors;
 
@@ -213,7 +182,7 @@ void MainWindow::setDarkTheme() {
     colors[ImGuiCol_ModalWindowDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void MainWindow::showDcokSpace() {
+void MainWindow::ShowDcokSpace() {
     static bool opt_fullscreen_persistant = true;
     bool        opt_fullscreen            = opt_fullscreen_persistant;
 
@@ -245,13 +214,13 @@ void MainWindow::showDcokSpace() {
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flag);
     } else {
-        showDisabledMessage();
+        ShowDisabledMessage();
     }
 
     ImGui::End();
 }
 
-void MainWindow::showDisabledMessage() {
+void MainWindow::ShowDisabledMessage() {
     ImGuiIO& io = ImGui::GetIO();
     ImGui::Text("ERROR: Docking is not enabled! See Demo > Configuration.");
     ImGui::Text(
@@ -262,8 +231,7 @@ void MainWindow::showDisabledMessage() {
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
-void MainWindow::key_back(GLFWwindow* window, int key, int scanmode, int action,
-                          int mode) {
+void MainWindow::OnKeyBack(GLFWwindow* window, int key, int scanmode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }

@@ -44,7 +44,7 @@ RobbieController::RobbieController(string save_p) {
 }
 RobbieController::~RobbieController() {}
 
-void RobbieController::init() {
+void RobbieController::Init() {
     // init controller
     float res[robbie_cnt];
     float res_ori[robbie_cnt];
@@ -55,10 +55,10 @@ void RobbieController::init() {
     }
 }
 
-void RobbieController::train() {
+void RobbieController::Train() {
     for (int k = 0; k < loop_controller; k++) {
         for (int i = 0; i < robbie_cnt; i++) {
-            robbies[i].playOne(loop_map);
+            robbies[i].PlayOne(loop_map);
             scores[i]    = robbies[i].averScore;
             scores_tf[i] = robbies[i].averScore;
             if (k < 1000) {
@@ -77,13 +77,13 @@ void RobbieController::train() {
             }
         }
 
-        int top_id = showHisgram(k);
+        int top_id = ShowHisgram(k);
         if (max_histyory < scores[top_id]) {
             max_histyory = scores[top_id];
-            robbies[top_id].print();
-            saveRobbie(robbies[top_id], robbie_path);
+            robbies[top_id].Print();
+            SaveRobbie(robbies[top_id], robbie_path);
         }
-        robbies[top_id].compare(robbies[0]);
+        robbies[top_id].Compare(robbies[0]);
 
         float all = accumulate(scores_tf, scores_tf + ROBBIE_CNT, 0.0);
         for (int i = 0; i < ROBBIE_CNT; i++) {
@@ -96,49 +96,49 @@ void RobbieController::train() {
                 "========================================"
              << endl;
         for (int i = 0; i < ROBBIE_CNT / 2; i++) {
-            int fa                  = getIndex(randomFloat());
-            int mo                  = getIndex(randomFloat());
-            int pos                 = randomInt(GENE_LEN);
+            int fa                  = GetIndex(RandomFloat());
+            int mo                  = GetIndex(RandomFloat());
+            int pos                 = RandomInt(GENE_LEN);
             robbies_temp[i * 2]     = robbies[fa].clip2(robbies[mo], pos);
             robbies_temp[i * 2 + 1] = robbies[mo].clip2(robbies[fa], pos);
         }
         for (int i = 0; i < ROBBIE_CNT; i++) {
             robbies[i] = robbies_temp[i];
-            robbies[i].mutate();
+            robbies[i].Mutate();
         }
     }
 }
 
-void RobbieController::print_str() {
+void RobbieController::Print_str() {
     cout << "   0  " << endl;
     cout << " 3 4 2" << endl;
     cout << "   1  " << endl;
 }
 
-void RobbieController::playScreen(Robbie& rob, RobbieMap& map) {
+void RobbieController::PlayScreen(Robbie& rob, RobbieMap& map) {
     PlayActions act;
     for (int i = 0; i < LOOP_CNT; i++) {
-        print_str();
+        Print_str();
         int result = 0;
-        int hash   = map.getHash(rob.pos);
-        int action = rob.getAction(hash);
+        int hash   = map.GetHash(rob.pos);
+        int action = rob.GetAction(hash);
         usleep(100000);
         act.hash         = hash;
         act.actions[i]   = action;
         act.positions[i] = rob.pos;
-        map.drawFrame(act, rob.genes);
+        map.DrawFrame(act, rob.genes);
         cout << i << " : " << rob.score << "hash:" << hash << endl;
         while (action == RANDOM) {
-            action = randomInt(STR_CNT);
+            action = RandomInt(STR_CNT);
         }
         switch (action) {
         case WAIT:
             break;
         case PICK:
-            result = rob.pick(action, map);
+            result = rob.Pick(action, map);
             break;
         default:
-            result = rob.move(action, map);
+            result = rob.Move(action, map);
             break;
         }
         // cout << "=" << result << " ";
@@ -148,7 +148,7 @@ void RobbieController::playScreen(Robbie& rob, RobbieMap& map) {
     // map.cleanTarget();
 }
 
-Robbie RobbieController::loadRobbie(string robbie_path) {
+Robbie RobbieController::LoadRobbie(string robbie_path) {
     Robbie   rob;
     ifstream fp;
     fp.open(robbie_path);
@@ -163,7 +163,7 @@ Robbie RobbieController::loadRobbie(string robbie_path) {
     fp.close();
     return rob;
 }
-void RobbieController::saveRobbie(Robbie& rob, string robbie_path) {
+void RobbieController::SaveRobbie(Robbie& rob, string robbie_path) {
     int score = int(rob.averScore);
     if (robbie_path != "") {
         robbie_path += to_string(score) + ".txt";
@@ -180,7 +180,7 @@ void RobbieController::saveRobbie(Robbie& rob, string robbie_path) {
     }
 }
 
-int RobbieController::getIndex(float random_index) {
+int RobbieController::GetIndex(float random_index) {
     int i = 0;
     while (scores_tf[i] < random_index) {
         i++;
@@ -188,7 +188,7 @@ int RobbieController::getIndex(float random_index) {
     return i;
 }
 
-int RobbieController::showHisgram(int num) {
+int RobbieController::ShowHisgram(int num) {
     int   minIndex = 0;
     int   maxIndex = 0;
     float minData  = 1000;

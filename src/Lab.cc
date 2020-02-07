@@ -11,16 +11,16 @@
 
 using namespace std;
 
-Lab::Lab() { initLab(); }
+Lab::Lab() { InitLab(); }
 
 Lab::~Lab() {}
 
-void Lab::initLab() {
+void Lab::InitLab() {
     root    = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
     version = 0;
 }
 
-void Lab::start() {
+void Lab::Start() {
     cout << "biulab is running." << endl;
-    window.startWindow();
+    window.StartWindow();
 }

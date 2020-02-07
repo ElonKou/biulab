@@ -19,9 +19,9 @@ class Lab {
 
     ~Lab();
 
-    void initLab();
+    void InitLab();
 
-    void start();
+    void Start();
 };
 
 #endif

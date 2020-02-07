@@ -3,7 +3,6 @@
 #define EDITOR_MAP_H_
 
 #include "BiuLabTypes.hh"
-#include "DataBase.hh"
 #include "Lib.hh"
 #include "SimpleMap.hh"
 #include "SimpleMapConfig.hh"
@@ -34,7 +33,7 @@ typedef struct {
     ActionType     action;
 } HistoryType;
 
-class MapEditor : public DataBase {
+class MapEditor : public CoreBase {
   private:
     int         selectPosCnt;
     vec_2i      selectPos[2];
@@ -49,19 +48,19 @@ class MapEditor : public DataBase {
 
     MapEditor();
     ~MapEditor();
-    void checkAndSetElem(SimpleMap& mp, vec_2i pos);
+    void CheckAndSetElem(SimpleMap& mp, vec_2i pos);
 
-    void drawLine(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
-    void drawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
-    void drawPoint(SimpleMap& mp, vec_2i pos);
-    void drawBlock(SimpleMap& mp, vec_2i pos);
-    void drawAll(SimpleMap& mp, vec_2i pos);
+    void DrawLine(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
+    void DrawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
+    void DrawPoint(SimpleMap& mp, vec_2i pos);
+    void DrawBlock(SimpleMap& mp, vec_2i pos);
+    void DrawAll(SimpleMap& mp, vec_2i pos);
 
-    void updateMap(SimpleMap& mp);
-    void setTools(ToolsType tool);
-    void setSelection(SelectionsType slect);
-    void resize(SimpleMap& mp);
-    void modifiedMap(SimpleMap& mp, vec_2i pos);
+    void UpdateMap(SimpleMap& mp);
+    void SetTools(ToolsType tool);
+    void SetSelection(SelectionsType slect);
+    void Resize(SimpleMap& mp);
+    void ModifiedMap(SimpleMap& mp, vec_2i pos);
 };
 
 #endif

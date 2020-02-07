@@ -2,10 +2,9 @@
 #ifndef DATA_BASE_H_
 #define DATA_BASE_H_
 
-#include "BiuLabConfig.hh"
-#include "BiuLabTypes.hh"
+#include "Base.hh"
 
-class DataBase {
+class DataBase : public Base {
   public:
     DataBase() {}
 

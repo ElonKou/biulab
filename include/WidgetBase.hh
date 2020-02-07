@@ -2,18 +2,18 @@
 #ifndef WIDGHT_BASE_H_
 #define WIDGHT_BASE_H_
 
-#include "BiuLab.hh"
+#include "Base.hh"
 #include <string>
 
 using namespace std;
 
-class WidgetBase {
+class WidgetBase : public Base {
   public:
     WidgetBase() {}
 
     ~WidgetBase() {}
 
-    virtual void show() = 0;
+    virtual void Show() = 0;
 
     void showHelpMarker(const string dsec) {
         ImGui::TextDisabled("(?)");

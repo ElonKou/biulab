@@ -7,6 +7,7 @@
 ================================================================*/
 
 #include "DataManager.hh"
+DataManager* data_manager = new DataManager();
 
 DataManager::DataManager() {
 }
@@ -14,22 +15,22 @@ DataManager::DataManager() {
 DataManager::~DataManager() {
 }
 
-DataBase* DataManager::Find(string class_name) {
-    auto item = biulab_data.find(class_name);
-    if (item != biulab_data.end()) {
-        return item->second;
-    } else {
-        return nullptr;
-    }
-}
-
-void DataManager::CreateDataBase(string class_name, DataBase* data_ptr) {
-    biulab_data.insert(std::pair<string, DataBase*>(class_name, data_ptr));
+void DataManager::CreateDataBase(string class_name, Base* data_ptr) {
+    biulab.insert(std::pair<string, Base*>(class_name, data_ptr));
 }
 
 void DataManager::DeleteDataBase(string class_name) {
-    DataBase* base = Find(class_name);
+    Base* base = operator[](class_name);
     if (base) {
-        delete (base);
+        delete base;
+    }
+}
+
+Base* DataManager::operator[](string class_name) {
+    auto item = biulab.find(class_name);
+    if (item != biulab.end()) {
+        return item->second;
+    } else {
+        return nullptr;
     }
 }

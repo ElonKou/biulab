@@ -18,7 +18,7 @@ OverviewWindow::OverviewWindow() {}
 
 OverviewWindow::~OverviewWindow() {}
 
-void OverviewWindow::show() {
+void OverviewWindow::Show() {
     ImGui::SetNextWindowBgAlpha(0.3f);
     if (ImGui::Begin("Overlay", &show_overlay_bar, 0)) {
         ImGui::Text("C : Open control panel.");

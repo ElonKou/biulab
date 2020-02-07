@@ -19,5 +19,5 @@ SimpleMapModule::SimpleMapModule() {}
 SimpleMapModule::~SimpleMapModule() {}
 
 void SimpleMapModule::UpdateModule() {
-    window.show();
+    window.Show();
 }

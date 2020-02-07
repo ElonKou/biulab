@@ -42,18 +42,28 @@ class RobbieController {
     float  scores[ROBBIE_CNT];
     float  scores_tf[ROBBIE_CNT];
     // void play(Robbie r, Map &m);
-    void   init();
-    void   train();
-    void   print_str();
-    void   playScreen(Robbie& rob, RobbieMap& map);
-    Robbie loadRobbie(string robbie_path);
-    void   saveRobbie(Robbie& rob, string robbie_path);
-    void   addRobbie();
-    void   setMap(RobbieMap* map);
-    int    showHisgram(int num);
-    int    getIndex(float random_index);
 
-    void playOne();
+    void Init();
+
+    void Train();
+
+    void Print_str();
+
+    void PlayScreen(Robbie& rob, RobbieMap& map);
+
+    Robbie LoadRobbie(string robbie_path);
+
+    void SaveRobbie(Robbie& rob, string robbie_path);
+
+    void AddRobbie();
+
+    void SetMap(RobbieMap* map);
+
+    int ShowHisgram(int num);
+
+    int GetIndex(float random_index);
+
+    void PlayOne();
 };
 
 #endif

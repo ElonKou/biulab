@@ -537,8 +537,8 @@ void windowView::showOverlay() {
 }
 
 void windowView::showInspector() {
-    vector<string> vec_robbies = getFiles(ins_robbie_path);
-    vector<string> vec_maps = getFiles(ins_map_path);
+    vector<string> vec_robbies = GetFiles(ins_robbie_path);
+    vector<string> vec_maps = GetFiles(ins_map_path);
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNode("Maps")) {
@@ -814,7 +814,7 @@ void windowView::showControlWindow() {
     }
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Map")) {
-        vector<string> vec_maps = getFiles(ins_map_path);
+        vector<string> vec_maps = GetFiles(ins_map_path);
         const char* items[vec_maps.size()];
         for (int i = 0; i < vec_maps.size(); i++) {
             items[i] = vec_maps[i].c_str();

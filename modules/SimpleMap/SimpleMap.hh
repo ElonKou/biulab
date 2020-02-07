@@ -2,18 +2,18 @@
 #ifndef SIMPLE_MAP_H_
 #define SIMPLE_MAP_H_
 
+#include "BiuLabConfig.hh"
 #include "BiuLabTypes.hh"
-#include "DataBase.hh"
 #include "MapBase.hh"
 #include <string>
 #include <vector>
 
 using namespace std;
 
-class SimpleMap : public DataBase {
+class SimpleMap : public MapBase {
   private:
-    void print(vec_2i pos);
-    void cleanTarget();
+    void Print(vec_2i pos);
+    void CleanTarget();
 
   public:
     SimpleMap();
@@ -26,20 +26,20 @@ class SimpleMap : public DataBase {
     string map_name;
     string path_name;
 
-    void         init();
-    void         RandomMap();
-    void         ClearMap();
-    bool         inMap(vec_2i pos);
-    void         updateSize(vec_2i new_size);
-    void         loadMap(const string& load_path);
-    void         saveMap(const string& save_path);
-    int          getHash(vec_2i pos);
-    int          getTarget(vec_2i pos);
-    void         setTarget(vec_2i pos, int key);
-    virtual int  getElem(vec_2i pos);
-    virtual void setElem(vec_2i pos, int key);
-    int          doAction(vec_2i start, vec_2i offset);
-    int          getValue(vec_2i pos) { return target[pos.y][pos.x]; }
-    inline int*  operator[](int row);
+    void        Init();
+    void        RandomMap();
+    void        ClearMap();
+    bool        InMap(vec_2i pos);
+    void        UpdateSize(vec_2i new_size);
+    void        LoadMap(const string& load_path);
+    void        SaveMap(const string& save_path);
+    int         GetHash(vec_2i pos);
+    int         GetTarget(vec_2i pos);
+    void        SetTarget(vec_2i pos, int key);
+    int         GetElem(vec_2i pos);
+    void        SetElem(vec_2i pos, int key);
+    int         DoAction(vec_2i start, vec_2i offset);
+    int         GetValue(vec_2i pos) { return target[pos.y][pos.x]; }
+    inline int* operator[](int row);
 };
 #endif

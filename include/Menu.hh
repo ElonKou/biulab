@@ -11,9 +11,9 @@ class Menu : public WidgetBase {
 
     ~Menu();
 
-    virtual void show();
+    virtual void Show();
 
-    void showMenuFile();
+    void ShowMenuFile();
 };
 
 #endif

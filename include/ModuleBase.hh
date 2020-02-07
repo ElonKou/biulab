@@ -2,21 +2,14 @@
 #ifndef MODULES_BASE_H_
 #define MODULES_BASE_H_
 
-#include "BiuLabConfig.hh"
-#include "DataManager.hh"
+#include "Base.hh"
 #include <iostream>
 
-class ModuleBase {
+class ModuleBase : public Base {
   public:
-    DataManager* data_manager;
-
     ModuleBase() {}
 
     ~ModuleBase() {}
-
-    void SetEnvironment(DataManager* data_manager_) {
-        data_manager = data_manager_;
-    }
 
     void Init();
 

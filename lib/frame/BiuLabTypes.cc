@@ -23,4 +23,8 @@ vec_2i vec_2i::operator+(vec_2i other) {
     v.y = y + other.y;
     return v;
 }
-void vec_2i::print() { cout << "(" << x << "," << y << ")"; }
+
+ostream& operator<<(ostream& os, const vec_2i& v) {
+    os << "(" << v.x << ", " << v.y << ")";
+    return os;
+}

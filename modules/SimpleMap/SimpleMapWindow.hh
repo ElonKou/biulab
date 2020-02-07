@@ -2,6 +2,7 @@
 #ifndef SIMPLE_MAP_WINDOW_H_
 #define SIMPLE_MAP_WINDOW_H_
 
+#include "DataManager.hh"
 #include "MapEditor.hh"
 #include "SimpleMap.hh"
 #include "SimpleMapConfig.hh"
@@ -10,7 +11,7 @@
 class SimpleMapWindow : public WindowBase {
   private:
     bool       has_map;
-    SimpleMap* map;
+    SimpleMap* simple_map;
     MapEditor* map_editor;
 
   public:
@@ -18,11 +19,9 @@ class SimpleMapWindow : public WindowBase {
 
     ~SimpleMapWindow();
 
-    virtual void show();
+    virtual void Show();
 
-    void SetCores(MapEditor* map_editor_, SimpleMap* simple_map_);
-
-    void ClearCores();
+    void UpdateData();
 };
 
 #endif

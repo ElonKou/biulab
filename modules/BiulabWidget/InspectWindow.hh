@@ -28,9 +28,9 @@ class InspectWindow : public WindowBase {
 
     ~InspectWindow();
 
-    virtual void show();
+    virtual void Show();
 
-    void updateInspectItemList(InspectList list);
+    void UpdateInspectItemList(InspectList list);
 };
 
 #endif

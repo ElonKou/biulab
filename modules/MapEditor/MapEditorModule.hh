@@ -2,6 +2,7 @@
 #ifndef MAP_EDITOR_MODULE_H_
 #define MAP_EDITOR_MODULE_H_
 
+#include "DataManager.hh"
 #include "InspectWindow.hh"
 #include "MapEditorWindow.hh"
 #include "ModuleBase.hh"

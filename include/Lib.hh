@@ -43,36 +43,48 @@
 #include <vector>
 
 using namespace std;
-#define random(x) (rand() % x);
+#define Random(x) (rand() % x);
 
-char* getChar(string str);
-void  printOk(string str);
-void  printOk(int str);
-void  printWaning(string str);
-void  printWaning(int str);
-void  printSucceed(string str);
-void  printSucceed(int str);
-void  printError(string str);
-void  printError(int str);
-void  printSome(string str);
-void  printSome(int str);
+char* GetChar(string str);
+
+void PrintOk(string str);
+
+void PrintOk(int str);
+
+void PrintWaning(string str);
+
+void PrintWaning(int str);
+
+void PrintSucceed(string str);
+
+void PrintSucceed(int str);
+
+void PrintError(string str);
+
+void PrintError(int str);
+
+void PrintSome(string str);
+
+void PrintSome(int str);
 
 // File tools
 
 template <class Type>
-Type stringToNum(const std::string& str) {
+Type StringToNum(const std::string& str) {
     istringstream iss(str);
     Type          num;
     iss >> num;
     return num;
 }
 
-vector<string> getFiles(string dir);
-vector<string> split(const string& s, const string& seperator);
-string&        replace_all(string& str, const string& old_value,
-                           const string& new_value);
+vector<string> GetFiles(string dir);
 
-int   randomInt(int range);
-float randomFloat();
+vector<string> Split(const string& s, const string& seperator);
+
+string& Replace_all(string& str, const string& old_value, const string& new_value);
+
+int RandomInt(int range);
+
+float RandomFloat();
 
 #endif

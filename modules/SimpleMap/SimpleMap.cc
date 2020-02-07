@@ -20,7 +20,7 @@ SimpleMap::SimpleMap() {
     map         = nullptr;
     target      = nullptr;
     map_name    = "std.map";
-    path_name   = BIULAB_APPLICATION_PATH"/genetic";
+    path_name   = BIULAB_APPLICATION_PATH "/genetic";
 }
 
 SimpleMap::SimpleMap(vec_2i map_size) {
@@ -41,7 +41,7 @@ SimpleMap::SimpleMap(vec_2i map_size) {
 
 SimpleMap::~SimpleMap() {}
 
-void SimpleMap::cleanTarget() {
+void SimpleMap::CleanTarget() {
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
             target[i][j] = map[i][j];
@@ -65,8 +65,8 @@ void SimpleMap::RandomMap() {
         target[0][i] = target[size.y - 1][i] = MAP_EDGE;
     }
     for (int i = 0; i < rubbish_cnt;) {
-        int temp_x = randomInt(size.x);
-        int temp_y = randomInt(size.y);
+        int temp_x = RandomInt(size.x);
+        int temp_y = RandomInt(size.y);
         if (map[temp_y][temp_x] == MAP_EMPTY) {
             map[temp_y][temp_x]    = MAP_RUBBISH;
             target[temp_y][temp_x] = MAP_RUBBISH;
@@ -84,11 +84,11 @@ void SimpleMap::ClearMap() {
     }
 }
 
-bool SimpleMap::inMap(vec_2i pos) {
+bool SimpleMap::InMap(vec_2i pos) {
     return (pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y);
 }
 
-void SimpleMap::init() {
+void SimpleMap::Init() {
     // init the std map
     map    = new int*[size.y];
     target = new int*[size.y];
@@ -106,7 +106,7 @@ void SimpleMap::init() {
     RandomMap();
 }
 
-void SimpleMap::updateSize(vec_2i new_size) {
+void SimpleMap::UpdateSize(vec_2i new_size) {
     int map_temp[size.y][size.x];
     for (int j = 0; j < size.y; j++) {
         for (int i = 0; i < size.x; i++) {
@@ -153,7 +153,7 @@ void SimpleMap::updateSize(vec_2i new_size) {
     size = new_size;
 }
 
-void SimpleMap::loadMap(const string& load_path) {
+void SimpleMap::LoadMap(const string& load_path) {
     cout << "Loading:" << load_path << endl;
     fstream fp;
     string  line;
@@ -163,7 +163,7 @@ void SimpleMap::loadMap(const string& load_path) {
         size_t      found = line.find("version:");
         if (found != string::npos) {
             str               = line.substr(found + 8, line.size());
-            float map_version = stringToNum<float>(str);
+            float map_version = StringToNum<float>(str);
         }
         found = line.find("name:");
         if (found != string::npos) {
@@ -173,17 +173,17 @@ void SimpleMap::loadMap(const string& load_path) {
         found = line.find("width:");
         if (found != string::npos) {
             str    = line.substr(found + 6, line.size());
-            size.x = stringToNum<int>(str);
+            size.x = StringToNum<int>(str);
         }
         found = line.find("height:");
         if (found != string::npos) {
             str    = line.substr(found + 7, line.size());
-            size.y = stringToNum<int>(str);
+            size.y = StringToNum<int>(str);
         }
         found = line.find("rubbish:");
         if (found != string::npos) {
             str         = line.substr(found + 8, line.size());
-            rubbish_cnt = stringToNum<int>(str);
+            rubbish_cnt = StringToNum<int>(str);
         }
         found = line.find("map:");
         if (found != string::npos) {
@@ -191,7 +191,7 @@ void SimpleMap::loadMap(const string& load_path) {
             for (int i = 0; i < size.y; i++) {
                 map[i] = new int[size.x];
                 getline(fp, line);
-                vector<string> vec = split(line, ",");
+                vector<string> vec = Split(line, ",");
                 for (int j = 0; j < size.x; j++) {
                     if (vec[j] == "#") {
                         map[i][j] = MAP_EDGE;
@@ -209,7 +209,7 @@ void SimpleMap::loadMap(const string& load_path) {
     fp.close();
 }
 
-void SimpleMap::saveMap(const string& save_path) {
+void SimpleMap::SaveMap(const string& save_path) {
     cout << save_path << endl;
     fstream fp;
     fp.open(save_path, ios::out | ios::trunc);
@@ -246,12 +246,12 @@ void SimpleMap::saveMap(const string& save_path) {
 
 // inline int SimpleMap::getValue(vec_2i pos) { return target[pos.y][pos.x]; }
 
-int SimpleMap::getHash(vec_2i pos) {
-    int east  = getValue(vec_2i(pos.x + 1, pos.y));
-    int north = getValue(vec_2i(pos.x, pos.y + 1));
-    int west  = getValue(vec_2i(pos.x - 1, pos.y));
-    int south = getValue(vec_2i(pos.x, pos.y - 1));
-    int mid   = getValue(pos);
+int SimpleMap::GetHash(vec_2i pos) {
+    int east  = GetValue(vec_2i(pos.x + 1, pos.y));
+    int north = GetValue(vec_2i(pos.x, pos.y + 1));
+    int west  = GetValue(vec_2i(pos.x - 1, pos.y));
+    int south = GetValue(vec_2i(pos.x, pos.y - 1));
+    int mid   = GetValue(pos);
     int hash  = 0;
     hash += 1 * east;
     hash += 3 * north;
@@ -261,20 +261,20 @@ int SimpleMap::getHash(vec_2i pos) {
     return hash;
 }
 
-int SimpleMap::getTarget(vec_2i pos) { return target[pos.y][pos.x]; }
+int SimpleMap::GetTarget(vec_2i pos) { return target[pos.y][pos.x]; }
 
-void SimpleMap::setTarget(vec_2i pos, int key) { target[pos.y][pos.x] = key; }
+void SimpleMap::SetTarget(vec_2i pos, int key) { target[pos.y][pos.x] = key; }
 
-int SimpleMap::getElem(vec_2i pos) { return map[pos.y][pos.x]; }
+int SimpleMap::GetElem(vec_2i pos) { return map[pos.y][pos.x]; }
 
-void SimpleMap::setElem(vec_2i pos, int key) { map[pos.y][pos.x] = key; }
+void SimpleMap::SetElem(vec_2i pos, int key) { map[pos.y][pos.x] = key; }
 
-int SimpleMap::doAction(vec_2i start, vec_2i offset) {
+int SimpleMap::DoAction(vec_2i start, vec_2i offset) {
     // MAP_EDGE : -1(failed)
     // pick : 0(empty)
     // move : 1(succeed)
     vec_2i now    = vec_2i(start.x + offset.x, start.y + offset.y);
-    int    nowVal = getValue(start);
+    int    nowVal = GetValue(start);
     if (nowVal == MAP_EDGE) {
         return -1;
     } else if (nowVal == MAP_RUBBISH) {
@@ -284,17 +284,17 @@ int SimpleMap::doAction(vec_2i start, vec_2i offset) {
 
 inline int* SimpleMap::operator[](int row) { return map[row]; }
 
-void SimpleMap::print(vec_2i pos) {
-    printSucceed("map:\t\t\t\t\t\ttarget:\n");
+void SimpleMap::Print(vec_2i pos) {
+    PrintSucceed("map:\t\t\t\t\t\ttarget:\n");
     for (int i = size.y - 1; i >= 0; i--) {
         for (int j = 0; j < size.x; j++) {
             if (map[i][j] != 0) {
                 if (map[i][j] == MAP_EDGE) {
-                    printSucceed(map[i][j]);
+                    PrintSucceed(map[i][j]);
                 } else {
-                    printOk(map[i][j]);
+                    PrintOk(map[i][j]);
                 }
-                printSucceed(" ");
+                PrintSucceed(" ");
             } else {
                 printf("  ");
             }
@@ -302,15 +302,15 @@ void SimpleMap::print(vec_2i pos) {
         printf("  ");
         for (int j = 0; j < size.x; j++) {
             if (i == pos.y && j == pos.x) {
-                printError(target[i][j]);
-                printError(" ");
+                PrintError(target[i][j]);
+                PrintError(" ");
             } else if (target[i][j] != 0) {
                 if (map[i][j] == MAP_EDGE) {
-                    printSucceed(map[i][j]);
+                    PrintSucceed(map[i][j]);
                 } else {
-                    printOk(map[i][j]);
+                    PrintOk(map[i][j]);
                 }
-                printSucceed(" ");
+                PrintSucceed(" ");
             } else {
                 printf("  ");
             }
