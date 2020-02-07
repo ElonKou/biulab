@@ -7,6 +7,8 @@
 
 class ModuleBase : public Base {
   public:
+    string module_name;
+
     ModuleBase() {}
 
     ~ModuleBase() {}

@@ -80,7 +80,7 @@ void MapEditor::DrawBlock(SimpleMap& mp, vec_2i pos) {
     cache.push_back(pos);
     int select_elem = mp.GetElem(pos);
     CheckAndSetElem(mp, pos);
-    while (!cache.empty()) {
+    while (!cache.empty() && tools != select_elem) {
         vec_2i point = cache.front();
         cache.erase(cache.begin());
 
@@ -109,7 +109,7 @@ void MapEditor::DrawBlock(SimpleMap& mp, vec_2i pos) {
 
 void MapEditor::DrawAll(SimpleMap& mp, vec_2i pos) {
     for (int i = 0; i < mp.size.y; i++) {
-        for (int j = 0; j < mp.size.y; j++) {
+        for (int j = 0; j < mp.size.x; j++) {
             CheckAndSetElem(mp, vec_2i(j, i));
         }
     }

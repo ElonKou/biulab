@@ -60,7 +60,6 @@ GLFWwindow* MainWindow::InitWindow() {
 }
 
 void MainWindow::DrawWindow() {
-    // checkState();
     if (show_dock_sapce) {
         ShowDcokSpace();
     }

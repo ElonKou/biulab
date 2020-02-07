@@ -14,7 +14,9 @@ using namespace std;
 
 DYN_DECLARE(SimpleMapModule);
 
-SimpleMapModule::SimpleMapModule() {}
+SimpleMapModule::SimpleMapModule() {
+    module_name = "SimpleMapModule";
+}
 
 SimpleMapModule::~SimpleMapModule() {}
 

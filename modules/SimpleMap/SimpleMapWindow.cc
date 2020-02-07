@@ -15,6 +15,8 @@ using namespace std;
 DYN_DECLARE(SimpleMapWindow);
 
 SimpleMapWindow::SimpleMapWindow() {
+    bsize      = 16.0f;
+    padding    = 1.0f;
     simple_map = nullptr;
 }
 
@@ -30,10 +32,6 @@ void SimpleMapWindow::Show() {
         return;
     }
     if (ImGui::Begin("Simple Map", &show_simplemap_window, 0)) {
-        float bsize     = 16.0f;
-        float threshold = 0.5f;
-        float padding   = 1.0f;
-
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         auto   start_pos   = ImGui::GetCursorScreenPos();
         auto   drawList    = ImGui::GetWindowDrawList();
@@ -41,10 +39,8 @@ void SimpleMapWindow::Show() {
         ImVec2 offset;
         ImVec2 map_size = ImVec2(simple_map->size.x * bsize, simple_map->size.y * bsize);
         ImVec2 end_pos  = ImVec2(start_pos.x + window_size.x, start_pos.y + window_size.y);
-        if (window_size.x > map_size.x && window_size.y > map_size.y) {
-            offset.x = (window_size.x - map_size.x) / 2 + start_pos.x;
-            offset.y = (window_size.y - map_size.y) / 2 + start_pos.y;
-        }
+        offset.x        = (window_size.x - map_size.x) / 2 + start_pos.x;
+        offset.y        = (window_size.y - map_size.y) / 2 + start_pos.y;
 
         for (int i = 0; i < simple_map->size.y; i++) {
             for (int j = 0; j < simple_map->size.x; j++) {
@@ -68,11 +64,14 @@ void SimpleMapWindow::Show() {
                 }
             }
         }
-        // if (ImGui::IsMouseHoveringRect(start_pos, end_pos)) {
-        //     if (ImGui::IsMouseClicked(2)) {
-        //         cout << "scorll " << endl;
-        //     }
-        // }
+        if (ImGui::IsMouseHoveringRect(start_pos, end_pos)) {
+            ImGuiIO& io = ImGui::GetIO();
+            if (io.MouseWheel != 0.0) {
+                bsize += io.MouseWheel;
+                bsize = MAX(bsize, 4);
+                bsize = MIN(bsize, 64);
+            }
+        }
         ImGui::EndChild();
     }
     ImGui::End();

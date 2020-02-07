@@ -19,8 +19,11 @@ void ModulesManager::LoadModule() {
     pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
 
     module = (ModuleBase*)pluginhelper.Create("MapEditorModule");
-    modules.push_back(module);
-    data_manager->CreateDataBase("MapEditorModule", module);
+    if (module) {
+        PrintSucceed(module->module_name + " load succeed\n");
+        modules.push_back(module);
+        data_manager->CreateDataBase("MapEditorModule", module);
+    }
 }
 
 void ModulesManager::UpdateModule() {

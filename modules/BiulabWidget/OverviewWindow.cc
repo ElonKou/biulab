@@ -30,11 +30,21 @@ void OverviewWindow::Show() {
             ImGui::Text("(%6.1f,%6.1f)", ImGui::GetIO().MousePos.x,
                         ImGui::GetIO().MousePos.y);
         } else {
+            ImGui::SameLine();
             ImGui::Text("<invalid>");
         }
-        // ImGui::Text("Slection");
-        // ImGui::Text("robbie:%s", ins_select_robbie.c_str());
-        // ImGui::Text("map:%s", ins_select_map.c_str());
+        if (info) {
+            for (auto iter = info->items.begin(); iter != info->items.end(); iter++) {
+                for (auto it = iter->second.data.begin(); it != iter->second.data.end(); it++) {
+                    string name = it->first + ": " + it->second;
+                    ImGui::Text("%s", name.c_str());
+                }
+            }
+        }
     }
     ImGui::End();
+}
+
+void OverviewWindow::UpdateData() {
+    info = GetData<OverviewInfo>("OverviewInfo");
 }

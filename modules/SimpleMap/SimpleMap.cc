@@ -19,7 +19,8 @@ SimpleMap::SimpleMap() {
     rubbish_cnt = RUBBISH_CNT;
     map         = nullptr;
     target      = nullptr;
-    map_name    = "std.map";
+    map_name    = "base.map";
+    version     = "0.1";
     path_name   = BIULAB_APPLICATION_PATH "/genetic";
 }
 
@@ -217,11 +218,11 @@ void SimpleMap::SaveMap(const string& save_path) {
         cout << "Save error." << endl;
         return;
     }
-    fp << "version:0.1" << endl;
+    fp << "version:" << version << endl;
     fp << "map_name:" << map_name << endl;
     fp << "width:" << to_string(size.x) << endl;
     fp << "height:" << to_string(size.y) << endl;
-    fp << "rubbish:" << to_string(20) << endl;
+    fp << "rubbish:" << to_string(rubbish_cnt) << endl;
     fp << "map:" << endl;
     for (int j = 0; j < size.y; j++) {
         string x = "";

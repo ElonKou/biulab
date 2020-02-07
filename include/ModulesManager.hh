@@ -3,6 +3,7 @@
 #define MODULES_MANAGER_H_
 
 #include "DataManager.hh"
+#include "Lib.hh"
 #include "ModuleBase.hh"
 #include "PluginHelper.hh"
 #include <vector>

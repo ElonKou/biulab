@@ -9,12 +9,12 @@
 #include "WindowBase.hh"
 
 class SimpleMapWindow : public WindowBase {
-  private:
-    bool       has_map;
+  public:
+    float      bsize;
+    float      padding;
     SimpleMap* simple_map;
     MapEditor* map_editor;
 
-  public:
     SimpleMapWindow();
 
     ~SimpleMapWindow();

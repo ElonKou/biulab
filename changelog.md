@@ -26,6 +26,7 @@
 - [ ] controller
 
 # CHANGELOG
+- [x] [v0.6] Module 2020.02.08: completed map editor module.
 - [x] [v0.5] Arch   2020.02.07: reconstruct frame struct.
 - [x] [v0.5] Arch   2020.02.07: add shared data for that erery module can get Base data pointer.
 - [x] [v0.5] Core   2020.02.07: biulab.

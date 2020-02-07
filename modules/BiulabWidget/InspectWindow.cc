@@ -17,17 +17,16 @@ InspectWindow::~InspectWindow() {}
 
 void InspectWindow::Show() {
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
-        for (size_t i = 0; i < item_list.items.size(); i++) {
-            ImGui::SetNextItemOpen(item_list.items[i].collapsed, ImGuiCond_Once);
-            InspectItem& item = item_list.items[i];
+        for (auto it = info->items.begin(); it != info->items.end(); it++) {
+            ImGui::SetNextItemOpen(!it->second.collapsed, ImGuiCond_Once);
+            InspectItem& item = it->second;
             if (ImGui::TreeNode(item.title.c_str())) {
                 for (int j = 0; j < item.data.size(); j++) {
                     string list_name = item.data[j];
                     if (ImGui::Selectable(list_name.c_str(), item.data[j] == item.selected, ImGuiSelectableFlags_AllowDoubleClick)) {
                         if (ImGui::IsMouseDoubleClicked(0)) {
                             item.selected = list_name;
-                            item.index    = j;
-                            // simple_map->loadMap(BIULAB_APPLICATION_PATH "/../maps/" + list_name);
+                            item.changed  = true;
                         }
                     }
                 }
@@ -38,6 +37,6 @@ void InspectWindow::Show() {
     ImGui::End();
 }
 
-void InspectWindow::UpdateInspectItemList(InspectList list) {
-    item_list = list;
+void InspectWindow::UpdateData() {
+    info = GetData<InspectInfo>("InspectInfo");
 }

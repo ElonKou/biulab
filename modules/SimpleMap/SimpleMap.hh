@@ -25,6 +25,7 @@ class SimpleMap : public MapBase {
     int    rubbish_cnt;
     string map_name;
     string path_name;
+    string version;
 
     void        Init();
     void        RandomMap();

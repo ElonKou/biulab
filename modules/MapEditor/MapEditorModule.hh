@@ -9,6 +9,13 @@
 #include "OverviewWindow.hh"
 #include "SimpleMapWindow.hh"
 
+typedef struct MapEditorData {
+    InspectInfo*  inspect_info;
+    OverviewInfo* overview_info;
+    MapEditor*    map_editor;
+    SimpleMap*    simple_map;
+} MapEditorData;
+
 class MapEditorModule : public ModuleBase {
   private:
     MapEditorWindow map_editor_window;
@@ -19,18 +26,16 @@ class MapEditorModule : public ModuleBase {
 
     InspectWindow insepect_window;
 
-    MapEditor* map_editor;
-
-    SimpleMap* simple_map;
-
   public:
+    MapEditorData* data;
+
     MapEditorModule();
 
     ~MapEditorModule();
 
     virtual void UpdateModule();
 
-    void Init();
+    void Check();
 };
 
 #endif

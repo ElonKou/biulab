@@ -2,26 +2,26 @@
 #ifndef INSPECT_WINDOW_H_
 #define INSPECT_WINDOW_H_
 
+#include "DataManager.hh"
 #include "Lib.hh"
 #include "WindowBase.hh"
 #include <unordered_map>
-#include <vector>
 
-typedef struct InspectItem {
-    int            index;
+typedef struct InspectInfoItem {
     bool           collapsed;
+    bool           changed;
     string         selected;
     string         title;
     vector<string> data;
 } InspectItem;
 
-typedef struct InspectList {
-    vector<InspectItem> items;
-} InspectList;
+typedef struct InspectInfo : public DataBase {
+    unordered_map<string, InspectItem> items;
+} InspectInfo;
 
 class InspectWindow : public WindowBase {
   private:
-    InspectList item_list;
+    InspectInfo* info;
 
   public:
     InspectWindow();
@@ -30,7 +30,7 @@ class InspectWindow : public WindowBase {
 
     virtual void Show();
 
-    void UpdateInspectItemList(InspectList list);
+    void UpdateData();
 };
 
 #endif
