@@ -75,50 +75,50 @@ void MapEditorWindow::Show() {
             // Tools
             {
                 static int tool_id = 0;
-                if (ImGui::RadioButton("None", &tool_id, 0)) {
+                if (ImGui::ColorRadioButton("None##T", &tool_id, 0, map_editor->infos["T_NONE"].color)) {
                     map_editor->SetTools(T_NONE);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Edge", &tool_id, 1)) {
+                if (ImGui::ColorRadioButton("Edge##T", &tool_id, 1, map_editor->infos["T_EDGE"].color)) {
                     map_editor->SetTools(T_EDGE);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Rubbish", &tool_id, 2)) {
+                if (ImGui::ColorRadioButton("Rubbish##T", &tool_id, 2, map_editor->infos["T_RUBBISH"].color)) {
                     map_editor->SetTools(T_RUBBISH);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Out", &tool_id, 3)) {
-                    map_editor->SetTools(T_OUT);
+                if (ImGui::ColorRadioButton("Empty##T", &tool_id, 3, map_editor->infos["T_EMPTY"].color)) {
+                    map_editor->SetTools(T_EMPTY);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Empty", &tool_id, 4)) {
-                    map_editor->SetTools(T_EMPTY);
+                if (ImGui::ColorRadioButton("Out##T", &tool_id, 4, map_editor->infos["T_OUT"].color)) {
+                    map_editor->SetTools(T_OUT);
                 }
             }
             // Selections.
             {
                 static int selection_id = 0;
-                if (ImGui::RadioButton("None", &selection_id, 0)) {
+                if (ImGui::SmallRadioButton("None##select", &selection_id, 0)) {
                     map_editor->SetSelection(S_NONE);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Point", &selection_id, 1)) {
+                if (ImGui::SmallRadioButton("Point", &selection_id, 1)) {
                     map_editor->SetSelection(S_POINT);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Line", &selection_id, 2)) {
+                if (ImGui::SmallRadioButton("Line", &selection_id, 2)) {
                     map_editor->SetSelection(S_LINE);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Rect", &selection_id, 3)) {
+                if (ImGui::SmallRadioButton("Rect", &selection_id, 3)) {
                     map_editor->SetSelection(S_RECT);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("Block", &selection_id, 4)) {
+                if (ImGui::SmallRadioButton("Block", &selection_id, 4)) {
                     map_editor->SetSelection(S_BLOCK);
                 }
                 ImGui::SameLine();
-                if (ImGui::RadioButton("All", &selection_id, 5)) {
+                if (ImGui::SmallRadioButton("All", &selection_id, 5)) {
                     map_editor->SetSelection(S_ALL);
                 }
             }

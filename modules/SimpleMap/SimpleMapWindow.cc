@@ -48,13 +48,13 @@ void SimpleMapWindow::Show() {
                 ImVec2 p1 = {offset.x + (j + 1) * bsize - padding,
                              offset.y + (i + 1) * bsize - padding};
                 if (simple_map->map[i][j] == MAP_EDGE) {
-                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32({1.0f, 1.0f, 1.0f, 0.4}));
+                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(simple_map->infos["MAP_EDGE"].color));
                 } else if (simple_map->map[i][j] == MAP_RUBBISH) {
-                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32({1.0f, 0.0f, 0.0f, 0.5}));
+                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(simple_map->infos["MAP_RUBBISH"].color));
                 } else if (simple_map->map[i][j] == MAP_EMPTY) {
-                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32({1.0f, 1.0f, 1.0f, 0.1}));
+                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(simple_map->infos["MAP_EMPTY"].color));
                 } else if (simple_map->map[i][j] == MAP_OUT) {
-                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32({1.0f, 1.0f, 1.0f, 0.0}));
+                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(simple_map->infos["MAP_OUT"].color));
                 }
                 // Hover
                 if (ImGui::IsMouseHoveringRect(p0, p1)) {

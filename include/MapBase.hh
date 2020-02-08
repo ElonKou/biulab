@@ -4,22 +4,38 @@
 
 #include "CoreBase.hh"
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
-enum MapType { MAP_NONE,
-               MAP_EDGE,
-               MAP_OUT,
-               MAP_EMPTY,
-               MAP_RUBBISH };
+enum MapType {
+    MAP_EDGE,
+    MAP_OUT,
+    MAP_EMPTY,
+    MAP_RUBBISH
+};
 
 enum PathType { PATH_EMPTY };
 
+typedef struct MapElemInfo {
+    MapType type;
+    string  name;
+    string  target;
+    ImVec4  color;
+} MapElemInfo;
+
 class MapBase : public CoreBase {
   public:
-    MapBase(){}
+    unordered_map<string, MapElemInfo> infos;
 
-    ~MapBase(){}
+    MapBase() {
+        infos.insert({"MAP_EDGE", {MAP_EDGE, "Edge", "#", {1.0, 1.0, 1.0, 0.4}}});
+        infos.insert({"MAP_RUBBISH", {MAP_RUBBISH, "Rubbish", "*", {1.0, 0.0, 0.0, 0.5}}});
+        infos.insert({"MAP_EMPTY", {MAP_EMPTY, "Empty", " ", {1.0, 1.0, 1.0, 0.1}}});
+        infos.insert({"MAP_OUT", {MAP_OUT, "Out", ".", {1.0, 1.0, 1.0, 0.0}}});
+    }
+
+    ~MapBase() {}
 
     virtual int GetElem(vec_2i pos) = 0;
 

@@ -17,7 +17,13 @@ MapEditor::MapEditor()
     , height(MAP_HEIGHT)
     , tools(T_NONE)
     , selections(S_NONE)
-    , selectPosCnt(0) {}
+    , selectPosCnt(0) {
+    infos.insert({"T_NONE", {"None", {0.0, 0.0, 0.0, 1.0}}});
+    infos.insert({"T_EDGE", {"Edge", {1.0, 1.0, 1.0, 0.4}}});
+    infos.insert({"T_RUBBISH", {"Rubbish", {1.0, 0.0, 0.0, 0.5}}});
+    infos.insert({"T_EMPTY", {"Empty", {1.0, 1.0, 1.0, 0.1}}});
+    infos.insert({"T_OUT", {"Out", {1.0, 1.0, 1.0, 0.0}}});
+}
 
 MapEditor::~MapEditor() {}
 

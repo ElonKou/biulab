@@ -53,17 +53,13 @@ void SimpleMap::CleanTarget() {
 void SimpleMap::RandomMap() {
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
-            map[i][j]    = MAP_EMPTY;
-            target[i][j] = MAP_EMPTY;
+            if (map[i][j] == MAP_RUBBISH) {
+                map[i][j] = MAP_EMPTY;
+            }
+            if (target[i][j] == MAP_RUBBISH) {
+                target[i][j] = MAP_EMPTY;
+            }
         }
-    }
-    for (int i = 0; i < size.y; i++) {
-        map[i][0] = map[i][size.x - 1] = MAP_EDGE;
-        target[i][0] = target[i][size.x - 1] = MAP_EDGE;
-    }
-    for (int i = 0; i < size.x; i++) {
-        map[0][i] = map[size.y - 1][i] = MAP_EDGE;
-        target[0][i] = target[size.y - 1][i] = MAP_EDGE;
     }
     for (int i = 0; i < rubbish_cnt;) {
         int temp_x = RandomInt(size.x);
@@ -188,20 +184,26 @@ void SimpleMap::LoadMap(const string& load_path) {
         }
         found = line.find("map:");
         if (found != string::npos) {
-            map = new int*[size.y];
+            map    = new int*[size.y];
+            target = new int*[size.y];
             for (int i = 0; i < size.y; i++) {
-                map[i] = new int[size.x];
+                map[i]    = new int[size.x];
+                target[i] = new int[size.x];
                 getline(fp, line);
                 vector<string> vec = Split(line, ",");
                 for (int j = 0; j < size.x; j++) {
                     if (vec[j] == "#") {
-                        map[i][j] = MAP_EDGE;
+                        map[i][j]    = MAP_EDGE;
+                        target[i][j] = MAP_EDGE;
                     } else if (vec[j] == "*") {
-                        map[i][j] = MAP_RUBBISH;
+                        map[i][j]    = MAP_RUBBISH;
+                        target[i][j] = MAP_RUBBISH;
                     } else if (vec[j] == " ") {
-                        map[i][j] = MAP_EMPTY;
+                        map[i][j]    = MAP_EMPTY;
+                        target[i][j] = MAP_EMPTY;
                     } else if (vec[j] == ".") {
-                        map[i][j] = MAP_OUT;
+                        map[i][j]    = MAP_OUT;
+                        target[i][j] = MAP_OUT;
                     }
                 }
             }

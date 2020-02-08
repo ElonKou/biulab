@@ -33,6 +33,11 @@ typedef struct {
     ActionType     action;
 } HistoryType;
 
+typedef struct MapEditorInfo {
+    string name;
+    ImVec4 color;
+} MapEditorInfo;
+
 class MapEditor : public CoreBase {
   private:
     int         selectPosCnt;
@@ -43,8 +48,9 @@ class MapEditor : public CoreBase {
     int width;
     int height;
 
-    ToolsType      tools;
-    SelectionsType selections;
+    ToolsType                            tools;
+    SelectionsType                       selections;
+    unordered_map<string, MapEditorInfo> infos;
 
     MapEditor();
     ~MapEditor();
