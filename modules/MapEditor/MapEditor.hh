@@ -4,42 +4,11 @@
 
 #include "BiuLabTypes.hh"
 #include "Lib.hh"
-#include "SimpleMap.hh"
+#include "MapEditorBase.hh"
+#include "MapBase.hh"
 #include "SimpleMapConfig.hh"
 
-enum ToolsType {
-    T_NONE,
-    T_EDGE,
-    T_OUT,
-    T_EMPTY,
-    T_RUBBISH,
-    T_GEM
-};
-enum SelectionsType {
-    S_NONE,
-    S_POINT,
-    S_LINE,
-    S_RECT,
-    S_BLOCK,
-    S_ALL
-};
-enum ActionType { A_NONE,
-                  A_UNDO,
-                  A_REDO };
-
-typedef struct {
-    vec_2i         pos[2];
-    ToolsType      tool;
-    SelectionsType selects;
-    ActionType     action;
-} HistoryType;
-
-typedef struct MapEditorInfo {
-    string name;
-    ImVec4 color;
-} MapEditorInfo;
-
-class MapEditor : public CoreBase {
+class MapEditor : public MapEditorBase {
   private:
     int         selectPosCnt;
     vec_2i      selectPos[2];
@@ -49,25 +18,21 @@ class MapEditor : public CoreBase {
     int width;
     int height;
 
-    ToolsType                            tools;
-    SelectionsType                       selections;
-    unordered_map<int, MapEditorInfo> infos;
-
     MapEditor();
     ~MapEditor();
-    void CheckAndSetElem(SimpleMap& mp, vec_2i pos);
+    void CheckAndSetElem(MapBase& mp, vec_2i pos);
 
-    void DrawLine(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
-    void DrawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y);
-    void DrawPoint(SimpleMap& mp, vec_2i pos);
-    void DrawBlock(SimpleMap& mp, vec_2i pos);
-    void DrawAll(SimpleMap& mp, vec_2i pos);
+    void DrawLine(MapBase& mp, vec_2i pos_x, vec_2i pos_y);
+    void DrawRect(MapBase& mp, vec_2i pos_x, vec_2i pos_y);
+    void DrawPoint(MapBase& mp, vec_2i pos);
+    void DrawBlock(MapBase& mp, vec_2i pos);
+    void DrawAll(MapBase& mp, vec_2i pos);
 
-    void UpdateMap(SimpleMap& mp);
+    void UpdateMap(MapBase& mp);
     void SetTools(ToolsType tool);
     void SetSelection(SelectionsType slect);
-    void Resize(SimpleMap& mp);
-    void ModifiedMap(SimpleMap& mp, vec_2i pos);
+    void Resize(MapBase& mp);
+    void ModifiedMap(MapBase& mp, vec_2i pos);
 };
 
 #endif

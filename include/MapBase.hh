@@ -27,6 +27,7 @@ typedef struct MapElemInfo {
 
 class MapBase : public CoreBase {
   public:
+    vec_2i                          size;
     unordered_map<int, MapElemInfo> infos;
     unordered_map<string, MapType>  elems;
 
@@ -44,6 +45,10 @@ class MapBase : public CoreBase {
     }
 
     ~MapBase() {}
+
+    virtual bool InMap(vec_2i pos) = 0;
+
+    virtual void UpdateSize(vec_2i new_size) = 0;
 
     virtual int GetElem(vec_2i pos) = 0;
 

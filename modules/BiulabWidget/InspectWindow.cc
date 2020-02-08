@@ -11,12 +11,48 @@
 
 DYN_DECLARE(InspectWindow);
 
+void InspectInfo::AddInfo(string path, string pattern, bool target) {
+    vector<string> names = GetFiles(path);
+    InspectItem    item;
+    for (size_t i = 0; i < names.size(); i++) {
+        vector<string> name = Split(names[i], "/");
+        item.data.push_back(name[name.size() - 1]);
+        item.selected  = "";
+        item.title     = pattern;
+        item.collapsed = target;
+    }
+    items.insert({pattern, item});
+}
+
+void InspectInfo::UpdateFunc(string maps_path) {
+    unordered_map<string, string> xx = {{"maps", ""}};
+    overview_info->items.insert({"simplemap", xx});
+    overview_info->items["simplemap"]["maps"] = items["maps"].selected;
+    if (items.size() > 0 && items["maps"].changed) {
+        string map_name_      = items["maps"].selected;
+        items["maps"].changed = false;
+        simple_map->LoadMap(maps_path + "/" + map_name_);
+        if (map_editor_window) {
+            map_editor_window->UpdateData();
+        }
+    }
+}
+
+void InspectInfo::UpdateData() {
+    simple_map        = GetData<MapBase>("SimpleMap");
+    overview_info     = GetData<OverviewInfo>("OverviewInfo");
+    map_editor_window = GetData<WindowBase>("MapEditorWindow");
+}
+
 InspectWindow::InspectWindow() {}
 
 InspectWindow::~InspectWindow() {}
 
 void InspectWindow::Show() {
     if (ImGui::Begin("Inspector", &show_inspector_window, 0)) {
+        if (!info) {
+            return;
+        }
         for (auto it = info->items.begin(); it != info->items.end(); it++) {
             ImGui::SetNextItemOpen(!it->second.collapsed, ImGuiCond_Once);
             InspectItem& item = it->second;

@@ -15,8 +15,6 @@ using namespace std;
 MapEditor::MapEditor()
     : width(MAP_WIDTH)
     , height(MAP_HEIGHT)
-    , tools(T_NONE)
-    , selections(S_NONE)
     , selectPosCnt(0) {
     infos.insert({int(T_NONE), {"None", {0.0, 0.0, 0.0, 1.0}}});
     infos.insert({int(T_EDGE), {"Edge", {1.0, 1.0, 1.0, 0.4}}});
@@ -28,7 +26,7 @@ MapEditor::MapEditor()
 
 MapEditor::~MapEditor() {}
 
-void MapEditor::CheckAndSetElem(SimpleMap& mp, vec_2i pos) {
+void MapEditor::CheckAndSetElem(MapBase& mp, vec_2i pos) {
     if (tools == T_EDGE) {
         mp.SetElem(pos, MAP_EDGE);
     } else if (tools == T_EMPTY) {
@@ -42,7 +40,7 @@ void MapEditor::CheckAndSetElem(SimpleMap& mp, vec_2i pos) {
     }
 }
 
-void MapEditor::DrawLine(SimpleMap& mp, vec_2i start, vec_2i end) {
+void MapEditor::DrawLine(MapBase& mp, vec_2i start, vec_2i end) {
     vec_2i pos         = start;
     int    direction_x = end.x - start.x;
     int    direction_y = end.y - start.y;
@@ -67,7 +65,7 @@ void MapEditor::DrawLine(SimpleMap& mp, vec_2i start, vec_2i end) {
     }
 }
 
-void MapEditor::DrawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y) {
+void MapEditor::DrawRect(MapBase& mp, vec_2i pos_x, vec_2i pos_y) {
     int min_x = MIN(pos_x.x, pos_y.x);
     int max_x = MAX(pos_x.x, pos_y.x);
     int min_y = MIN(pos_x.y, pos_y.y);
@@ -80,11 +78,11 @@ void MapEditor::DrawRect(SimpleMap& mp, vec_2i pos_x, vec_2i pos_y) {
     }
 }
 
-void MapEditor::DrawPoint(SimpleMap& mp, vec_2i pos) {
+void MapEditor::DrawPoint(MapBase& mp, vec_2i pos) {
     CheckAndSetElem(mp, pos);
 }
 
-void MapEditor::DrawBlock(SimpleMap& mp, vec_2i pos) {
+void MapEditor::DrawBlock(MapBase& mp, vec_2i pos) {
     std::vector<vec_2i> cache;
     cache.push_back(pos);
     int select_elem = mp.GetElem(pos);
@@ -116,7 +114,7 @@ void MapEditor::DrawBlock(SimpleMap& mp, vec_2i pos) {
     }
 }
 
-void MapEditor::DrawAll(SimpleMap& mp, vec_2i pos) {
+void MapEditor::DrawAll(MapBase& mp, vec_2i pos) {
     for (int i = 0; i < mp.size.y; i++) {
         for (int j = 0; j < mp.size.x; j++) {
             CheckAndSetElem(mp, vec_2i(j, i));
@@ -124,7 +122,7 @@ void MapEditor::DrawAll(SimpleMap& mp, vec_2i pos) {
     }
 }
 
-void MapEditor::UpdateMap(SimpleMap& mp) {
+void MapEditor::UpdateMap(MapBase& mp) {
     mp.UpdateSize(vec_2i(width, height));
 }
 
@@ -132,9 +130,9 @@ void MapEditor::SetTools(ToolsType tool) { tools = tool; }
 
 void MapEditor::SetSelection(SelectionsType slect) { selections = slect; }
 
-void MapEditor::Resize(SimpleMap& mp) {}
+void MapEditor::Resize(MapBase& mp) {}
 
-void MapEditor::ModifiedMap(SimpleMap& mp, vec_2i pos) {
+void MapEditor::ModifiedMap(MapBase& mp, vec_2i pos) {
     if (tools != T_NONE && selections != S_NONE) {
         // Select two pos.
         if (selections == S_RECT) {

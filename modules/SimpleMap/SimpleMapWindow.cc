@@ -24,7 +24,7 @@ SimpleMapWindow::~SimpleMapWindow() {}
 
 void SimpleMapWindow::UpdateData() {
     simple_map = GetData<SimpleMap>("SimpleMap");
-    map_editor = GetData<MapEditor>("MapEditor");
+    map_editor = GetData<MapEditorBase>("MapEditor");
 }
 
 void SimpleMapWindow::Show() {

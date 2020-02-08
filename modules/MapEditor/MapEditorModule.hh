@@ -5,6 +5,7 @@
 #include "DataManager.hh"
 #include "DynamicClass.hh"
 #include "InspectWindow.hh"
+#include "MapEditor.hh"
 #include "MapEditorWindow.hh"
 #include "ModuleBase.hh"
 #include "OverviewWindow.hh"

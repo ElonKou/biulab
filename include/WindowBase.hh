@@ -11,6 +11,8 @@ class WindowBase : public WidgetBase {
     ~WindowBase() {}
 
     virtual void Show() = 0;
+
+    virtual void UpdateData() = 0;
 };
 
 #endif

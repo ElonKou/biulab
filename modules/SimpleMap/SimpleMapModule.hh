@@ -16,6 +16,8 @@ typedef struct SimpleMapData {
     InspectWindow*   insp_window;
     OverviewWindow*  over_window;
     SimpleMap*       simple_map;
+    InspectInfo*     inspect_info;
+    OverviewInfo*    overview_info;
 } SimpleMapData;
 
 class SimpleMapModule : ModuleBase {
@@ -27,6 +29,8 @@ class SimpleMapModule : ModuleBase {
     ~SimpleMapModule();
 
     virtual void UpdateModule();
+
+    void Check();
 };
 
 #endif

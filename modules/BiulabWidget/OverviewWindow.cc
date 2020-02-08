@@ -14,6 +14,12 @@ using namespace std;
 
 DYN_DECLARE(OverviewWindow);
 
+void OverviewInfo::UpdateData() {
+}
+
+void OverviewInfo::UpdateFunc() {
+}
+
 OverviewWindow::OverviewWindow() {}
 
 OverviewWindow::~OverviewWindow() {}
@@ -35,7 +41,7 @@ void OverviewWindow::Show() {
         }
         if (info) {
             for (auto iter = info->items.begin(); iter != info->items.end(); iter++) {
-                for (auto it = iter->second.data.begin(); it != iter->second.data.end(); it++) {
+                for (auto it = iter->second.begin(); it != iter->second.end(); it++) {
                     string name = it->first + ": " + it->second;
                     ImGui::Text("%s", name.c_str());
                 }

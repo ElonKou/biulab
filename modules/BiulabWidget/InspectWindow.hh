@@ -4,6 +4,8 @@
 
 #include "DataManager.hh"
 #include "Lib.hh"
+#include "MapBase.hh"
+#include "OverviewWindow.hh"
 #include "WindowBase.hh"
 #include <unordered_map>
 
@@ -17,13 +19,18 @@ typedef struct InspectInfoItem {
 
 typedef struct InspectInfo : public DataBase {
     unordered_map<string, InspectItem> items;
+    MapBase*                           simple_map;
+    OverviewInfo*                      overview_info;
+    WindowBase*                        map_editor_window;
+    void                               AddInfo(string path, string pattern, bool target);
+    void                               UpdateFunc(string maps_path);
+    void                               UpdateData();
 } InspectInfo;
 
 class InspectWindow : public WindowBase {
-  private:
+  public:
     InspectInfo* info;
 
-  public:
     InspectWindow();
 
     ~InspectWindow();

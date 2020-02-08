@@ -9,6 +9,8 @@ class DataBase : public Base {
     DataBase() {}
 
     ~DataBase() {}
+
+    void virtual UpdateData() = 0;
 };
 
 #endif

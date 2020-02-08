@@ -7,12 +7,10 @@
 #include <unordered_map>
 #include <vector>
 
-typedef struct OverviewInfoItem {
-    unordered_map<string, string> data;
-} OverviewInfoItem;
-
 typedef struct OverviewInfo : public DataBase {
-    unordered_map<string, OverviewInfoItem> items;
+    unordered_map<string, unordered_map<string, string>> items;
+    void                                                 UpdateData();
+    void                                                 UpdateFunc();
 } OverWindowInfo;
 
 class OverviewWindow : public WindowBase {

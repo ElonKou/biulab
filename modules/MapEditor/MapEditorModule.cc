@@ -54,6 +54,8 @@ MapEditorModule::MapEditorModule() {
     data->simple_map_window->UpdateData();
     data->insepect_window->UpdateData();
     data->overview_window->UpdateData();
+    data->overview_info->UpdateData();
+    data->inspect_info->UpdateData();
 }
 
 MapEditorModule::~MapEditorModule() {}
@@ -67,39 +69,9 @@ void MapEditorModule::UpdateModule() {
 }
 
 void MapEditorModule::Check() {
-    string         maps_path     = BIULAB_APPLICATION_PATH "/genetic/maps";
-    string         robbies_path  = BIULAB_APPLICATION_PATH "/genetic/robbies";
-    vector<string> maps_names    = GetFiles(maps_path);
-    vector<string> robbies_names = GetFiles(robbies_path);
-    InspectItem    maps_item;
-    InspectItem    robbies_item;
-    for (size_t i = 0; i < maps_names.size(); i++) {
-        vector<string> names = Split(maps_names[i], "/");
-        maps_item.data.push_back(names[names.size() - 1]);
-        maps_item.selected  = "";
-        maps_item.title     = "maps";
-        maps_item.collapsed = false;
-    }
-    for (size_t i = 0; i < robbies_names.size(); i++) {
-        vector<string> names = Split(robbies_names[i], "/");
-        robbies_item.data.push_back(names[names.size() - 1]);
-        robbies_item.selected  = "";
-        robbies_item.title     = "robbies";
-        robbies_item.collapsed = true;
-    }
-    data->inspect_info->items.insert({"robbies", robbies_item});
-    data->inspect_info->items.insert({"maps", maps_item});
-    if (data->overview_info->items.size() == 0) {
-        OverviewInfoItem over_item;
-        over_item.data.insert({"maps", data->inspect_info->items["maps"].selected});
-        data->overview_info->items.insert({"simplemap", over_item});
-    } else {
-        data->overview_info->items["simplemap"].data["maps"] = data->inspect_info->items["maps"].selected;
-    }
-    if (data->inspect_info->items.size() > 0 && data->inspect_info->items["maps"].changed) {
-        string map_name_                          = data->inspect_info->items["maps"].selected;
-        data->inspect_info->items["maps"].changed = false;
-        data->simple_map->LoadMap(maps_path + "/" + map_name_);
-        data->map_editor_window->UpdateData();
-    }
+    string maps_path    = BIULAB_APPLICATION_PATH "/genetic/maps";
+    string robbies_path = BIULAB_APPLICATION_PATH "/genetic/robbies";
+    data->inspect_info->AddInfo(robbies_path, "robbies", true);
+    data->inspect_info->AddInfo(maps_path, "maps", false);
+    data->inspect_info->UpdateFunc(maps_path);
 }

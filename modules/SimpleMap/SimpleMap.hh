@@ -19,7 +19,6 @@ class SimpleMap : public MapBase {
     SimpleMap();
     SimpleMap(vec_2i map_size);
     ~SimpleMap();
-    vec_2i size;
     int**  map;
     int**  target;
     int    rubbish_cnt;
