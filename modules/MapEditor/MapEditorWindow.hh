@@ -8,10 +8,6 @@
 
 class MapEditorWindow : public WindowBase {
   private:
-    bool       has_map;
-    bool       map_changed;
-    bool       has_create_map;
-    bool       has_saved_map;
     char       temp_name[256];
     char       temp_path[256];
     SimpleMap* simple_map;

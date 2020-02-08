@@ -24,6 +24,12 @@ void ModulesManager::LoadModule() {
         modules.push_back(module);
         data_manager->CreateDataBase("MapEditorModule", module);
     }
+    // module = (ModuleBase*)pluginhelper.Create("SimpleMapModule");
+    // if (module) {
+    //     PrintSucceed(module->module_name + " load succeed\n");
+    //     modules.push_back(module);
+    //     data_manager->CreateDataBase("SimpleMapModule", module);
+    // }
 }
 
 void ModulesManager::UpdateModule() {

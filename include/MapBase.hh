@@ -10,9 +10,10 @@ using namespace std;
 
 enum MapType {
     MAP_EDGE,
-    MAP_OUT,
+    MAP_RUBBISH,
     MAP_EMPTY,
-    MAP_RUBBISH
+    MAP_OUT,
+    MAP_GEM
 };
 
 enum PathType { PATH_EMPTY };
@@ -26,13 +27,20 @@ typedef struct MapElemInfo {
 
 class MapBase : public CoreBase {
   public:
-    unordered_map<string, MapElemInfo> infos;
+    unordered_map<int, MapElemInfo> infos;
+    unordered_map<string, MapType>  elems;
 
     MapBase() {
-        infos.insert({"MAP_EDGE", {MAP_EDGE, "Edge", "#", {1.0, 1.0, 1.0, 0.4}}});
-        infos.insert({"MAP_RUBBISH", {MAP_RUBBISH, "Rubbish", "*", {1.0, 0.0, 0.0, 0.5}}});
-        infos.insert({"MAP_EMPTY", {MAP_EMPTY, "Empty", " ", {1.0, 1.0, 1.0, 0.1}}});
-        infos.insert({"MAP_OUT", {MAP_OUT, "Out", ".", {1.0, 1.0, 1.0, 0.0}}});
+        infos.insert({int(MAP_EDGE), {MAP_EDGE, "Edge", "#", {1.0, 1.0, 1.0, 0.4}}});
+        infos.insert({int(MAP_RUBBISH), {MAP_RUBBISH, "Rubbish", "*", {1.0, 0.0, 0.0, 0.5}}});
+        infos.insert({int(MAP_EMPTY), {MAP_EMPTY, "Empty", " ", {1.0, 1.0, 1.0, 0.1}}});
+        infos.insert({int(MAP_OUT), {MAP_OUT, "Out", ".", {1.0, 1.0, 1.0, 0.0}}});
+        infos.insert({int(MAP_GEM), {MAP_GEM, "Gem", "$", {0.0, 1.0, 0.0, 0.5}}});
+        elems.insert({"#", MAP_EDGE});
+        elems.insert({"*", MAP_RUBBISH});
+        elems.insert({" ", MAP_EMPTY});
+        elems.insert({".", MAP_OUT});
+        elems.insert({"$", MAP_GEM});
     }
 
     ~MapBase() {}

@@ -15,6 +15,15 @@ DataManager::DataManager() {
 DataManager::~DataManager() {
 }
 
+bool DataManager::HasDataBase(string class_name) {
+    auto item = biulab.find(class_name);
+    if (item != biulab.end()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void DataManager::CreateDataBase(string class_name, Base* data_ptr) {
     biulab.insert(std::pair<string, Base*>(class_name, data_ptr));
 }

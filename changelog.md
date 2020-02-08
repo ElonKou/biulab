@@ -26,6 +26,7 @@
 - [ ] controller
 
 # CHANGELOG
+- [x] [v0.7] Module 2020.02.08: add gem elem for simple map module.
 - [x] [v0.7] Module 2020.02.08: add simple module new widget.
 - [x] [v0.7] Module 2020.02.08: fixed random function crash bug.
 - [x] [v0.6] Module 2020.02.08: completed map editor module.

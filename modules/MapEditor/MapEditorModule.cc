@@ -7,7 +7,6 @@
 ================================================================*/
 
 #include "MapEditorModule.hh"
-#include "DynamicClass.hh"
 
 using namespace std;
 
@@ -15,29 +14,55 @@ DYN_DECLARE(MapEditorModule);
 
 MapEditorModule::MapEditorModule() {
     module_name = "MapEditorModule";
-    data                = new MapEditorData();
-    data->simple_map    = new SimpleMap();
-    data->map_editor    = new MapEditor();
-    data->inspect_info  = new InspectInfo();
-    data->overview_info = new OverviewInfo();
+    data        = new MapEditorData();
+
+    if (!data_manager->HasDataBase("MapEditorWindow")) {
+        data->map_editor_window = new MapEditorWindow();
+        data_manager->CreateDataBase("MapEditorWindow", data->map_editor_window);
+    }
+    if (!data_manager->HasDataBase("SimpleMapWindow")) {
+        data->simple_map_window = new SimpleMapWindow();
+        data_manager->CreateDataBase("SimpleMapWindow", data->simple_map_window);
+    }
+    if (!data_manager->HasDataBase("OverviewWindow")) {
+        data->overview_window = new OverviewWindow();
+        data_manager->CreateDataBase("OverviewWindow", data->overview_window);
+    }
+    if (!data_manager->HasDataBase("InspectWindow")) {
+        data->insepect_window = new InspectWindow();
+        data_manager->CreateDataBase("InspectWindow", data->insepect_window);
+    }
+
+    if (!data_manager->HasDataBase("SimpleMap")) {
+        data->simple_map = new SimpleMap();
+        data_manager->CreateDataBase("SimpleMap", data->simple_map);
+    }
+    if (!data_manager->HasDataBase("MapEditor")) {
+        data->map_editor = new MapEditor();
+        data_manager->CreateDataBase("MapEditor", data->map_editor);
+    }
+    if (!data_manager->HasDataBase("InspectInfo")) {
+        data->inspect_info = new InspectInfo();
+        data_manager->CreateDataBase("InspectInfo", data->inspect_info);
+    }
+    if (!data_manager->HasDataBase("OverviewInfo")) {
+        data->overview_info = new OverviewInfo();
+        data_manager->CreateDataBase("OverviewInfo", data->overview_info);
+    }
     data->simple_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
-    data_manager->CreateDataBase("SimpleMap", data->simple_map);
-    data_manager->CreateDataBase("MapEditor", data->map_editor);
-    data_manager->CreateDataBase("InspectInfo", data->inspect_info);
-    data_manager->CreateDataBase("OverviewInfo", data->overview_info);
-    map_editor_window.UpdateData();
-    simple_map_window.UpdateData();
-    insepect_window.UpdateData();
-    overview_window.UpdateData();
+    data->map_editor_window->UpdateData();
+    data->simple_map_window->UpdateData();
+    data->insepect_window->UpdateData();
+    data->overview_window->UpdateData();
 }
 
 MapEditorModule::~MapEditorModule() {}
 
 void MapEditorModule::UpdateModule() {
-    map_editor_window.Show();
-    simple_map_window.Show();
-    insepect_window.Show();
-    overview_window.Show();
+    data->map_editor_window->Show();
+    data->simple_map_window->Show();
+    data->insepect_window->Show();
+    data->overview_window->Show();
     Check();
 }
 
@@ -75,6 +100,6 @@ void MapEditorModule::Check() {
         string map_name_                          = data->inspect_info->items["maps"].selected;
         data->inspect_info->items["maps"].changed = false;
         data->simple_map->LoadMap(maps_path + "/" + map_name_);
-        map_editor_window.UpdateData();
+        data->map_editor_window->UpdateData();
     }
 }

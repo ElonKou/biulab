@@ -23,6 +23,7 @@ class SimpleMap : public MapBase {
     int**  map;
     int**  target;
     int    rubbish_cnt;
+    int    gem_cnt;
     string map_name;
     string path_name;
     string version;

@@ -17,6 +17,7 @@ using namespace std;
 SimpleMap::SimpleMap() {
     size        = {MAP_WIDTH, MAP_HEIGHT};
     rubbish_cnt = RUBBISH_CNT;
+    gem_cnt     = GEM_CNT;
     map         = nullptr;
     target      = nullptr;
     map_name    = "base.map";
@@ -53,10 +54,10 @@ void SimpleMap::CleanTarget() {
 void SimpleMap::RandomMap() {
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
-            if (map[i][j] == MAP_RUBBISH) {
+            if (map[i][j] == MAP_RUBBISH || map[i][j] == MAP_GEM) {
                 map[i][j] = MAP_EMPTY;
             }
-            if (target[i][j] == MAP_RUBBISH) {
+            if (target[i][j] == MAP_RUBBISH || map[i][j] == MAP_GEM) {
                 target[i][j] = MAP_EMPTY;
             }
         }
@@ -67,6 +68,15 @@ void SimpleMap::RandomMap() {
         if (map[temp_y][temp_x] == MAP_EMPTY) {
             map[temp_y][temp_x]    = MAP_RUBBISH;
             target[temp_y][temp_x] = MAP_RUBBISH;
+            i++;
+        }
+    }
+    for (int i = 0; i < gem_cnt;) {
+        int temp_x = RandomInt(size.x);
+        int temp_y = RandomInt(size.y);
+        if (map[temp_y][temp_x] == MAP_EMPTY) {
+            map[temp_y][temp_x]    = MAP_GEM;
+            target[temp_y][temp_x] = MAP_GEM;
             i++;
         }
     }
@@ -93,13 +103,15 @@ void SimpleMap::Init() {
         map[i]    = new int[size.x];
         target[i] = new int[size.x];
     }
-    for (int i = 0; i < size.y; i++) {
-        for (int j = 0; j < size.x; j++) {
-            map[i][j]    = MAP_EMPTY;
-            target[i][j] = MAP_EMPTY;
-        }
-    }
     ClearMap();
+    for (int i = 0; i < size.y; i++) {
+        map[i][0] = map[i][size.x - 1] = MAP_EDGE;
+        target[i][0] = target[i][size.x - 1] = MAP_EDGE;
+    }
+    for (int i = 0; i < size.x; i++) {
+        map[0][i] = map[size.y - 1][i] = MAP_EDGE;
+        target[0][i] = target[size.y - 1][i] = MAP_EDGE;
+    }
     RandomMap();
 }
 
@@ -182,6 +194,11 @@ void SimpleMap::LoadMap(const string& load_path) {
             str         = line.substr(found + 8, line.size());
             rubbish_cnt = StringToNum<int>(str);
         }
+        found = line.find("gem:");
+        if (found != string::npos) {
+            str     = line.substr(found + 4, line.size());
+            gem_cnt = StringToNum<int>(str);
+        }
         found = line.find("map:");
         if (found != string::npos) {
             map    = new int*[size.y];
@@ -192,18 +209,13 @@ void SimpleMap::LoadMap(const string& load_path) {
                 getline(fp, line);
                 vector<string> vec = Split(line, ",");
                 for (int j = 0; j < size.x; j++) {
-                    if (vec[j] == "#") {
-                        map[i][j]    = MAP_EDGE;
-                        target[i][j] = MAP_EDGE;
-                    } else if (vec[j] == "*") {
-                        map[i][j]    = MAP_RUBBISH;
-                        target[i][j] = MAP_RUBBISH;
-                    } else if (vec[j] == " ") {
+                    auto it = elems.find(vec[j]);
+                    if (it != elems.end()) {
+                        map[i][j]    = it->second;
+                        target[i][j] = it->second;
+                    } else {
                         map[i][j]    = MAP_EMPTY;
                         target[i][j] = MAP_EMPTY;
-                    } else if (vec[j] == ".") {
-                        map[i][j]    = MAP_OUT;
-                        target[i][j] = MAP_OUT;
                     }
                 }
             }
@@ -220,24 +232,30 @@ void SimpleMap::SaveMap(const string& save_path) {
         cout << "Save error." << endl;
         return;
     }
+    rubbish_cnt = 0;
+    gem_cnt     = 0;
+    for (int j = 0; j < size.y; j++) {
+        for (int i = 0; i < size.x; i++) {
+            if (map[j][i] == MAP_RUBBISH) {
+                rubbish_cnt++;
+            }
+            if (map[j][i] == MAP_GEM) {
+                gem_cnt++;
+            }
+        }
+    }
+
     fp << "version:" << version << endl;
     fp << "map_name:" << map_name << endl;
     fp << "width:" << to_string(size.x) << endl;
     fp << "height:" << to_string(size.y) << endl;
     fp << "rubbish:" << to_string(rubbish_cnt) << endl;
+    fp << "gem:" << to_string(gem_cnt) << endl;
     fp << "map:" << endl;
     for (int j = 0; j < size.y; j++) {
         string x = "";
         for (int i = 0; i < size.x; i++) {
-            if (map[j][i] == MAP_EDGE) {
-                x = "#";
-            } else if (map[j][i] == MAP_RUBBISH) {
-                x = "*";
-            } else if (map[j][i] == MAP_EMPTY) {
-                x = " ";
-            } else if (map[j][i] == MAP_OUT) {
-                x = ".";
-            }
+            x = infos[int(map[j][i])].target;
             fp << x << ",";
         }
         if (j != size.y - 1) {

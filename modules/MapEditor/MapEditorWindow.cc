@@ -16,12 +16,8 @@ using namespace std;
 DYN_DECLARE(MapEditorWindow);
 
 MapEditorWindow::MapEditorWindow() {
-    has_map        = false;
-    has_create_map = false;
-    has_saved_map  = false;
-    map_changed    = false;
-    simple_map     = nullptr;
-    map_editor     = nullptr;
+    simple_map = nullptr;
+    map_editor = nullptr;
 }
 
 MapEditorWindow::~MapEditorWindow() {}
@@ -36,21 +32,17 @@ void MapEditorWindow::Show() {
             // Base
             {
                 if (ImGui::Button("Random")) {
-                    if (has_map) {
+                    if (simple_map) {
                         simple_map->RandomMap();
                     }
                 }
                 ImGui::SameLine();
-                if (ImGui::Button("Create")) {
-                    if (!has_create_map) {
-                        has_create_map = true;
-                        has_map        = true;
-                        simple_map->Init();
-                    }
+                if (ImGui::Button("Init")) {
+                    simple_map->Init();
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Save")) {
-                    if (has_map) {
+                    if (simple_map) {
                         string map_name_ = string(temp_name);
                         string full_path;
                         simple_map->map_name = string(temp_name);
@@ -60,8 +52,6 @@ void MapEditorWindow::Show() {
                             full_path = simple_map->path_name + "/maps/" + map_name_;
                         }
                         simple_map->SaveMap(full_path);
-                        has_map        = false;
-                        has_create_map = false;
                     }
                 }
                 ImGui::InputText("Save name", temp_name, IM_ARRAYSIZE(temp_name));
@@ -75,50 +65,54 @@ void MapEditorWindow::Show() {
             // Tools
             {
                 static int tool_id = 0;
-                if (ImGui::ColorRadioButton("None##T", &tool_id, 0, map_editor->infos["T_NONE"].color)) {
+                if (ImGui::ColorRadioButton("None##T", &tool_id, 0, map_editor->infos[int(T_NONE)].color)) {
                     map_editor->SetTools(T_NONE);
                 }
                 ImGui::SameLine();
-                if (ImGui::ColorRadioButton("Edge##T", &tool_id, 1, map_editor->infos["T_EDGE"].color)) {
+                if (ImGui::ColorRadioButton("Edge##T", &tool_id, 1, map_editor->infos[int(T_EDGE)].color)) {
                     map_editor->SetTools(T_EDGE);
                 }
                 ImGui::SameLine();
-                if (ImGui::ColorRadioButton("Rubbish##T", &tool_id, 2, map_editor->infos["T_RUBBISH"].color)) {
+                if (ImGui::ColorRadioButton("Rubbish##T", &tool_id, 2, map_editor->infos[int(T_RUBBISH)].color)) {
                     map_editor->SetTools(T_RUBBISH);
                 }
                 ImGui::SameLine();
-                if (ImGui::ColorRadioButton("Empty##T", &tool_id, 3, map_editor->infos["T_EMPTY"].color)) {
+                if (ImGui::ColorRadioButton("Empty##T", &tool_id, 3, map_editor->infos[int(T_EMPTY)].color)) {
                     map_editor->SetTools(T_EMPTY);
                 }
                 ImGui::SameLine();
-                if (ImGui::ColorRadioButton("Out##T", &tool_id, 4, map_editor->infos["T_OUT"].color)) {
+                if (ImGui::ColorRadioButton("Out##T", &tool_id, 4, map_editor->infos[int(T_OUT)].color)) {
                     map_editor->SetTools(T_OUT);
+                }
+                ImGui::SameLine();
+                if (ImGui::ColorRadioButton("Gem##T", &tool_id, 5, map_editor->infos[int(T_GEM)].color)) {
+                    map_editor->SetTools(T_GEM);
                 }
             }
             // Selections.
             {
                 static int selection_id = 0;
-                if (ImGui::SmallRadioButton("None##select", &selection_id, 0)) {
+                if (ImGui::SmallRadioButton("None##S", &selection_id, 0)) {
                     map_editor->SetSelection(S_NONE);
                 }
                 ImGui::SameLine();
-                if (ImGui::SmallRadioButton("Point", &selection_id, 1)) {
+                if (ImGui::SmallRadioButton("Point##S", &selection_id, 1)) {
                     map_editor->SetSelection(S_POINT);
                 }
                 ImGui::SameLine();
-                if (ImGui::SmallRadioButton("Line", &selection_id, 2)) {
+                if (ImGui::SmallRadioButton("Line##S", &selection_id, 2)) {
                     map_editor->SetSelection(S_LINE);
                 }
                 ImGui::SameLine();
-                if (ImGui::SmallRadioButton("Rect", &selection_id, 3)) {
+                if (ImGui::SmallRadioButton("Rect##S", &selection_id, 3)) {
                     map_editor->SetSelection(S_RECT);
                 }
                 ImGui::SameLine();
-                if (ImGui::SmallRadioButton("Block", &selection_id, 4)) {
+                if (ImGui::SmallRadioButton("Block##S", &selection_id, 4)) {
                     map_editor->SetSelection(S_BLOCK);
                 }
                 ImGui::SameLine();
-                if (ImGui::SmallRadioButton("All", &selection_id, 5)) {
+                if (ImGui::SmallRadioButton("All##S", &selection_id, 5)) {
                     map_editor->SetSelection(S_ALL);
                 }
             }
@@ -131,6 +125,5 @@ void MapEditorWindow::Show() {
 void MapEditorWindow::UpdateData() {
     simple_map = GetData<SimpleMap>("SimpleMap");
     map_editor = GetData<MapEditor>("MapEditor");
-    has_map    = true;
     strcpy(temp_name, simple_map->map_name.c_str());
 }

@@ -7,15 +7,16 @@ aux_source_directory(../../lib/imgui MODULES_SOURCE_DIR)
 
 aux_source_directory(../../lib/tools MODULES_SOURCE_DIR)
 
-add_library(simplemap SHARED ${MODULES_SOURCE_DIR})
+link_libraries(simplemap biulabwidget)
 
-# link_libraries(mapeditor)
+add_library(simplemap SHARED ${MODULES_SOURCE_DIR})
 
 include_directories(
     include
     ./
     ../../include
     ../MapEditor
+    ../BiulabWidget
 )
 
 # [install]

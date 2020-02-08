@@ -7,8 +7,6 @@
 ================================================================*/
 
 #include "SimpleMapModule.hh"
-#include "DynamicClass.hh"
-#include <iostream>
 
 using namespace std;
 
@@ -16,10 +14,11 @@ DYN_DECLARE(SimpleMapModule);
 
 SimpleMapModule::SimpleMapModule() {
     module_name = "SimpleMapModule";
+    data        = new SimpleMapData();
 }
 
 SimpleMapModule::~SimpleMapModule() {}
 
 void SimpleMapModule::UpdateModule() {
-    window.Show();
+    // window.Show();
 }

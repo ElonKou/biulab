@@ -12,7 +12,8 @@ enum ToolsType {
     T_EDGE,
     T_OUT,
     T_EMPTY,
-    T_RUBBISH
+    T_RUBBISH,
+    T_GEM
 };
 enum SelectionsType {
     S_NONE,
@@ -50,7 +51,7 @@ class MapEditor : public CoreBase {
 
     ToolsType                            tools;
     SelectionsType                       selections;
-    unordered_map<string, MapEditorInfo> infos;
+    unordered_map<int, MapEditorInfo> infos;
 
     MapEditor();
     ~MapEditor();

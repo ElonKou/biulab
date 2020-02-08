@@ -19,6 +19,8 @@ class DataManager {
 
     ~DataManager();
 
+    bool HasDataBase(string class_name);
+
     void CreateDataBase(string class_name, Base* data_ptr);
 
     void DeleteDataBase(string class_name);
