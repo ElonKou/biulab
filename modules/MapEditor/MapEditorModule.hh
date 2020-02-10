@@ -12,18 +12,18 @@
 #include "SimpleMapWindow.hh"
 
 typedef struct MapEditorData {
-    MapEditorWindow* map_editor_window;
-    SimpleMapWindow* simple_map_window;
-    OverviewWindow*  overview_window;
-    InspectWindow*   insepect_window;
-    InspectInfo*     inspect_info;
-    OverviewInfo*    overview_info;
-    MapEditor*       map_editor;
-    SimpleMap*       simple_map;
+    MapEditorWindow*            map_editor_window;
+    SimpleMapWindow*            simple_map_window;
+    OverviewWindow*             overview_window;
+    InspectWindow*              insepect_window;
+    InspectInfo*                inspect_info;
+    OverviewInfo*               overview_info;
+    MapEditor*                  map_editor;
+    SimpleMap*                  simple_map;
+    unordered_map<string, bool> target;
 } MapEditorData;
 
 class MapEditorModule : public ModuleBase {
-  private:
   public:
     MapEditorData* data;
 
@@ -32,6 +32,8 @@ class MapEditorModule : public ModuleBase {
     ~MapEditorModule();
 
     virtual void UpdateModule();
+
+    virtual void UpdateData();
 
     void Check();
 };

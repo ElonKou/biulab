@@ -16,6 +16,8 @@ class ModuleBase : public Base {
     void Init();
 
     virtual void UpdateModule() = 0;
+
+    virtual void UpdateData() = 0;
 };
 
 #endif

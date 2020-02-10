@@ -7,7 +7,7 @@ aux_source_directory(../../lib/imgui MODULES_SOURCE_DIR)
 
 aux_source_directory(../../lib/tools MODULES_SOURCE_DIR)
 
-link_libraries(simplemap biulabwidget)
+link_libraries(biulabwidget)
 
 add_library(simplemap SHARED ${MODULES_SOURCE_DIR})
 

@@ -17,13 +17,21 @@ class ModulesManager {
     vector<ModuleBase*> modules;
 
   public:
-    void LoadModule();
-
-    void UpdateModule();
+    unordered_map<string, bool> modules_info;
 
     ModulesManager();
 
     ~ModulesManager();
+
+    bool LoadModule(string module_name);
+
+    bool UnloadModule(string module_name);
+
+    void UpdateModule();
+
+    void UpdateData();
+
+    void GetAllModules();
 };
 
 #endif

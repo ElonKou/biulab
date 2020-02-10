@@ -29,19 +29,21 @@ void InspectInfo::UpdateFunc(string maps_path) {
     overview_info->items.insert({"simplemap", xx});
     overview_info->items["simplemap"]["maps"] = items["maps"].selected;
     if (items.size() > 0 && items["maps"].changed) {
-        string map_name_      = items["maps"].selected;
-        items["maps"].changed = false;
-        simple_map->LoadMap(maps_path + "/" + map_name_);
-        if (map_editor_window) {
-            map_editor_window->UpdateData();
+        string map_name_ = items["maps"].selected;
+        if (map_name_.size() > 0) {
+            items["maps"].changed = false;
+            simple_map->LoadMap(maps_path + "/" + map_name_);
+            if (map_editor_window) {
+                map_editor_window->UpdateData();
+            }
         }
     }
 }
 
 void InspectInfo::UpdateData() {
-    simple_map        = GetData<MapBase>("SimpleMap");
-    overview_info     = GetData<OverviewInfo>("OverviewInfo");
-    map_editor_window = GetData<WindowBase>("MapEditorWindow");
+    simple_map        = GetData<MapBase>("SimpleMap", "InspectInfo");
+    overview_info     = GetData<OverviewInfo>("OverviewInfo", "InspectInfo");
+    map_editor_window = GetData<WindowBase>("MapEditorWindow", "InspectInfo");
 }
 
 InspectWindow::InspectWindow() {}
@@ -74,5 +76,5 @@ void InspectWindow::Show() {
 }
 
 void InspectWindow::UpdateData() {
-    info = GetData<InspectInfo>("InspectInfo");
+    info = GetData<InspectInfo>("InspectInfo", "InspectWindow");
 }

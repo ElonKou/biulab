@@ -16,51 +16,101 @@ SimpleMapModule::SimpleMapModule() {
     module_name = "SimpleMapModule";
     data        = new SimpleMapData();
 
+    data->target.insert({"SimpleMapWindow", false});
+    data->target.insert({"InspectWindow", false});
+    data->target.insert({"OverviewWindow", false});
+    data->target.insert({"SimpleMap", false});
+    data->target.insert({"InspectInfo", false});
+    data->target.insert({"OverviewInfo", false});
     if (!data_manager->HasDataBase("SimpleMapWindow")) {
         data->map_window = new SimpleMapWindow();
-        data_manager->CreateDataBase("SimpleMapWindow", data->map_window);
+        data_manager->CreateDataBase("SimpleMapModule", "SimpleMapWindow", data->map_window);
+        data->target["SimpleMapWindow"] = true;
     }
     if (!data_manager->HasDataBase("InspectWindow")) {
         data->insp_window = new InspectWindow();
-        data_manager->CreateDataBase("InspectWindow", data->insp_window);
+        data_manager->CreateDataBase("SimpleMapModule", "InspectWindow", data->insp_window);
+        data->target["InspectWindow"] = true;
     }
     if (!data_manager->HasDataBase("OverviewWindow")) {
         data->over_window = new OverviewWindow();
-        data_manager->CreateDataBase("OverviewWindow", data->over_window);
+        data_manager->CreateDataBase("SimpleMapModule", "OverviewWindow", data->over_window);
+        data->target["OverviewWindow"] = true;
     }
     if (!data_manager->HasDataBase("SimpleMap")) {
         data->simple_map = new SimpleMap();
-        data_manager->CreateDataBase("SimpleMap", data->simple_map);
+        data_manager->CreateDataBase("SimpleMapModule", "SimpleMap", data->simple_map);
+        data->target["SimpleMap"] = true;
     }
     if (!data_manager->HasDataBase("InspectInfo")) {
         data->inspect_info = new InspectInfo();
-        data_manager->CreateDataBase("InspectInfo", data->inspect_info);
+        data_manager->CreateDataBase("SimpleMapModule", "InspectInfo", data->inspect_info);
+        data->target["InspectInfo"] = true;
     }
     if (!data_manager->HasDataBase("OverviewInfo")) {
         data->overview_info = new OverviewInfo();
-        data_manager->CreateDataBase("OverviewInfo", data->overview_info);
+        data_manager->CreateDataBase("SimpleMapModule", "OverviewInfo", data->overview_info);
+        data->target["OverviewInfo"] = true;
     }
-    data->simple_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
-    data->map_window->UpdateData();
-    data->insp_window->UpdateData();
-    data->over_window->UpdateData();
-    data->inspect_info->UpdateData();
-    data->overview_info->UpdateData();
+    UpdateData();
 }
 
 SimpleMapModule::~SimpleMapModule() {}
 
 void SimpleMapModule::UpdateModule() {
-    data->map_window->Show();
-    data->over_window->Show();
-    data->insp_window->Show();
+    if (data->target["SimpleMapWindow"] && show_simplemap_window) {
+        data->map_window->Show();
+    }
+    if (data->target["OverviewWindow"] && show_overlay_window) {
+        data->over_window->Show();
+    }
+    if (data->target["InspectWindow"] && show_inspector_window) {
+        data->insp_window->Show();
+    }
     Check();
 }
 
+void SimpleMapModule::UpdateData() {
+    if (data->target["SimpleMapWindow"]) {
+        data->map_window->UpdateData();
+    } else {
+        data->map_window = GetData<SimpleMapWindow>("SimpleMapWindow", "SimpleMapModule");
+    }
+    if (data->target["InspectWindow"]) {
+        data->insp_window->UpdateData();
+    } else {
+        data->insp_window = GetData<InspectWindow>("InspectWindow", "SimpleMapModule");
+    }
+    if (data->target["OverviewWindow"]) {
+        data->over_window->UpdateData();
+    } else {
+        data->over_window = GetData<OverviewWindow>("OverviewWindow", "SimpleMapModule");
+    }
+    if (data->target["SimpleMap"]) {
+        data->simple_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
+    } else {
+        data->simple_map = GetData<SimpleMap>("SimpleMap", "SimpleMapModule");
+    }
+    if (data->target["InspectInfo"]) {
+        data->inspect_info->UpdateData();
+    } else {
+        data->inspect_info = GetData<InspectInfo>("InspectInfo", "SimpleMapModule");
+    }
+    if (data->target["OverviewInfo"]) {
+        data->overview_info->UpdateData();
+    } else {
+        data->overview_info = GetData<OverviewInfo>("OverviewInfo", "SimpleMapModule");
+    }
+}
+
 void SimpleMapModule::Check() {
-    string maps_path    = BIULAB_APPLICATION_PATH "/genetic/maps";
-    string robbies_path = BIULAB_APPLICATION_PATH "/genetic/robbies";
-    data->inspect_info->AddInfo(robbies_path, "robbies", true);
-    data->inspect_info->AddInfo(maps_path, "maps", false);
-    data->inspect_info->UpdateFunc(maps_path);
+    if (data->target["InspectInfo"]) {
+        string maps_path    = BIULAB_APPLICATION_PATH "/genetic/maps";
+        string robbies_path = BIULAB_APPLICATION_PATH "/genetic/robbies";
+        data->inspect_info->AddInfo(robbies_path, "robbies", true);
+        data->inspect_info->AddInfo(maps_path, "maps", false);
+        if (data->target["OverviewInfo"]) {
+            data->inspect_info->UpdateFunc(maps_path);
+        }
+    }
 }

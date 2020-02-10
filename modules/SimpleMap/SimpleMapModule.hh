@@ -12,12 +12,13 @@
 #include "WindowBase.hh"
 
 typedef struct SimpleMapData {
-    SimpleMapWindow* map_window;
-    InspectWindow*   insp_window;
-    OverviewWindow*  over_window;
-    SimpleMap*       simple_map;
-    InspectInfo*     inspect_info;
-    OverviewInfo*    overview_info;
+    SimpleMapWindow*            map_window;
+    InspectWindow*              insp_window;
+    OverviewWindow*             over_window;
+    SimpleMap*                  simple_map;
+    InspectInfo*                inspect_info;
+    OverviewInfo*               overview_info;
+    unordered_map<string, bool> target;
 } SimpleMapData;
 
 class SimpleMapModule : ModuleBase {
@@ -29,6 +30,8 @@ class SimpleMapModule : ModuleBase {
     ~SimpleMapModule();
 
     virtual void UpdateModule();
+
+    virtual void UpdateData();
 
     void Check();
 };

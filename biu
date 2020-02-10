@@ -1,0 +1,7 @@
+#!/bin/bash
+cd ../../build
+cmake ..;make;make install
+cd ../modules/build/
+cmake ..;make;make install
+cd ../../install/bin
+./biulab

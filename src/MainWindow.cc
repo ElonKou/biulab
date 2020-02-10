@@ -16,9 +16,9 @@ MainWindow::MainWindow() {
     main_window_info.font_size        = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
 
-    window = InitWindow();
-
-    modules_manager.LoadModule();
+    window       = InitWindow();
+    menu.manager = &modules_manager;
+    modules_manager.GetAllModules();
 
     LoadFont();
     SetGL(window);
@@ -36,19 +36,22 @@ GLFWwindow* MainWindow::InitWindow() {
     glfwWindowHint(GLFW_SAMPLES, 4);
     glEnable(GL_MULTISAMPLE);
     GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab " BIULAB_VERSION " © elonkou", NULL, NULL);
-    GLFWimage   images[2];
-    int         iw, ih, n;
-    string      icon_path       = BIULAB_INSTALL_PATH "/../resources/icons/icon.png";
-    string      icon_small_path = BIULAB_INSTALL_PATH "/../resources/icons/icon_small.png";
-    images[0].pixels            = stbi_load(icon_path.c_str(), &iw, &ih, &n, 4);
-    images[0].width             = iw;
-    images[0].height            = ih;
-    images[1].pixels            = stbi_load(icon_small_path.c_str(), &iw, &ih, &n, 4);
-    images[1].width             = iw;
-    images[1].height            = ih;
-    glfwSetWindowIcon(window, 2, images);
-    stbi_image_free(images[0].pixels);
-    stbi_image_free(images[1].pixels);
+    if (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) {
+        /* The function glfwSetWindowIcon only display icon on verison 3.2+. */
+        GLFWimage images[2];
+        int       iw, ih, n;
+        string    icon_path       = BIULAB_INSTALL_PATH "/../resources/icons/icon.png";
+        string    icon_small_path = BIULAB_INSTALL_PATH "/../resources/icons/icon_small.png";
+        images[0].pixels          = stbi_load(icon_path.c_str(), &iw, &ih, &n, 4);
+        images[0].width           = iw;
+        images[0].height          = ih;
+        images[1].pixels          = stbi_load(icon_small_path.c_str(), &iw, &ih, &n, 4);
+        images[1].width           = iw;
+        images[1].height          = ih;
+        glfwSetWindowIcon(window, 2, images);
+        stbi_image_free(images[0].pixels);
+        stbi_image_free(images[1].pixels);
+    }
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, OnKeyBack);
     glewExperimental = GL_TRUE;

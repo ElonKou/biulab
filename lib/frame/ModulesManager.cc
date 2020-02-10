@@ -7,33 +7,69 @@
 ================================================================*/
 
 #include "ModulesManager.hh"
+#include <fstream>
 #include <iostream>
 
 ModulesManager::ModulesManager() {
+    pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
 }
 
 ModulesManager::~ModulesManager() {}
 
-void ModulesManager::LoadModule() {
+bool ModulesManager::LoadModule(string module_name) {
     ModuleBase* module;
-    pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
-
-    // module = (ModuleBase*)pluginhelper.Create("MapEditorModule");
-    // if (module) {
-    //     PrintSucceed(module->module_name + " load succeed\n");
-    //     modules.push_back(module);
-    //     data_manager->CreateDataBase("MapEditorModule", module);
-    // }
-    module = (ModuleBase*)pluginhelper.Create("SimpleMapModule");
+    module = (ModuleBase*)pluginhelper.Create(module_name);
     if (module) {
         PrintSucceed(module->module_name + " load succeed\n");
         modules.push_back(module);
-        data_manager->CreateDataBase("SimpleMapModule", module);
+        UpdateData();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool ModulesManager::UnloadModule(string module_name) {
+    return true;
+}
+
+void ModulesManager::UpdateData() {
+    for (size_t i = 0; i < modules.size(); i++) {
+        modules[i]->UpdateData();
     }
 }
 
 void ModulesManager::UpdateModule() {
+    if (module_changed) {
+        cout << module_changed << " " << module_selected << " " << module_selected_name << endl;
+        if (module_selected && !modules_info[module_selected_name]) {
+            bool ok = LoadModule(module_selected_name);
+            if (ok) {
+                modules_info[module_selected_name] = true;
+            }
+        }
+        module_selected = false;
+        module_changed  = false;
+    }
     for (size_t i = 0; i < modules.size(); i++) {
         modules[i]->UpdateModule();
     }
+    // data_manager->Display();
+}
+
+void ModulesManager::GetAllModules() {
+    fstream fp;
+    string  line;
+    string  temp;
+    fp.open(BIULAB_MODULES_PATH "/ModulesConfig.ini", ios::in);
+    while (getline(fp, line)) {
+        if (line.size() > 0 && line[0] != ';') {
+            if (line[0] != ' ') {
+                line.erase(line.begin() + line.size() - 1);
+                line += "Module";
+                modules_info.insert({line, false});
+            }
+        }
+    }
+    fp.close();
 }

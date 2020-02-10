@@ -26,7 +26,7 @@ OverviewWindow::~OverviewWindow() {}
 
 void OverviewWindow::Show() {
     ImGui::SetNextWindowBgAlpha(0.3f);
-    if (ImGui::Begin("Overlay", &show_overlay_bar, 0)) {
+    if (ImGui::Begin("Overlay", &show_overlay_window, 0)) {
         ImGui::Text("C : Open control panel.");
         ImGui::Text("D : Open display panel.");
         // ImGui::Separator();
@@ -52,5 +52,5 @@ void OverviewWindow::Show() {
 }
 
 void OverviewWindow::UpdateData() {
-    info = GetData<OverviewInfo>("OverviewInfo");
+    info = GetData<OverviewInfo>("OverviewInfo", "OverviewWindow");
 }

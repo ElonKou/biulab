@@ -4,6 +4,7 @@
 
 #include "BiuLabConfig.hh"
 #include "BiuLabTypes.hh"
+#include "Lib.hh"
 #include "imgui.h"
 #include "imgui_biulab.h"
 #include "imgui_impl_glfw.h"
@@ -13,16 +14,19 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-// windows
+// modules
+extern bool   module_changed;       // whether select the load module panel.
+extern bool   module_selected;      // flag for load/close module.
+extern string module_selected_name; // the name of module.
 
+// windows
 extern bool               show_dock_sapce;
 extern bool               show_main_window;
 extern bool               show_demo_window;
 extern bool               show_main_menu_bar;
-extern bool               show_overlay_bar;
+extern bool               show_overlay_window;
 extern bool               show_control_window;
 extern bool               show_graph_window;
-extern bool               show_editor_window;
 extern bool               show_node_window;
 extern bool               show_inspector_window;
 extern bool               show_mapeditor_window;

@@ -11,23 +11,26 @@
 
 DYN_DECLARE(Menu);
 
-Menu::Menu() {}
+Menu::Menu() {
+}
 
 Menu::~Menu() {}
 
 void Menu::ShowMenuFile() {
-    if (ImGui::MenuItem("New")) {
-    }
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {
-    }
-    if (ImGui::BeginMenu("Open Recent")) {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More..")) {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            ImGui::EndMenu();
+    static bool first_load = false;
+    if (ImGui::BeginMenu("Open Modules", "Ctrl+O")) {
+        for (auto it = manager->modules_info.begin(); it != manager->modules_info.end(); it++) {
+            if (ImGui::MenuItem(it->first.c_str(), NULL, it->second)) {
+                if (!module_selected) {
+                    module_changed       = true;
+                    module_selected      = true;
+                    module_selected_name = it->first;
+                } else {
+                    module_changed       = true;
+                    module_selected      = false;
+                    module_selected_name = it->first;
+                }
+            }
         }
         ImGui::EndMenu();
     }
@@ -91,7 +94,7 @@ void Menu::Show() {
             show_simplemap_window = !show_simplemap_window;
         }
         if (ImGui::MenuItem("Overview")) {
-            show_overlay_bar = !show_overlay_bar;
+            show_overlay_window = !show_overlay_window;
         }
         if (ImGui::MenuItem("Node view")) {
             show_node_window = !show_node_window;
@@ -103,7 +106,7 @@ void Menu::Show() {
             show_graph_window = !show_graph_window;
         }
         if (ImGui::MenuItem("Editor")) {
-            show_editor_window = !show_editor_window;
+            show_mapeditor_window = !show_mapeditor_window;
         }
         if (ImGui::MenuItem("Demo")) {
             show_demo_window = !show_demo_window;

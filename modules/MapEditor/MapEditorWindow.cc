@@ -26,7 +26,7 @@ void MapEditorWindow::Show() {
     if (!map_editor) {
         return;
     }
-    if (ImGui::Begin("Editor", &show_editor_window, 0)) {
+    if (ImGui::Begin("Editor", &show_mapeditor_window, 0)) {
         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
         if (ImGui::TreeNode("Map editor")) {
             // Base
@@ -123,7 +123,7 @@ void MapEditorWindow::Show() {
 }
 
 void MapEditorWindow::UpdateData() {
-    simple_map = GetData<SimpleMap>("SimpleMap");
-    map_editor = GetData<MapEditor>("MapEditor");
+    simple_map = GetData<SimpleMap>("SimpleMap", "MapEditorWindow");
+    map_editor = GetData<MapEditor>("MapEditor", "MapEditorWindow");
     strcpy(temp_name, simple_map->map_name.c_str());
 }

@@ -163,7 +163,7 @@ void SimpleMap::UpdateSize(vec_2i new_size) {
 }
 
 void SimpleMap::LoadMap(const string& load_path) {
-    cout << "Loading:" << load_path << endl;
+    cout << "Load: " << load_path << endl;
     fstream fp;
     string  line;
     fp.open(load_path, ios::in);
@@ -225,7 +225,7 @@ void SimpleMap::LoadMap(const string& load_path) {
 }
 
 void SimpleMap::SaveMap(const string& save_path) {
-    cout << save_path << endl;
+    cout << "Save: " << save_path << endl;
     fstream fp;
     fp.open(save_path, ios::out | ios::trunc);
     if (!fp) {

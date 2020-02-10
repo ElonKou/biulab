@@ -23,8 +23,8 @@ SimpleMapWindow::SimpleMapWindow() {
 SimpleMapWindow::~SimpleMapWindow() {}
 
 void SimpleMapWindow::UpdateData() {
-    simple_map = GetData<SimpleMap>("SimpleMap");
-    map_editor = GetData<MapEditorBase>("MapEditor");
+    simple_map = GetData<SimpleMap>("SimpleMap", "SimpleMapWindow");
+    map_editor = GetData<MapEditorBase>("MapEditor", "SimpleMapWindow");
 }
 
 void SimpleMapWindow::Show() {
