@@ -10,6 +10,46 @@
 #include <iostream>
 using namespace std;
 
-RobbieModule::RobbieModule() {}
+DYN_DECLARE(RobbieModule);
+
+RobbieModule::RobbieModule() {
+    module_name = "Robbie";
+    data        = new RobbieModuleData();
+
+    data->target.insert({"RobbieControl", false});
+    data->target.insert({"RobbieControlWindow", false});
+    data->target.insert({"SimpleMap", false});
+    if (!data_manager->HasDataBase("RobbieControl")) {
+        data->controller              = new RobbieController();
+        data->target["RobbieControl"] = true;
+        data_manager->CreateDataBase("Robbie", "RobbieControl", data->controller);
+    }
+    if (!data_manager->HasDataBase("RobbieControlWindow")) {
+        data->robbie_controll_window        = new RobbieControlWindow();
+        data->target["RobbieControlWindow"] = true;
+        data_manager->CreateDataBase("Robbie", "RobbieControlWindow", data->robbie_controll_window);
+    }
+    if (!data_manager->HasDataBase("SimpleMap")) {
+        data->dis_map             = new SimpleMap();
+        data->target["SimpleMap"] = true;
+        data->dis_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
+        data_manager->CreateDataBase("Robbie", "SimpleMap", data->dis_map);
+    }
+    UpdateData();
+}
 
 RobbieModule::~RobbieModule() {}
+
+void RobbieModule::UpdateModule() {
+    if (data->robbie_controll_window && data->target["RobbieControlWindow"]) {
+        data->robbie_controll_window->Show();
+    }
+}
+
+void RobbieModule::UpdateData() {
+    if (data->target["SimpleMap"]) {
+        data->dis_map = GetData<SimpleMap>("SimpleMap", "Robbie");
+    }
+    data->controller->UpdateData();
+    data->robbie_controll_window->UpdateData();
+}

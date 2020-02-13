@@ -41,7 +41,6 @@ void ModulesManager::UpdateData() {
 
 void ModulesManager::UpdateModule() {
     if (module_changed) {
-        cout << module_changed << " " << module_selected << " " << module_selected_name << endl;
         if (module_selected && !modules_info[module_selected_name]) {
             bool ok = LoadModule(module_selected_name);
             if (ok) {

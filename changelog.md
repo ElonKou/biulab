@@ -26,6 +26,7 @@
 - [ ] controller
 
 # CHANGELOG
+- [x] [v1.1.0]  Module  2020.02.10: add robbie module succeed.
 - [x] [v1.0] Core   2020.02.10: succeed in biulab v1.0.
 - [x] [v0.9] Module 2020.02.09: compete simplemap module.
 - [x] [v0.7] Module 2020.02.08: add gem elem for simple map module.

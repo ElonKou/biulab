@@ -2,46 +2,61 @@
 #ifndef ROBBIE_CONTROLLER_H_
 #define ROBBIE_CONTROLLER_H_
 
+#include "BiuLabConfig.hh"
 #include "BiuLabTypes.hh"
+#include "CoreBase.hh"
+#include "DataManager.hh"
 #include "Robbie.hh"
 #include "RobbieConfig.hh"
 #include "SimpleMap.hh"
 #include <string>
 using namespace std;
 
-class RobbieController {
-  public:
-    struct Result {
-        int score;
-        int robbie_id;
-        int map_id;
-    };
-    RobbieController();
-    RobbieController(string save_path);
-    ~RobbieController();
-    int   loop_controller;
-    int   loop_map;
-    int   robbie_cnt;
-    float mutate_rate;
-    float max_histyory;
-    char  robbie_path[255];
-    char  robbie_name[255];
-    char  map_path[255];
-    char  map_name[128];
-    // Map map;
-    int map_width;
-    int map_height;
-    // run
-    bool save_run;
-    bool running;
-    bool chanegd;
-    bool run_step;
+typedef struct RobbieResult {
+    // vector<int> scores;
+    double aver_score;
+    // int robbie_id;
+    // int map_id;
+} RobbieResult;
 
-    Robbie robbies[ROBBIE_CNT];
-    Robbie robbies_temp[ROBBIE_CNT];
-    float  scores[ROBBIE_CNT];
-    float  scores_tf[ROBBIE_CNT];
-    // void play(Robbie r, Map &m);
+typedef struct RobbieControllerData : public DataBase {
+    int                  loop_controller;
+    int                  loop_map;
+    int                  robbie_cnt;
+    int                  global_id;
+    bool                 train_stop_check;
+    float                mutate_rate;
+    float                max_histyory;
+    RobbieActionHistory  history;
+    SimpleMap*           dis_map;
+    Robbie*              dis_rob;
+    vector<Robbie>       robbies;
+    vector<SimpleMap*>   maps;
+    vector<RobbieResult> robbie_scores;
+    vector<RobbieResult> robbie_scores_tf;
+
+    RobbieControllerData() {}
+
+    ~RobbieControllerData() {}
+
+    virtual void UpdateData();
+} RobbieControllerData;
+
+class RobbieController : public CoreBase {
+  public:
+    RobbieController();
+    ~RobbieController();
+    // char                  robbie_path[256];
+    // char                  robbie_name[256];
+    // char                  map_path[256];
+    // char                  map_name[256];
+    bool                  save_run;
+    bool                  running;
+    bool                  pause;
+    bool                  stoped;
+    bool                  play_chanegd;
+    bool                  run_step;
+    RobbieControllerData* data;
 
     void Init();
 
@@ -49,15 +64,17 @@ class RobbieController {
 
     void Print_str();
 
-    void PlayScreen(Robbie& rob, RobbieMap& map);
+    void Play();
+
+    void UpdateInFrame();
 
     Robbie LoadRobbie(string robbie_path);
 
     void SaveRobbie(Robbie& rob, string robbie_path);
 
-    void AddRobbie();
+    void SetMap(SimpleMap* map);
 
-    void SetMap(RobbieMap* map);
+    void UpdateData();
 
     int ShowHisgram(int num);
 

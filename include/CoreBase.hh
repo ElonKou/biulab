@@ -9,6 +9,8 @@ class CoreBase : public Base {
     CoreBase() {}
 
     ~CoreBase() {}
+
+    // virtual void UpdateData() = 0;
 };
 
 #endif

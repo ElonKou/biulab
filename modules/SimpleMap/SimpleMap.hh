@@ -13,7 +13,6 @@ using namespace std;
 class SimpleMap : public MapBase {
   private:
     void Print(vec_2i pos);
-    void CleanTarget();
 
   public:
     SimpleMap();
@@ -29,7 +28,8 @@ class SimpleMap : public MapBase {
 
     void        Init();
     void        RandomMap();
-    void        ClearMap();
+    void        CleanMap();
+    void        CleanTarget();
     bool        InMap(vec_2i pos);
     void        UpdateSize(vec_2i new_size);
     void        LoadMap(const string& load_path);
@@ -41,6 +41,7 @@ class SimpleMap : public MapBase {
     void        SetElem(vec_2i pos, int key);
     int         DoAction(vec_2i start, vec_2i offset);
     int         GetValue(vec_2i pos) { return target[pos.y][pos.x]; }
+    int         GetValue4Hash(vec_2i pos);
     inline int* operator[](int row);
 };
 #endif

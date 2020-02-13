@@ -3,64 +3,59 @@
 #define ROBBIE_H_
 
 #include "BiuLabTypes.hh"
+#include "CoreBase.hh"
 #include "RobbieConfig.hh"
-#include "RobbieMap.hh"
+#include "SimpleMap.hh"
+#include "fstream"
+#include <unordered_map>
 
-class Robbie {
+typedef struct RewardPunishmentInfo {
+    int reward;
+    int punishment_edge;
+    int punishment_pick;
+} RewardPunishmentInfo;
+
+class Robbie : public CoreBase {
   public:
     Robbie();
     ~Robbie();
-    Robbie clone();
-    // gene
-    Strategy strategy[STR_CNT] = {{0, 0, 1}, {1, 0, -1}, {2, 1, 0}, {3, -1, 0}, {4, 0, 0}, {5, 0, 0}, {6, 0, 0}};
-    int      gene_len;
-    int      str_len;
-    int      genes[GENE_LEN];
-    int      mutate_all;
-    int      mutate_val;
+    int                        id;
+    int                        father;
+    int                        mother;
+    int                        str_len;
+    int                        gene_len;
+    int                        loop_cnt;
+    int                        generation;
+    int                        mutate_val;
+    int                        mutate_all;
+    float                      score;
+    float                      aver_score;
+    vec_2i                     pos;
+    vector<int>                genes;
+    unordered_map<int, vec_2i> strategy;
+    RewardPunishmentInfo*      rp_info;
 
-    // robbie info
-    int    id;
-    int    score;
-    int    generation;
-    int    parentId[PARENT_CNT];
-    float  averScore;
-    vec_2i pos;
-    vec_2i start;
+    Robbie Clip(Robbie mother, int pos = -1);
 
-    void Init();
+    void Mutate();
 
-    void   RandomPos();
-    
-    void   Clear();
-    
-    void   Clip(Robbie& other);
-    
-    Robbie Clip2(Robbie other, int pos);
-    
-    void   Clip3(Robbie other);
-    
-    void   Mutate();
-    
-    void   Compare(Robbie other);
-    
-    int    Move(int action, RobbieMap& map);
-    
-    int    Pick(int action, RobbieMap& map);
-    
-    void   Play(RobbieMap& map);
-    
-    void   PlayOne(int cnt);
-    
-    void   Print();
-    
-    int    GetScore();
-    
-    int    GetAction(int hash);
-    
-    void   Save(string fileName);
-    
-    void   Load(string fileName);
+    RobbieActionResult Move(RobbieAction act, SimpleMap& map);
+
+    RobbieActionResult Pick(RobbieAction act, SimpleMap& map);
+
+    RobbieActionResult NextStep(SimpleMap& map);
+
+    void PlaySingleMap(SimpleMap& map);
+
+    void PlayMultiMaps(int cnt);
+
+    void Print();
+
+    void Compare(Robbie other);
+
+    void Save(string save_path);
+
+    void Load(string load_path);
 };
 
 #endif

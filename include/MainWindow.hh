@@ -56,7 +56,7 @@ class MainWindow {
 
     void SetDarkTheme();
 
-    static void OnKeyBack(GLFWwindow* window, int key, int scanmode, int action, int mode);
+    static void OnKeyBack(GLFWwindow* window, int key, int scanmode, int key_action, int mode);
 };
 
 #endif

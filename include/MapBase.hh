@@ -16,7 +16,7 @@ enum MapType {
     MAP_GEM
 };
 
-enum PathType { PATH_EMPTY };
+enum PathType {};
 
 typedef struct MapElemInfo {
     MapType type;
@@ -53,6 +53,10 @@ class MapBase : public CoreBase {
     virtual int GetElem(vec_2i pos) = 0;
 
     virtual void SetElem(vec_2i pos, int key) = 0;
+
+    virtual int GetTarget(vec_2i pos) = 0;
+
+    virtual void SetTarget(vec_2i pos, int key) = 0;
 
     virtual void LoadMap(const string& load_path) = 0;
 

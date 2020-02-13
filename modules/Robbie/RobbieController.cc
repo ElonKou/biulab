@@ -17,60 +17,69 @@
 #include <iostream>
 using namespace std;
 
+void RobbieControllerData::UpdateData() {
+    dis_map = GetData<SimpleMap>("SimpleMap", "RobbieController");
+}
+
 RobbieController::RobbieController()
-    : loop_controller(LOOP_CONTROLLER)
-    , loop_map(LOOP_MAP)
-    , robbie_cnt(ROBBIE_CNT)
-    , mutate_rate(MUTATE_VAL * 1.0 / MUTATE_ALL)
-    , max_histyory(-1000.0)
-    , map_width(MAP_WIDTH)
-    , map_height(MAP_HEIGHT)
-    , save_run(false)
+    : save_run(false)
     , running(false)
-    , chanegd(false)
+    , pause(false)
+    , stoped(false)
+    , play_chanegd(false)
     , run_step(false) {
-    string default_robbie_path = "~/ELONKOU/03.GENETIC/genetic/results";
-    string default_robbie_name = "robbie.rob";
-    string default_map_path    = "~/ELONKOU/03.GENETIC/genetic/maps";
-    string default_map_name    = "some.map";
-    strcpy(robbie_path, default_robbie_path.c_str());
-    strcpy(robbie_name, default_robbie_name.c_str());
-    strcpy(map_path, default_map_path.c_str());
-    strcpy(map_name, default_map_name.c_str());
+    data                   = new RobbieControllerData();
+    data->loop_controller  = LOOP_CONTROLLER;
+    data->loop_map         = LOOP_MAP;
+    data->robbie_cnt       = ROBBIE_CNT;
+    data->mutate_rate      = MUTATE_VAL * 1.0 / MUTATE_ALL;
+    data->global_id        = 0;
+    data->train_stop_check = false;
+    data->max_histyory     = -1000.0;
+    data->dis_map          = NULL;
+    data->dis_rob          = new Robbie();
+    data->dis_rob->Load(BIULAB_APPLICATION_PATH "/genetic/robbies/0_487.txt");
+    data->dis_rob->pos = vec_2i(2, 2);
+    // string default_robbie_path = "~/ELONKOU/03.GENETIC/genetic/results";
+    // string default_robbie_name = "std.rob";
+    // string default_map_path    = "~/ELONKOU/03.GENETIC/genetic/maps";
+    // string default_map_name    = "std.map";
+    // strcpy(robbie_path, default_robbie_path.c_str());
+    // strcpy(robbie_name, default_robbie_name.c_str());
+    // strcpy(map_path, default_map_path.c_str());
+    // strcpy(map_name, default_map_name.c_str());
+    Init();
 }
-RobbieController::RobbieController(string save_p) {
-    RobbieController();
-    strcpy(robbie_path, save_p.c_str());
-}
+
 RobbieController::~RobbieController() {}
 
 void RobbieController::Init() {
-    // init controller
-    float res[robbie_cnt];
-    float res_ori[robbie_cnt];
-    for (int i = 0; i < robbie_cnt; i++) {
-        robbies[i]   = Robbie();
-        scores[i]    = 0.0;
-        scores_tf[i] = 0.0;
+    for (int i = 0; i < data->robbie_cnt; i++) {
+        Robbie rob     = Robbie();
+        rob.id         = data->global_id++;
+        rob.pos        = vec_2i(1, 1);
+        rob.generation = 0;
+        data->robbies.push_back(rob);
     }
 }
 
 void RobbieController::Train() {
-    for (int k = 0; k < loop_controller; k++) {
-        for (int i = 0; i < robbie_cnt; i++) {
-            robbies[i].PlayOne(loop_map);
-            scores[i]    = robbies[i].averScore;
-            scores_tf[i] = robbies[i].averScore;
+    for (int k = 0; k < data->loop_controller; k++) {
+        vector<Robbie> robbies_temp;
+        for (int i = 0; i < data->robbie_cnt; i++) {
+            data->robbies[i].PlayMultiMaps(data->loop_map);
+            data->robbie_scores[i].aver_score    = data->robbies[i].aver_score;
+            data->robbie_scores_tf[i].aver_score = data->robbies[i].aver_score;
             if (k < 1000) {
-                if (scores_tf[i] < -500) {
-                    scores_tf[i] = -500;
+                if (data->robbie_scores_tf[i].aver_score < -500) {
+                    data->robbie_scores_tf[i].aver_score = -500;
                 }
-                scores_tf[i] = pow(500 + scores_tf[i], 3.0) * 0.000001;
+                data->robbie_scores_tf[i].aver_score = pow(500 + data->robbie_scores_tf[i].aver_score, 3.0) * 0.000001;
             } else {
-                if (scores_tf[i] < 0) {
-                    scores_tf[i] = 0;
+                if (data->robbie_scores_tf[i].aver_score < 0) {
+                    data->robbie_scores_tf[i].aver_score = 0;
                 } else {
-                    scores_tf[i] = scores_tf[i] * 50;
+                    data->robbie_scores_tf[i].aver_score = data->robbie_scores_tf[i].aver_score * 50;
                     // scores_tf[i] = scores_tf[i] * 50 * 1.3;
                     // scores_tf[i] = pow(scores_tf[i], 1.3);
                 }
@@ -78,33 +87,37 @@ void RobbieController::Train() {
         }
 
         int top_id = ShowHisgram(k);
-        if (max_histyory < scores[top_id]) {
-            max_histyory = scores[top_id];
-            robbies[top_id].Print();
-            SaveRobbie(robbies[top_id], robbie_path);
-        }
-        robbies[top_id].Compare(robbies[0]);
+        // if (data->max_histyory < data->robbie_scores[top_id].aver_score) {
+        //     data->max_histyory = data->robbie_scores[top_id].aver_score;
+        //     data->robbies[top_id].Print();
+        //     SaveRobbie(data->robbies[top_id], robbie_path);
+        // }
+        data->robbies[top_id].Compare(data->robbies[0]);
 
-        float all = accumulate(scores_tf, scores_tf + ROBBIE_CNT, 0.0);
-        for (int i = 0; i < ROBBIE_CNT; i++) {
-            scores_tf[i] /= all;
+        float sum = 0.0;
+        for (size_t i = 0; i = data->robbie_scores_tf.size(); i++) {
+            sum += data->robbie_scores_tf[i].aver_score;
+        }
+        for (int i = 0; i < data->robbie_cnt; i++) {
+            data->robbie_scores_tf[i].aver_score /= sum;
             if (i != 0) {
-                scores_tf[i] = scores_tf[i] + scores_tf[i - 1];
+                data->robbie_scores_tf[i].aver_score = data->robbie_scores_tf[i].aver_score + data->robbie_scores_tf[i - 1].aver_score;
             }
         }
-        cout << "========================================"
-                "========================================"
-             << endl;
-        for (int i = 0; i < ROBBIE_CNT / 2; i++) {
-            int fa                  = GetIndex(RandomFloat());
-            int mo                  = GetIndex(RandomFloat());
-            int pos                 = RandomInt(GENE_LEN);
-            robbies_temp[i * 2]     = robbies[fa].clip2(robbies[mo], pos);
-            robbies_temp[i * 2 + 1] = robbies[mo].clip2(robbies[fa], pos);
+        cout << "================================================================================" << endl;
+        for (int i = 0; i < data->robbie_cnt / 2; i++) {
+            int fa  = GetIndex(RandomFloat());
+            int mo  = GetIndex(RandomFloat());
+            int pos = RandomInt(GENE_LEN);
+            robbies_temp.push_back(data->robbies[fa].Clip(data->robbies[mo], pos));
+            robbies_temp.push_back(data->robbies[mo].Clip(data->robbies[fa], pos));
         }
-        for (int i = 0; i < ROBBIE_CNT; i++) {
-            robbies[i] = robbies_temp[i];
-            robbies[i].Mutate();
+        data->robbies.clear();
+        data->robbie_scores.clear();
+        data->robbie_scores_tf.clear();
+        for (int i = 0; i < data->robbie_cnt; i++) {
+            data->robbies.push_back(robbies_temp[i]);
+            data->robbies[i].Mutate();
         }
     }
 }
@@ -115,37 +128,40 @@ void RobbieController::Print_str() {
     cout << "   1  " << endl;
 }
 
-void RobbieController::PlayScreen(Robbie& rob, RobbieMap& map) {
-    PlayActions act;
-    for (int i = 0; i < LOOP_CNT; i++) {
-        Print_str();
-        int result = 0;
-        int hash   = map.GetHash(rob.pos);
-        int action = rob.GetAction(hash);
-        usleep(100000);
-        act.hash         = hash;
-        act.actions[i]   = action;
-        act.positions[i] = rob.pos;
-        map.DrawFrame(act, rob.genes);
-        cout << i << " : " << rob.score << "hash:" << hash << endl;
-        while (action == RANDOM) {
-            action = RandomInt(STR_CNT);
+void RobbieController::Play() {
+    cout << data->dis_rob->pos << endl;
+    int          hash    = data->dis_map->GetHash(data->dis_rob->pos);
+    RobbieAction pre_act = RobbieAction(data->dis_rob->genes[hash]);
+    data->history.hashs.push_back(hash);
+    data->history.positions.push_back(data->dis_rob->pos);
+    data->history.actions.push_back(pre_act);
+    data->history.results.push_back(data->dis_rob->NextStep(*(data->dis_map)));
+    // map.CleanTarget();
+    data->history.hashs.resize(100);
+    data->history.positions.resize(100);
+    data->history.actions.resize(100);
+    data->history.results.resize(100);
+}
+
+void RobbieController::UpdateInFrame() {
+    static int frame_rate = 0;
+    if (running) {
+        if (!pause) {
+            frame_rate++;
+            if (frame_rate > 60) {
+                frame_rate = 0;
+                Play();
+            }
         }
-        switch (action) {
-        case WAIT:
-            break;
-        case PICK:
-            result = rob.Pick(action, map);
-            break;
-        default:
-            result = rob.Move(action, map);
-            break;
-        }
-        // cout << "=" << result << " ";
-        // cout << "=" << action << " ";
     }
-    // cout << endl << score << endl;
-    // map.cleanTarget();
+    if (play_chanegd && stoped) {
+        data->dis_map->CleanTarget();
+        data->dis_rob->pos        = vec_2i(2, 2);
+        data->dis_rob->score      = 0;
+        data->dis_rob->aver_score = -1000.0;
+        play_chanegd              = false;
+        stoped                    = false;
+    }
 }
 
 Robbie RobbieController::LoadRobbie(string robbie_path) {
@@ -164,7 +180,7 @@ Robbie RobbieController::LoadRobbie(string robbie_path) {
     return rob;
 }
 void RobbieController::SaveRobbie(Robbie& rob, string robbie_path) {
-    int score = int(rob.averScore);
+    int score = int(rob.aver_score);
     if (robbie_path != "") {
         robbie_path += to_string(score) + ".txt";
         ofstream fp;
@@ -182,7 +198,7 @@ void RobbieController::SaveRobbie(Robbie& rob, string robbie_path) {
 
 int RobbieController::GetIndex(float random_index) {
     int i = 0;
-    while (scores_tf[i] < random_index) {
+    while (data->robbie_scores_tf[i].aver_score < random_index) {
         i++;
     }
     return i;
@@ -196,17 +212,17 @@ int RobbieController::ShowHisgram(int num) {
     float sum      = 0.0;
     int   nevCnt   = 0;
     for (int i = 0; i < ROBBIE_CNT; i++) {
-        sum += scores[i];
-        if (scores[i] > 0) {
+        sum += data->robbie_scores[i].aver_score;
+        if (data->robbie_scores[i].aver_score > 0) {
             nevCnt++;
         }
-        if (scores[i] > maxData) {
+        if (data->robbie_scores[i].aver_score > maxData) {
             maxIndex = i;
-            maxData  = scores[i];
+            maxData  = data->robbie_scores[i].aver_score;
         }
-        if (scores[i] < minData) {
+        if (data->robbie_scores[i].aver_score < minData) {
             minIndex = i;
-            minData  = scores[i];
+            minData  = data->robbie_scores[i].aver_score;
         }
     }
     int   clipCnt        = 20;
@@ -214,13 +230,13 @@ int RobbieController::ShowHisgram(int num) {
     float step           = res / clipCnt;
     int   shows[clipCnt] = {0};
     for (int i = 0; i < ROBBIE_CNT; i++) {
-        int index = int((scores[i] - minData) / step);
+        int index = int((data->robbie_scores[i].aver_score - minData) / step);
         shows[index]++;
     }
     cout << num << "\tID:" << maxIndex << "\tCLIP_CNT:" << clipCnt
          << "\tSTEP:" << step << "\tAVER:" << setw(5) << setprecision(5)
          << sum / ROBBIE_CNT << "\t>=0:" << nevCnt << "\tMIN:" << minData
-         << "\tMAX:" << maxData << "\tHIS_MAX:" << max_histyory << endl;
+         << "\tMAX:" << maxData << "\tHIS_MAX:" << data->max_histyory << endl;
     for (int i = 0; i < clipCnt; i++) {
         cout << left << setw(9) << minData + i * step << right << setw(9)
              << minData + (i + 1) * step << ":";
@@ -230,4 +246,8 @@ int RobbieController::ShowHisgram(int num) {
         cout << endl;
     }
     return maxIndex;
+}
+
+void RobbieController::UpdateData() {
+    data->UpdateData();
 }

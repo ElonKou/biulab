@@ -82,7 +82,7 @@ void SimpleMap::RandomMap() {
     }
 }
 
-void SimpleMap::ClearMap() {
+void SimpleMap::CleanMap() {
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
             map[i][j]    = MAP_EMPTY;
@@ -103,7 +103,7 @@ void SimpleMap::Init() {
         map[i]    = new int[size.x];
         target[i] = new int[size.x];
     }
-    ClearMap();
+    CleanMap();
     for (int i = 0; i < size.y; i++) {
         map[i][0] = map[i][size.x - 1] = MAP_EDGE;
         target[i][0] = target[i][size.x - 1] = MAP_EDGE;
@@ -268,17 +268,18 @@ void SimpleMap::SaveMap(const string& save_path) {
 // inline int SimpleMap::getValue(vec_2i pos) { return target[pos.y][pos.x]; }
 
 int SimpleMap::GetHash(vec_2i pos) {
-    int east  = GetValue(vec_2i(pos.x + 1, pos.y));
-    int north = GetValue(vec_2i(pos.x, pos.y + 1));
-    int west  = GetValue(vec_2i(pos.x - 1, pos.y));
-    int south = GetValue(vec_2i(pos.x, pos.y - 1));
-    int mid   = GetValue(pos);
+    int east  = GetValue4Hash(vec_2i(pos.x + 1, pos.y));
+    int north = GetValue4Hash(vec_2i(pos.x, pos.y + 1));
+    int west  = GetValue4Hash(vec_2i(pos.x - 1, pos.y));
+    int south = GetValue4Hash(vec_2i(pos.x, pos.y - 1));
+    int mid   = GetValue4Hash(pos);
     int hash  = 0;
     hash += 1 * east;
     hash += 3 * north;
     hash += 9 * west;
     hash += 27 * south;
     hash += 81 * mid;
+    // cout << pos << " : " << east << " " << north << " " << west << " " << south << " " << mid << " " << hash << endl;
     return hash;
 }
 
@@ -300,6 +301,29 @@ int SimpleMap::DoAction(vec_2i start, vec_2i offset) {
         return -1;
     } else if (nowVal == MAP_RUBBISH) {
     } else {
+    }
+}
+
+int SimpleMap::GetValue4Hash(vec_2i pos) {
+    MapType x = MapType(GetValue(pos));
+    switch (x) {
+    case MAP_EDGE:
+        return 2;
+        break;
+    case MAP_RUBBISH:
+        return 1;
+        break;
+    case MAP_EMPTY:
+        return 0;
+        break;
+    case MAP_OUT:
+        return 2;
+        break;
+    case MAP_GEM:
+        return 1;
+        break;
+    default:
+        break;
     }
 }
 

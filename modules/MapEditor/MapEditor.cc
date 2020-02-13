@@ -29,14 +29,19 @@ MapEditor::~MapEditor() {}
 void MapEditor::CheckAndSetElem(MapBase& mp, vec_2i pos) {
     if (tools == T_EDGE) {
         mp.SetElem(pos, MAP_EDGE);
+        mp.SetTarget(pos, MAP_EDGE);
     } else if (tools == T_EMPTY) {
         mp.SetElem(pos, MAP_EMPTY);
+        mp.SetTarget(pos, MAP_EMPTY);
     } else if (tools == T_RUBBISH) {
         mp.SetElem(pos, MAP_RUBBISH);
+        mp.SetTarget(pos, MAP_RUBBISH);
     } else if (tools == T_OUT) {
         mp.SetElem(pos, MAP_OUT);
+        mp.SetTarget(pos, MAP_OUT);
     } else if (tools == T_GEM) {
         mp.SetElem(pos, MAP_GEM);
+        mp.SetTarget(pos, MAP_GEM);
     }
 }
 

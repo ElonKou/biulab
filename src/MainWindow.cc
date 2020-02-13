@@ -233,14 +233,14 @@ void MainWindow::ShowDisabledMessage() {
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
-void MainWindow::OnKeyBack(GLFWwindow* window, int key, int scanmode, int action, int mode) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+void MainWindow::OnKeyBack(GLFWwindow* window, int key, int scanmode, int key_action, int mode) {
+    if (key == GLFW_KEY_ESCAPE && key_action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-    // if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+    // if (key == GLFW_KEY_C && key_action == GLFW_PRESS) {
     //     show_control_window = !show_control_window;
     // }
-    // if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+    // if (key == GLFW_KEY_D && key_action == GLFW_PRESS) {
     //     show_display_window = !show_display_window;
     // }
 }

@@ -21,15 +21,15 @@ enum SelectionsType {
     S_BLOCK,
     S_ALL
 };
-enum ActionType { A_NONE,
-                  A_UNDO,
-                  A_REDO };
+enum MapEditorActionType { A_NONE,
+                           A_UNDO,
+                           A_REDO };
 
 typedef struct {
-    vec_2i         pos[2];
-    ToolsType      tool;
-    SelectionsType selects;
-    ActionType     action;
+    vec_2i              pos[2];
+    ToolsType           tool;
+    SelectionsType      selects;
+    MapEditorActionType action;
 } HistoryType;
 
 typedef struct MapEditorInfo {

@@ -17,7 +17,7 @@ add_subdirectory(SimpleMap)
 
 add_subdirectory(MapEditor)
 
-# add_subdirectory(Robbie)
+add_subdirectory(Robbie)
 
 # [install]
 install(FILES ModulesConfig.ini  

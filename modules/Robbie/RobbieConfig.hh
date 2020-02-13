@@ -3,66 +3,43 @@
 #define ROBBIE_CONFIG_H_
 
 #include "BiuLabTypes.hh"
+#include <vector>
 
-#define START_X 6 // 起始位置
-#define START_Y 6 // 起始位置
+#define STR_CNT 7       // the length of strategy.
+#define GENE_LEN 243    // the length of genes.
+#define MUTATE_ALL 1000 // mutate all.
+#define MUTATE_VAL 5    // mutate rate = MUTATE_VAL/MUTATE_ALL.
+#define CLIP_CNT 1      // mutate cut times.
 
-#define STR_CNT 7       // 基因密码子长度
-#define MUTATE_ALL 1000 // 突变总数值
-#define MUTATE_VAL 5    // 突变率
-#define CLIP_CNT 1      // 剪切数量
-#define GENE_CLEAR -1   // 清除基因
+#define LOOP_MAP 10           // for play multi maps.
+#define LOOP_CNT 200          // for play steps.
+#define ROBBIE_CNT 200        // how many robiies in one generations.
+#define LOOP_CONTROLLER 10000 // the count of generations.
 
-#define LOOP_MAP 10    // 执行地图数量
-#define LOOP_CNT 200   // 执行步骤数量
-#define ROBBIE_CNT 200 // 代际数量(每一代数量)
-#define NAME_LEN 16    // 名字长度
-#define PARENT_CNT 2   // 双亲数量
-#define GENE_LEN 243   // 基因长度
+#define PUNISHMENT_EDGE -5 // punishment for move to edge of map.
+#define PUNISHMENT_PICK -1 // punishment for pick empty place.
+#define REWARD_PICK 10     // reward for right pick.
 
-#define MAP_WIDTH 16   // 地图宽度
-#define MAP_HEIGHT 16  // 地图长度
-#define RUBBISH_CNT 50 // 垃圾数量
-#define EDGE 2         // 边界标志
-#define RUBBISH 1      // 物体标志
-#define EMPTY 0        // 空的标志
-#define OUT -1         // 空的标志
-#define WALL_CNT 2     // 墙壁数量
-#define PATH_EMPTY -1  // 路径空标志
+typedef enum RobbieAction { ACTION_UP,
+                            ACTION_DOWN,
+                            ACTION_RIGHT,
+                            ACTION_LEFT,
+                            ACTION_RANDOM,
+                            ACTION_WAIT,
+                            ACTION_PICK } RobbieAction;
 
-#define LOOP_CONTROLLER 10000 // 代数
-#define PUNISHMENT_EDGE -5    // 撞墙惩罚
-#define PUNISHMENT_PICK -1    // 无效捡东西惩罚
-#define REWARD 10             //奖励
+typedef enum RobbieActionResult {
+    AC_RES_OK,
+    AC_RES_PUNISHMENT_EDGE,
+    AC_RES_PUNISHMENT_PICK,
+    AC_RES_REWARD_RUBBISH,
+} RobbieActionResult;
 
-typedef struct PlayActions {
-    vec_2i positions[LOOP_CNT];
-    int    actions[LOOP_CNT];
-    int    hash;
-    int    step;
-} PlayActions;
+typedef struct RobbieActionHistory {
+    vector<int>                hashs;
+    vector<vec_2i>             positions;
+    vector<RobbieAction>       actions;
+    vector<RobbieActionResult> results;
+} RobbieActionHistory;
 
-typedef struct Strategy {
-    int key;
-    int wmove;
-    int hmove;
-    Strategy();
-    Strategy(int key, int wmove, int hmove);
-    ~Strategy();
-} Strategy;
-
-// 移动规则
-// 坐标从左到右x++  从上到下y++
-// 0:北 4:随机移动
-// 1:南 5:不动
-// 2:东 6:捡东西(待增加新规则)
-// 3:西
-
-typedef enum action { UP,
-                      DOWN,
-                      RIGHT,
-                      LEFT,
-                      RANDOM,
-                      WAIT,
-                      PICK } ACTION;
 #endif
