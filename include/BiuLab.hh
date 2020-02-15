@@ -6,7 +6,8 @@
 #include "BiuLabTypes.hh"
 #include "Lib.hh"
 #include "imgui.h"
-#include "imgui_biulab.h"
+#include "imgui_biulab_tools.h"
+#include "imgui_biulab_widgets.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
@@ -31,7 +32,7 @@ extern bool               show_node_window;
 extern bool               show_inspector_window;
 extern bool               show_mapeditor_window;
 extern bool               show_simplemap_window;
-extern ImGuiDockNodeFlags dockspace_flag;
+extern bool               show_program_window;
 
 // Controller
 

@@ -29,6 +29,8 @@ class ModulesManager {
 
     void UpdateModule();
 
+    void LoadProgram(vector<string> &program_modules);
+
     void UpdateData();
 
     void GetAllModules();

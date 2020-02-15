@@ -56,10 +56,21 @@ void ModulesManager::UpdateModule() {
     // data_manager->Display();
 }
 
+void ModulesManager::LoadProgram(vector<string>& program_modules) {
+    for (size_t i = 0; i < program_modules.size(); i++) {
+        bool ok = LoadModule(program_modules[i]);
+        if (ok) {
+            modules_info[program_modules[i]] = true;
+        }
+    }
+    for (size_t i = 0; i < modules.size(); i++) {
+        modules[i]->UpdateModule();
+    }
+}
+
 void ModulesManager::GetAllModules() {
     fstream fp;
     string  line;
-    string  temp;
     fp.open(BIULAB_MODULES_PATH "/ModulesConfig.ini", ios::in);
     while (getline(fp, line)) {
         if (line.size() > 0 && line[0] != ';') {

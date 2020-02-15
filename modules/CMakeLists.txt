@@ -20,7 +20,7 @@ add_subdirectory(MapEditor)
 add_subdirectory(Robbie)
 
 # [install]
-install(FILES ModulesConfig.ini  
+install(FILES ModulesConfig.ini ProgramConfig.ini 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/
     PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ GROUP_WRITE WORLD_READ
 )

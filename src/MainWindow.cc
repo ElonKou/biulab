@@ -6,18 +6,17 @@
 *  Date     : 2019年12月21日 星期六 17时59分01秒
 ================================================================*/
 
-#define STB_IMAGE_IMPLEMENTATION
-
 #include "MainWindow.hh"
-#include "stb_image.h"
+#include "imgui_biulab_tools.h"
 
 MainWindow::MainWindow() {
     main_window_info.fonts_path       = BIULAB_INSTALL_PATH "/../resources/fonts/YaHei.Consolas.1.12.ttf";
     main_window_info.font_size        = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
 
-    window       = InitWindow();
-    menu.manager = &modules_manager;
+    window             = InitWindow();
+    menu.manager       = &modules_manager;
+    pro_window.manager = &modules_manager;
     modules_manager.GetAllModules();
 
     LoadFont();
@@ -36,22 +35,7 @@ GLFWwindow* MainWindow::InitWindow() {
     glfwWindowHint(GLFW_SAMPLES, 4);
     glEnable(GL_MULTISAMPLE);
     GLFWwindow* window = glfwCreateWindow(1280, 720, "BiuLab " BIULAB_VERSION " © elonkou", NULL, NULL);
-    if (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) {
-        /* The function glfwSetWindowIcon only display icon on verison 3.2+. */
-        GLFWimage images[2];
-        int       iw, ih, n;
-        string    icon_path       = BIULAB_INSTALL_PATH "/../resources/icons/icon.png";
-        string    icon_small_path = BIULAB_INSTALL_PATH "/../resources/icons/icon_small.png";
-        images[0].pixels          = stbi_load(icon_path.c_str(), &iw, &ih, &n, 4);
-        images[0].width           = iw;
-        images[0].height          = ih;
-        images[1].pixels          = stbi_load(icon_small_path.c_str(), &iw, &ih, &n, 4);
-        images[1].width           = iw;
-        images[1].height          = ih;
-        glfwSetWindowIcon(window, 2, images);
-        stbi_image_free(images[0].pixels);
-        stbi_image_free(images[1].pixels);
-    }
+    SetIcon(window);
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, OnKeyBack);
     glewExperimental = GL_TRUE;
@@ -68,6 +52,9 @@ void MainWindow::DrawWindow() {
     }
     if (show_main_menu_bar) {
         menu.Show();
+    }
+    if (show_program_window) {
+        pro_window.Show();
     }
     modules_manager.UpdateModule();
 }
@@ -96,15 +83,31 @@ void MainWindow::SetGL(GLFWwindow* window) {
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
+void MainWindow::SetIcon(GLFWwindow* window_) {
+    if (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) {
+        /* The function glfwSetWindowIcon only display icon on verison 3.2+. */
+        GLFWimage images[2];
+        int       iw, ih;
+        string    icon_path       = BIULAB_INSTALL_PATH "/resources/icons/icon.png";
+        string    icon_small_path = BIULAB_INSTALL_PATH "/resources/icons/icon_small.png";
+        images[0].pixels          = stbi_load(icon_path.c_str(), &iw, &ih, NULL, 4);
+        images[0].width           = iw;
+        images[0].height          = ih;
+        images[1].pixels          = stbi_load(icon_small_path.c_str(), &iw, &ih, NULL, 4);
+        images[1].width           = iw;
+        images[1].height          = ih;
+        glfwSetWindowIcon(window_, 2, images);
+        stbi_image_free(images[0].pixels);
+        stbi_image_free(images[1].pixels);
+    }
+}
+
 void MainWindow::LoadFont() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    // io.DeltaTime = 1.0f / 30.0f;
     (void)io;
-    io.Fonts->AddFontFromFileTTF(
-        main_window_info.fonts_path.c_str(), main_window_info.font_size, NULL,
-        io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    io.Fonts->AddFontFromFileTTF(main_window_info.fonts_path.c_str(), main_window_info.font_size, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     io.Fonts->Fonts[0]->DisplayOffset = ImVec2(0, -1);
 }
 
@@ -199,7 +202,7 @@ void MainWindow::ShowDcokSpace() {
         window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
         window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
     }
-
+    ImGuiDockNodeFlags dockspace_flag = ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoWindowMenuButton;
     if (dockspace_flag & ImGuiDockNodeFlags_PassthruCentralNode)
         window_flags |= ImGuiWindowFlags_NoBackground;
 
@@ -213,7 +216,7 @@ void MainWindow::ShowDcokSpace() {
     // DockSpace
     ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
-        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGuiID dockspace_id = ImGui::GetID("BiulabDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flag);
     } else {
         ShowDisabledMessage();

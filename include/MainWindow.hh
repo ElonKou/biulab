@@ -7,6 +7,7 @@
 #include "Menu.hh"
 #include "ModulesManager.hh"
 #include "PluginHelper.hh"
+#include "ProgramWindow.hh"
 #include "WindowBase.hh"
 
 using namespace std;
@@ -16,6 +17,8 @@ class MainWindow {
     GLFWwindow* window;
 
     Menu menu;
+
+    ProgramWindow pro_window;
 
     ModulesManager modules_manager;
 
@@ -47,6 +50,8 @@ class MainWindow {
     void StartWindow();
 
     void SetGL(GLFWwindow* window);
+
+    void SetIcon(GLFWwindow* window);
 
     void LoadFont();
 

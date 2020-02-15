@@ -87,6 +87,9 @@ void Menu::Show() {
     if (ImGui::BeginMenu("View")) {
         static bool tab_menu_button;
         static bool tab_close_button;
+        if (ImGui::MenuItem("Program")) {
+            show_program_window = !show_program_window;
+        }
         if (ImGui::MenuItem("Control")) {
             show_control_window = !show_control_window;
         }
@@ -111,15 +114,6 @@ void Menu::Show() {
         if (ImGui::MenuItem("Demo")) {
             show_demo_window = !show_demo_window;
         }
-        ImGui::Separator();
-
-        if (ImGui::MenuItem("Tab menu", NULL, &tab_menu_button)) {
-            dockspace_flag ^= ImGuiDockNodeFlags_NoWindowMenuButton;
-        }
-        if (ImGui::MenuItem("Close button", NULL, &tab_close_button)) {
-            dockspace_flag ^= ImGuiDockNodeFlags_NoCloseButton;
-        }
-
         ImGui::EndMenu();
     }
     if (ImGui::BeginMenu("Theme")) {
