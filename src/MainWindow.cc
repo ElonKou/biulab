@@ -96,7 +96,9 @@ void MainWindow::SetIcon(GLFWwindow* window_) {
         images[1].pixels          = stbi_load(icon_small_path.c_str(), &iw, &ih, NULL, 4);
         images[1].width           = iw;
         images[1].height          = ih;
+#if GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200
         glfwSetWindowIcon(window_, 2, images);
+#endif
         stbi_image_free(images[0].pixels);
         stbi_image_free(images[1].pixels);
     }
