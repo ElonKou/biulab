@@ -2,7 +2,6 @@
 #ifndef ROBBIE_H_
 #define ROBBIE_H_
 
-#include "BiuLabTypes.hh"
 #include "CoreBase.hh"
 #include "RobbieConfig.hh"
 #include "SimpleMap.hh"

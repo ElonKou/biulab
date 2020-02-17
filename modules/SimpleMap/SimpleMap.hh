@@ -3,7 +3,6 @@
 #define SIMPLE_MAP_H_
 
 #include "BiuLabConfig.hh"
-#include "BiuLabTypes.hh"
 #include "MapBase.hh"
 #include <string>
 #include <vector>

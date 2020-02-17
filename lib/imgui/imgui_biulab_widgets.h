@@ -22,6 +22,8 @@ IMGUI_API bool ColorRadioButton(const char* label, int* v, int v_button, ImVec4 
 
 IMGUI_API bool ThumbNail(ImTextureID user_texture_id, const ImVec2& size, std::string label, const ImVec2ih& uv, const size_t& index);
 
+IMGUI_API void DrawRobbie(ImDrawList* draw_list, ImVec2& p0, ImVec2& p1, ImVec4& color);
+
 } // namespace ImGui
 
 #endif

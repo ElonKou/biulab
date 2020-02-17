@@ -3,7 +3,6 @@
 #define ROBBIE_CONTROLLER_H_
 
 #include "BiuLabConfig.hh"
-#include "BiuLabTypes.hh"
 #include "CoreBase.hh"
 #include "DataManager.hh"
 #include "Robbie.hh"
@@ -24,6 +23,7 @@ typedef struct RobbieControllerData : public DataBase {
     int                  loop_map;
     int                  robbie_cnt;
     int                  global_id;
+    int                  speed;
     bool                 train_stop_check;
     float                mutate_rate;
     float                max_histyory;

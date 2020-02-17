@@ -16,27 +16,35 @@ enum MapType {
     MAP_GEM
 };
 
-enum PathType {};
+enum PathType {
+    PATH_ACTOR,
+    PATH_HISTORY,
+    PATH_PREDICT
+};
 
 typedef struct MapElemInfo {
-    MapType type;
-    string  name;
-    string  target;
-    ImVec4  color;
+    string name;
+    string target;
+    ImVec4 color;
 } MapElemInfo;
 
 class MapBase : public CoreBase {
   public:
     vec_2i                          size;
     unordered_map<int, MapElemInfo> infos;
+    unordered_map<int, MapElemInfo> info_target;
     unordered_map<string, MapType>  elems;
+    unordered_map<vec_2i, PathType> render_target;
 
     MapBase() {
-        infos.insert({int(MAP_EDGE), {MAP_EDGE, "Edge", "#", {1.0, 1.0, 1.0, 0.4}}});
-        infos.insert({int(MAP_RUBBISH), {MAP_RUBBISH, "Rubbish", "*", {1.0, 0.0, 0.0, 0.5}}});
-        infos.insert({int(MAP_EMPTY), {MAP_EMPTY, "Empty", " ", {1.0, 1.0, 1.0, 0.1}}});
-        infos.insert({int(MAP_OUT), {MAP_OUT, "Out", ".", {1.0, 1.0, 1.0, 0.0}}});
-        infos.insert({int(MAP_GEM), {MAP_GEM, "Gem", "$", {0.0, 1.0, 0.0, 0.5}}});
+        infos.insert({int(MAP_EDGE), {"Edge", "#", {1.0, 1.0, 1.0, 0.4}}});
+        infos.insert({int(MAP_RUBBISH), {"Rubbish", "*", {1.0, 0.0, 0.0, 0.5}}});
+        infos.insert({int(MAP_EMPTY), {"Empty", " ", {1.0, 1.0, 1.0, 0.1}}});
+        infos.insert({int(MAP_OUT), {"Out", ".", {1.0, 1.0, 1.0, 0.0}}});
+        infos.insert({int(MAP_GEM), {"Gem", "$", {0.0, 1.0, 0.0, 0.5}}});
+        info_target.insert({int(PATH_ACTOR), {"Actor", " ", {0.6274, 0.1255, 0.9412, 1.0}}});
+        info_target.insert({int(PATH_HISTORY), {"History", " ", {0.8471, 0.7490, 0.8471, 1.0}}});
+        info_target.insert({int(PATH_PREDICT), {"Predict", " ", {0.7294, 0.3333, 0.8274, 1.0}}});
         elems.insert({"#", MAP_EDGE});
         elems.insert({"*", MAP_RUBBISH});
         elems.insert({" ", MAP_EMPTY});
@@ -61,6 +69,8 @@ class MapBase : public CoreBase {
     virtual void LoadMap(const string& load_path) = 0;
 
     virtual void SaveMap(const string& save_path) = 0;
+
+    void SetRenderTargets(unordered_map<vec_2i, PathType> targets) { render_target = targets; }
 };
 
 #endif

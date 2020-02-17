@@ -35,6 +35,11 @@ void RobbieControlWindow::Show() {
             }
             ImGui::SameLine();
             ImGui::SliderFloat("Mutate rate", &robbie_controll->data->mutate_rate, 0.0, 1.0, "%.3f%");
+            if (ImGui::Button("R##4")) {
+                robbie_controll->data->speed = 2;
+            }
+            ImGui::SameLine();
+            ImGui::SliderInt("Play speed", &robbie_controll->data->speed, 1, 120, "%d");
         }
         {
             // controller comand

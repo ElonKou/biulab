@@ -2,7 +2,6 @@
 #ifndef ROBBIE_CONFIG_H_
 #define ROBBIE_CONFIG_H_
 
-#include "BiuLabTypes.hh"
 #include <vector>
 
 #define STR_CNT 7       // the length of strategy.

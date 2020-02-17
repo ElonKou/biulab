@@ -161,3 +161,18 @@ bool ImGui::ThumbNail(ImTextureID user_texture_id, const ImVec2& size, std::stri
 
     return pressed;
 }
+
+void ImGui::DrawRobbie(ImDrawList* draw_list, ImVec2& p0, ImVec2& p1, ImVec4& color) {
+    ImVec2 center = (p0 + p1) / 2;
+    ImVec2 p2     = center + ImVec2(-9, -5);
+    ImVec2 p3     = center + ImVec2(-2, -5);
+    ImVec2 p4     = center + ImVec2(2, -3);
+    ImVec2 p5     = center + ImVec2(9, -2);
+    ImVec2 p6     = center + ImVec2(-3, 4);
+    ImVec2 p7     = center + ImVec2(2, 2);
+    float  radius = p1.x - center.x;
+    draw_list->AddCircleFilled(center, radius, ImGui::ColorConvertFloat4ToU32(color), 16);
+    draw_list->AddLine(p2, p3, ImGui::ColorConvertFloat4ToU32({0, 0, 0, 1}), 2);
+    draw_list->AddLine(p4, p5, ImGui::ColorConvertFloat4ToU32({0, 0, 0, 1}), 2);
+    draw_list->AddLine(p6, p7, ImGui::ColorConvertFloat4ToU32({0, 0, 0, 1}), 2);
+}

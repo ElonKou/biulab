@@ -11,7 +11,7 @@ The BiuLab was designed based on plugin architecture, you can create your own mo
 ```bash
 # 2.1 ubuntu install (for ubuntu 18.04)
 sudo apt-get install libglfw3 libglfw3-dev libglfw3-doc
-sudo apt-get  install libglew-dev
+sudo apt-get install libglew-dev
 
 # 2.2 ubuntu install (for ubuntu 16.04, glfw3.2+)
 # please install libglfw3/libglfw3-dev/libglfw3-doc.

@@ -21,18 +21,18 @@ extern bool   module_selected;      // flag for load/close module.
 extern string module_selected_name; // the name of module.
 
 // windows
-extern bool               show_dock_sapce;
-extern bool               show_main_window;
-extern bool               show_demo_window;
-extern bool               show_main_menu_bar;
-extern bool               show_overlay_window;
-extern bool               show_control_window;
-extern bool               show_graph_window;
-extern bool               show_node_window;
-extern bool               show_inspector_window;
-extern bool               show_mapeditor_window;
-extern bool               show_simplemap_window;
-extern bool               show_program_window;
+extern bool show_dock_sapce;
+extern bool show_main_window;
+extern bool show_demo_window;
+extern bool show_main_menu_bar;
+extern bool show_overlay_window;
+extern bool show_control_window;
+extern bool show_graph_window;
+extern bool show_node_window;
+extern bool show_inspector_window;
+extern bool show_mapeditor_window;
+extern bool show_simplemap_window;
+extern bool show_program_window;
 
 // Controller
 

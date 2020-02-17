@@ -26,6 +26,7 @@
 - [ ] controller
 
 # CHANGELOG
+- [x] [v1.1.2] Core     2020.02.18: add targte element for display, like Robbie:).  
 - [x] [v1.1.1] Core     2020.02.16: add program select window.  
 - [x] [v1.1.0] Module   2020.02.10: add robbie module succeed.
 - [x] [v1.0] Core   2020.02.10: succeed in biulab v1.0.

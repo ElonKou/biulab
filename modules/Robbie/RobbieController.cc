@@ -34,6 +34,7 @@ RobbieController::RobbieController()
     data->robbie_cnt       = ROBBIE_CNT;
     data->mutate_rate      = MUTATE_VAL * 1.0 / MUTATE_ALL;
     data->global_id        = 0;
+    data->speed            = 2;
     data->train_stop_check = false;
     data->max_histyory     = -1000.0;
     data->dis_map          = NULL;
@@ -129,7 +130,17 @@ void RobbieController::Print_str() {
 }
 
 void RobbieController::Play() {
-    cout << data->dis_rob->pos << endl;
+    // cout << data->dis_rob->pos << endl;
+    unordered_map<vec_2i, PathType> render_targets;
+    // for (size_t idx = 0; idx < 5 && idx < data->history.positions.size(); idx++) {
+    //     vec_2i pp = data->history.positions[data->history.positions.size() - idx - 1];
+    //     if (pp == data->dis_rob->pos) {
+    //     } else {
+    //         render_targets.insert({pp, PATH_HISTORY});
+    //     }
+    // }
+    render_targets.insert({data->dis_rob->pos, PATH_ACTOR});
+    data->dis_map->SetRenderTargets(render_targets);
     int          hash    = data->dis_map->GetHash(data->dis_rob->pos);
     RobbieAction pre_act = RobbieAction(data->dis_rob->genes[hash]);
     data->history.hashs.push_back(hash);
@@ -137,18 +148,19 @@ void RobbieController::Play() {
     data->history.actions.push_back(pre_act);
     data->history.results.push_back(data->dis_rob->NextStep(*(data->dis_map)));
     // map.CleanTarget();
-    data->history.hashs.resize(100);
-    data->history.positions.resize(100);
-    data->history.actions.resize(100);
-    data->history.results.resize(100);
+    data->history.hashs.resize(MIN(20, data->history.hashs.size()));
+    data->history.positions.resize(MIN(20, data->history.positions.size()));
+    data->history.actions.resize(MIN(20, data->history.actions.size()));
+    data->history.results.resize(MIN(20, data->history.results.size()));
 }
 
 void RobbieController::UpdateInFrame() {
     static int frame_rate = 0;
+    int        max        = 60 / data->speed;
     if (running) {
         if (!pause) {
             frame_rate++;
-            if (frame_rate > 60) {
+            if (frame_rate > max) {
                 frame_rate = 0;
                 Play();
             }

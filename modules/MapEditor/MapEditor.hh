@@ -2,7 +2,6 @@
 #ifndef EDITOR_MAP_H_
 #define EDITOR_MAP_H_
 
-#include "BiuLabTypes.hh"
 #include "Lib.hh"
 #include "MapEditorBase.hh"
 #include "MapBase.hh"

@@ -7,17 +7,21 @@
 ================================================================*/
 
 #include "BiuLabTypes.hh"
-#include <iostream>
 
-using namespace std;
+bool operator==(const vec_2i& first, const vec_2i& second) {
+    return (first.x == second.x) && (first.y == second.y);
+}
+
 vec_2i::vec_2i() {
     x = 0;
     y = 0;
 }
+
 vec_2i::vec_2i(int a, int b)
     : x(a)
     , y(b) {}
-vec_2i vec_2i::operator+(vec_2i other) {
+
+vec_2i vec_2i::operator+(const vec_2i other) {
     vec_2i v;
     v.x = x + other.x;
     v.y = y + other.y;
