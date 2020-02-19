@@ -176,3 +176,30 @@ void ImGui::DrawRobbie(ImDrawList* draw_list, ImVec2& p0, ImVec2& p1, ImVec4& co
     draw_list->AddLine(p4, p5, ImGui::ColorConvertFloat4ToU32({0, 0, 0, 1}), 2);
     draw_list->AddLine(p6, p7, ImGui::ColorConvertFloat4ToU32({0, 0, 0, 1}), 2);
 }
+
+void ImGui::DrawFlag(ImDrawList* draw_list, ImVec2& p0, ImVec2& p1, ImVec4& color) {
+    ImVec2 p2 = p0 + (p1 - p0) / 8;
+    ImVec2 p3 = ImVec2(p2.x, p1.y - p2.y + p0.y);
+    ImVec2 p4 = p2 + (p3 - p2) * 2 / 3;
+    ImVec2 p5 = ((p2 + p4) / 2) + ImVec2((p1.x - p0.x) * 2 / 3, 0);
+    draw_list->AddLine(p2, p3, ImGui::ColorConvertFloat4ToU32(ImVec4(1.0, 1.0, 1.0, 1.0)), 2);
+    draw_list->AddTriangleFilled(p2, p4, p5, ImGui::ColorConvertFloat4ToU32(color));
+}
+
+void ImGui::DrawDoor(ImDrawList* draw_list, ImVec2& p0, ImVec2& p1, ImVec4& color) {
+    ImVec2 wh     = ImVec2((p1.x - p0.x) / 4, (p1.y - p0.y) / 8 * 3);
+    ImVec2 off    = ImVec2(p1 - p0) / 8;
+    ImVec2 center = (p0 + p1) / 2;
+    ImVec2 p2     = center + ImVec2(-wh.x, -wh.y);
+    ImVec2 p3     = center + ImVec2(wh.x, -wh.y);
+    ImVec2 p4     = center + ImVec2(wh.x, wh.y);
+    ImVec2 p5     = center + ImVec2(-wh.x, wh.y);
+    ImVec2 p6     = p2 + off;
+    ImVec2 p7     = p5 + off;
+    ImVec2 p8     = (p6 + p7) / 2;
+    ImVec2 p9     = p8 + ImVec2(off.x, -off.y);
+    ImVec2 p10    = p8 + ImVec2(off.x, off.y);
+    draw_list->AddQuad(p2, p3, p4, p5, ImGui::ColorConvertFloat4ToU32(color), 2);
+    draw_list->AddQuad(p6, p3, p4, p7, ImGui::ColorConvertFloat4ToU32(color), 2);
+    draw_list->AddLine(p9, p10, ImGui::ColorConvertFloat4ToU32(color), 2);
+}

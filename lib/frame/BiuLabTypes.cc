@@ -28,6 +28,13 @@ vec_2i vec_2i::operator+(const vec_2i other) {
     return v;
 }
 
+vec_2i vec_2i::operator-(const vec_2i other) {
+    vec_2i v;
+    v.x = x - other.x;
+    v.y = y - other.y;
+    return v;
+}
+
 ostream& operator<<(ostream& os, const vec_2i& v) {
     os << "(" << v.x << ", " << v.y << ")";
     return os;

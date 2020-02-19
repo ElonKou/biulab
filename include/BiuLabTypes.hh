@@ -14,6 +14,7 @@ typedef union vec_2i {
     vec_2i();
     vec_2i(int a, int b);
     vec_2i          operator+(const vec_2i other);
+    vec_2i          operator-(const vec_2i other);
     friend ostream& operator<<(ostream& os, const vec_2i& v);
 } vec_2i;
 

@@ -16,12 +16,12 @@ MapEditor::MapEditor()
     : width(MAP_WIDTH)
     , height(MAP_HEIGHT)
     , selectPosCnt(0) {
-    infos.insert({int(T_NONE), {"None", {0.0, 0.0, 0.0, 1.0}}});
-    infos.insert({int(T_EDGE), {"Edge", {1.0, 1.0, 1.0, 0.4}}});
-    infos.insert({int(T_RUBBISH), {"Rubbish", {1.0, 0.0, 0.0, 0.5}}});
-    infos.insert({int(T_EMPTY), {"Empty", {1.0, 1.0, 1.0, 0.1}}});
-    infos.insert({int(T_OUT), {"Out", {1.0, 1.0, 1.0, 0.0}}});
-    infos.insert({int(T_GEM), {"Gem", {0.0, 1.0, 0.0, 0.5}}});
+    infos.insert({int(T_NONE), {"None", map_color["None"]}});
+    infos.insert({int(T_EDGE), {"Edge", map_color["Edge"]}});
+    infos.insert({int(T_RUBBISH), {"Rubbish", map_color["Rubbish"]}});
+    infos.insert({int(T_EMPTY), {"Empty", map_color["Empty"]}});
+    infos.insert({int(T_OUT), {"Out", map_color["Out"]}});
+    infos.insert({int(T_GEM), {"Gem", map_color["Gem"]}});
 }
 
 MapEditor::~MapEditor() {}

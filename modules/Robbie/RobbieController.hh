@@ -24,6 +24,7 @@ typedef struct RobbieControllerData : public DataBase {
     int                  robbie_cnt;
     int                  global_id;
     int                  speed;
+    int                  history_size;
     bool                 train_stop_check;
     float                mutate_rate;
     float                max_histyory;

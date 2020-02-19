@@ -18,6 +18,7 @@ SimpleMapWindow::SimpleMapWindow() {
     bsize      = 16.0f;
     padding    = 1.0f;
     simple_map = nullptr;
+    map_editor = nullptr;
 }
 
 SimpleMapWindow::~SimpleMapWindow() {}
@@ -33,6 +34,7 @@ void SimpleMapWindow::Show() {
     }
     if (ImGui::Begin("Simple Map", &show_simplemap_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
+        ImGuiIO&      io          = ImGui::GetIO();
         static ImVec2 last_pos    = ImVec2(-1, -1);
         static int    last_cnt    = 0;
         auto          start_pos   = ImGui::GetCursorScreenPos();
@@ -59,19 +61,52 @@ void SimpleMapWindow::Show() {
                             last_cnt = 0;
                         }
                     }
+                    {
+                        // show position in tools tip.
+                        ImVec2 pos = ImGui::GetCursorScreenPos();
+                        ImGui::BeginTooltip();
+                        float region_sz = 32.0f;
+                        float region_x  = io.MousePos.x - pos.x - region_sz * 0.5f;
+                        if (region_x < 0.0f)
+                            region_x = 0.0f;
+                        else if (region_x > 160 - region_sz)
+                            region_x = 160 - region_sz;
+                        float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+                        if (region_y < 0.0f)
+                            region_y = 0.0f;
+                        else if (region_y > 90 - region_sz)
+                            region_y = 90 - region_sz;
+                        ImGui::Text("(%d, %d)", j, i);
+                        ImGui::EndTooltip();
+                    }
                 }
                 if (last_pos.x == i && last_pos.y == j) {
                     color.w = color.w < 1.0 ? color.w + 0.1 : color.w - 0.1;
                 }
                 drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(color));
-                auto found = simple_map->render_target.find(vec_2i(j, i));
-                if (found != simple_map->render_target.end()) {
-                    ImVec4 cir_color = simple_map->info_target[int(found->second)].color;
-                    // ImVec2 center    = (p0 + p1) / 2;
-                    // float  radius    = p1.x - center.x - 2;
-                    // drawList->AddCircleFilled(center, radius, ImGui::ColorConvertFloat4ToU32(cir_color), 16);
+            }
+        }
+        // render targets
+        float c_radius = 3;
+        for (size_t i = 0; i < simple_map->render_target.size(); i++) {
+            PathType pt = simple_map->render_target[i].p_type;
+            ImVec2   last_center;
+            for (size_t j = 0; j < simple_map->render_target[i].positions.size(); j++) {
+                vec_2i tar_pos   = simple_map->render_target[i].positions[j];
+                ImVec2 p0        = {offset.x + tar_pos.x * bsize, offset.y + tar_pos.y * bsize};
+                ImVec2 p1        = {offset.x + (tar_pos.x + 1) * bsize - padding, offset.y + (tar_pos.y + 1) * bsize - padding};
+                ImVec2 center    = (p0 + p1) / 2;
+                ImVec4 cir_color = simple_map->info_target[int(pt)].color;
+                if (pt == PATH_ACTOR) {
                     ImGui::DrawRobbie(drawList, p0, p1, cir_color);
                 }
+                if (pt == PATH_HISTORY) {
+                    if (j != 0) {
+                        drawList->AddLine(last_center, center, ImGui::ColorConvertFloat4ToU32(cir_color), 2);
+                    }
+                    drawList->AddCircleFilled(center, c_radius, ImGui::ColorConvertFloat4ToU32(cir_color));
+                }
+                last_center = center;
             }
         }
         if (ImGui::IsMouseHoveringRect(start_pos, end_pos)) {

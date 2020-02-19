@@ -19,6 +19,8 @@ add_subdirectory(MapEditor)
 
 add_subdirectory(Robbie)
 
+add_subdirectory(Maze)
+
 # [install]
 install(FILES ModulesConfig.ini ProgramConfig.ini 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/

@@ -14,9 +14,6 @@ class SimpleMap : public MapBase {
     void Print(vec_2i pos);
 
   public:
-    SimpleMap();
-    SimpleMap(vec_2i map_size);
-    ~SimpleMap();
     int**  map;
     int**  target;
     int    rubbish_cnt;
@@ -25,22 +22,25 @@ class SimpleMap : public MapBase {
     string path_name;
     string version;
 
-    void        Init();
-    void        RandomMap();
-    void        CleanMap();
-    void        CleanTarget();
-    bool        InMap(vec_2i pos);
-    void        UpdateSize(vec_2i new_size);
-    void        LoadMap(const string& load_path);
-    void        SaveMap(const string& save_path);
-    int         GetHash(vec_2i pos);
-    int         GetTarget(vec_2i pos);
-    void        SetTarget(vec_2i pos, int key);
-    int         GetElem(vec_2i pos);
-    void        SetElem(vec_2i pos, int key);
-    int         DoAction(vec_2i start, vec_2i offset);
-    int         GetValue(vec_2i pos) { return target[pos.y][pos.x]; }
-    int         GetValue4Hash(vec_2i pos);
-    inline int* operator[](int row);
+    SimpleMap();
+    SimpleMap(vec_2i map_size);
+    ~SimpleMap();
+    void         Init();
+    void         RandomMap();
+    void         CleanMap();
+    void         CleanTarget();
+    int          GetHash(vec_2i pos);
+    virtual bool InMap(vec_2i pos);
+    virtual void UpdateSize(vec_2i new_size);
+    virtual void LoadMap(const string& load_path);
+    virtual void SaveMap(const string& save_path);
+    virtual int  GetTarget(vec_2i pos);
+    virtual void SetTarget(vec_2i pos, int key);
+    virtual int  GetElem(vec_2i pos);
+    virtual void SetElem(vec_2i pos, int key);
+    int          DoAction(vec_2i start, vec_2i offset);
+    int          GetValue(vec_2i pos) { return target[pos.y][pos.x]; }
+    int          GetValue4Hash(vec_2i pos);
+    inline int*  operator[](int row);
 };
 #endif

@@ -34,7 +34,7 @@ RobbieController::RobbieController()
     data->robbie_cnt       = ROBBIE_CNT;
     data->mutate_rate      = MUTATE_VAL * 1.0 / MUTATE_ALL;
     data->global_id        = 0;
-    data->speed            = 2;
+    data->speed            = 4;
     data->train_stop_check = false;
     data->max_histyory     = -1000.0;
     data->dis_map          = NULL;
@@ -130,28 +130,36 @@ void RobbieController::Print_str() {
 }
 
 void RobbieController::Play() {
-    // cout << data->dis_rob->pos << endl;
-    unordered_map<vec_2i, PathType> render_targets;
-    // for (size_t idx = 0; idx < 5 && idx < data->history.positions.size(); idx++) {
-    //     vec_2i pp = data->history.positions[data->history.positions.size() - idx - 1];
-    //     if (pp == data->dis_rob->pos) {
-    //     } else {
-    //         render_targets.insert({pp, PATH_HISTORY});
-    //     }
-    // }
-    render_targets.insert({data->dis_rob->pos, PATH_ACTOR});
+    // display target in map.
+    vector<TargetElem> render_targets;
+    TargetElem         robbies;
+    robbies.positions.push_back(data->dis_rob->pos);
+    robbies.p_type = PATH_ACTOR;
+    render_targets.push_back(robbies);
+    // display paths in map.
+    TargetElem paths;
+    paths.positions = data->history.positions;
+    for (auto idx = data->history.positions.rbegin(); idx != data->history.positions.rend(); idx++) {
+        paths.positions.push_back(*idx);
+    }
+    reverse(paths.positions.begin(), paths.positions.end());
+    paths.p_type = PATH_HISTORY;
+    render_targets.push_back(paths);
     data->dis_map->SetRenderTargets(render_targets);
+
     int          hash    = data->dis_map->GetHash(data->dis_rob->pos);
     RobbieAction pre_act = RobbieAction(data->dis_rob->genes[hash]);
     data->history.hashs.push_back(hash);
     data->history.positions.push_back(data->dis_rob->pos);
     data->history.actions.push_back(pre_act);
     data->history.results.push_back(data->dis_rob->NextStep(*(data->dis_map)));
-    // map.CleanTarget();
-    data->history.hashs.resize(MIN(20, data->history.hashs.size()));
-    data->history.positions.resize(MIN(20, data->history.positions.size()));
-    data->history.actions.resize(MIN(20, data->history.actions.size()));
-    data->history.results.resize(MIN(20, data->history.results.size()));
+    // map.CleanTarget()
+    if (data->history.hashs.size() > 20) {
+        data->history.hashs.erase(data->history.hashs.begin());
+        data->history.positions.erase(data->history.positions.begin());
+        data->history.actions.erase(data->history.actions.begin());
+        data->history.results.erase(data->history.results.begin());
+    }
 }
 
 void RobbieController::UpdateInFrame() {

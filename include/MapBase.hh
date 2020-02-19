@@ -13,13 +13,16 @@ enum MapType {
     MAP_RUBBISH,
     MAP_EMPTY,
     MAP_OUT,
-    MAP_GEM
+    MAP_GEM,
+    MAP_MAZE,
+    MAP_DOOR,
+    MAP_FLAG
 };
 
 enum PathType {
     PATH_ACTOR,
     PATH_HISTORY,
-    PATH_PREDICT
+    PATH_PREDICT,
 };
 
 typedef struct MapElemInfo {
@@ -28,23 +31,46 @@ typedef struct MapElemInfo {
     ImVec4 color;
 } MapElemInfo;
 
+typedef struct TargetElem {
+    PathType       p_type;
+    vector<vec_2i> positions;
+} TargetElem;
+
+static unordered_map<string, ImVec4> map_color = {
+    {"None", {0.0, 0.0, 0.0, 1.0}},
+    {"Edge", {1.0, 1.0, 1.0, 0.4}},
+    {"Rubbish", {1.0, 0.0, 0.0, 0.5}},
+    {"Empty", {1.0, 1.0, 1.0, 0.1}},
+    {"Out", {1.0, 1.0, 1.0, 0.0}},
+    {"Gem", {0.0, 0.78, 0.55, 1.0}},
+    {"Maze", {1.0, 0.0, 1.0, 1.0}},
+    {"Door", {1.0, 0.0, 1.0, 1.0}},
+    {"Flag", {1.0, 0.0, 0.0, 1.0}},
+    {"Actor", {1.0, 0.8431, 0.0, 0.8}},
+    {"History", {1.0, 0.8431, 0.0, 0.2}},
+    {"Predict", {0.7294, 0.3333, 0.8274, 1.0}},
+};
+
 class MapBase : public CoreBase {
   public:
     vec_2i                          size;
     unordered_map<int, MapElemInfo> infos;
     unordered_map<int, MapElemInfo> info_target;
     unordered_map<string, MapType>  elems;
-    unordered_map<vec_2i, PathType> render_target;
+    vector<TargetElem>              render_target;
 
     MapBase() {
-        infos.insert({int(MAP_EDGE), {"Edge", "#", {1.0, 1.0, 1.0, 0.4}}});
-        infos.insert({int(MAP_RUBBISH), {"Rubbish", "*", {1.0, 0.0, 0.0, 0.5}}});
-        infos.insert({int(MAP_EMPTY), {"Empty", " ", {1.0, 1.0, 1.0, 0.1}}});
-        infos.insert({int(MAP_OUT), {"Out", ".", {1.0, 1.0, 1.0, 0.0}}});
-        infos.insert({int(MAP_GEM), {"Gem", "$", {0.0, 1.0, 0.0, 0.5}}});
-        info_target.insert({int(PATH_ACTOR), {"Actor", " ", {0.6274, 0.1255, 0.9412, 1.0}}});
-        info_target.insert({int(PATH_HISTORY), {"History", " ", {0.8471, 0.7490, 0.8471, 1.0}}});
-        info_target.insert({int(PATH_PREDICT), {"Predict", " ", {0.7294, 0.3333, 0.8274, 1.0}}});
+        infos.insert({int(MAP_EDGE), {"Edge", "#", map_color["Edge"]}});
+        infos.insert({int(MAP_RUBBISH), {"Rubbish", "*", map_color["Rubbish"]}});
+        infos.insert({int(MAP_EMPTY), {"Empty", " ", map_color["Empty"]}});
+        infos.insert({int(MAP_OUT), {"Out", ".", map_color["Out"]}});
+        infos.insert({int(MAP_GEM), {"Gem", "$", map_color["Gem"]}});
+        infos.insert({int(MAP_MAZE), {"Maze", "+", map_color["Maze"]}});
+        infos.insert({int(MAP_DOOR), {"Door", "p", map_color["Door"]}});
+        infos.insert({int(MAP_FLAG), {"Flag", "p", map_color["Flag"]}});
+        info_target.insert({int(PATH_ACTOR), {"Actor", " ", map_color["Actor"]}});
+        info_target.insert({int(PATH_HISTORY), {"History", " ", map_color["History"]}});
+        info_target.insert({int(PATH_PREDICT), {"Predict", " ", map_color["Predict"]}});
         elems.insert({"#", MAP_EDGE});
         elems.insert({"*", MAP_RUBBISH});
         elems.insert({" ", MAP_EMPTY});
@@ -70,7 +96,7 @@ class MapBase : public CoreBase {
 
     virtual void SaveMap(const string& save_path) = 0;
 
-    void SetRenderTargets(unordered_map<vec_2i, PathType> targets) { render_target = targets; }
+    void SetRenderTargets(vector<TargetElem> targets) { render_target = targets; }
 };
 
 #endif
