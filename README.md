@@ -11,6 +11,9 @@ The BiuLab was designed based on plugin architecture, you can create your own mo
 ### 2.1 Maze module. 
 ![text](./resources/images/maze.gif)
 
+### 2.2 Robbie module. 
+![text](./resources/images/robbie.gif)
+
 ## 3.How to install Biulab.
 ```bash
 # 3.1 ubuntu install (for ubuntu 18.04)

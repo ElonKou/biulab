@@ -83,7 +83,21 @@ void SimpleMapWindow::Show() {
                 if (last_pos.x == i && last_pos.y == j) {
                     color.w = color.w < 1.0 ? color.w + 0.1 : color.w - 0.1;
                 }
-                drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(color));
+                if (simple_map->only_show_round && simple_map->render_target.size() > 0) {
+                    vec_2i act = vec_2i(-10, -10);
+                    for (size_t k = 0; k < simple_map->render_target.size(); k++) {
+                        if (simple_map->render_target[k].p_type == PATH_ACTOR && simple_map->render_target[k].positions.size() > 0) {
+                            act = simple_map->render_target[k].positions[0];
+                            continue;
+                        }
+                    }
+                    vec_2i off = vec_2i(j, i) - act;
+                    if (off == vec_2i(1, 0) || off == vec_2i(-1, 0) || off == vec_2i(0, -1) || off == vec_2i(0, 1)) {
+                        drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(color));
+                    }
+                } else {
+                    drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(color));
+                }
             }
         }
         // render targets

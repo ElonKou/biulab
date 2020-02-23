@@ -44,6 +44,7 @@ void RobbieModule::UpdateModule() {
     if (data->robbie_controll_window && data->target["RobbieControlWindow"]) {
         data->robbie_controll_window->Show();
     }
+    data->controller->UpdateInFrame();
 }
 
 void RobbieModule::UpdateData() {

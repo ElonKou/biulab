@@ -24,9 +24,7 @@ void RobbieControllerData::UpdateData() {
 RobbieController::RobbieController()
     : save_run(false)
     , running(false)
-    , pause(false)
     , stoped(false)
-    , play_chanegd(false)
     , run_step(false) {
     data                   = new RobbieControllerData();
     data->loop_controller  = LOOP_CONTROLLER;
@@ -130,23 +128,6 @@ void RobbieController::Print_str() {
 }
 
 void RobbieController::Play() {
-    // display target in map.
-    vector<TargetElem> render_targets;
-    TargetElem         robbies;
-    robbies.positions.push_back(data->dis_rob->pos);
-    robbies.p_type = PATH_ACTOR;
-    render_targets.push_back(robbies);
-    // display paths in map.
-    TargetElem paths;
-    paths.positions = data->history.positions;
-    for (auto idx = data->history.positions.rbegin(); idx != data->history.positions.rend(); idx++) {
-        paths.positions.push_back(*idx);
-    }
-    reverse(paths.positions.begin(), paths.positions.end());
-    paths.p_type = PATH_HISTORY;
-    render_targets.push_back(paths);
-    data->dis_map->SetRenderTargets(render_targets);
-
     int          hash    = data->dis_map->GetHash(data->dis_rob->pos);
     RobbieAction pre_act = RobbieAction(data->dis_rob->genes[hash]);
     data->history.hashs.push_back(hash);
@@ -162,26 +143,46 @@ void RobbieController::Play() {
     }
 }
 
+void RobbieController::Stop() {
+    data->history.hashs.clear();
+    data->history.positions.clear();
+    data->history.actions.clear();
+    data->history.results.clear();
+    data->dis_map->render_target.clear();
+}
+
 void RobbieController::UpdateInFrame() {
     static int frame_rate = 0;
     int        max        = 60 / data->speed;
     if (running) {
-        if (!pause) {
-            frame_rate++;
-            if (frame_rate > max) {
-                frame_rate = 0;
-                Play();
-            }
+        frame_rate++;
+        if (frame_rate > max) {
+            frame_rate = 0;
+            Play();
         }
     }
-    if (play_chanegd && stoped) {
+    if (stoped) {
+        Stop();
         data->dis_map->CleanTarget();
         data->dis_rob->pos        = vec_2i(2, 2);
         data->dis_rob->score      = 0;
         data->dis_rob->aver_score = -1000.0;
-        play_chanegd              = false;
         stoped                    = false;
     }
+    vector<TargetElem> render_targets;
+    TargetElem         robbies;
+    robbies.positions.push_back(data->dis_rob->pos);
+    robbies.p_type = PATH_ACTOR;
+    render_targets.push_back(robbies);
+    // TargetElem paths;
+    // paths.positions = data->history.positions;
+    // for (auto idx = data->history.positions.rbegin(); idx != data->history.positions.rend(); idx++) {
+    //     paths.positions.push_back(*idx);
+    // }
+    // reverse(paths.positions.begin(), paths.positions.end());
+    // paths.p_type = PATH_HISTORY;
+    // render_targets.push_back(paths);
+    data->dis_map->SetRenderTargets(render_targets);
 }
 
 Robbie RobbieController::LoadRobbie(string robbie_path) {

@@ -14,6 +14,8 @@ void RobbieControlWindow::Show() {
             // variablesif
             ImGui::Checkbox("Stop check", &robbie_controll->data->train_stop_check);
             ImGui::SameLine();
+            ImGui::Checkbox("Only show round", &robbie_controll->data->dis_map->only_show_round);
+            ImGui::SameLine();
             showHelpMarker("this will check the stop flag, the controller will stop when robbie dont move.");
             if (ImGui::Button("R##1")) {
                 robbie_controll->data->loop_controller = LOOP_CONTROLLER;
@@ -45,26 +47,17 @@ void RobbieControlWindow::Show() {
             // controller comand
             if (!robbie_controll->running) {
                 if (ImGui::Button("Play")) {
-                    robbie_controll->running      = true;
-                    robbie_controll->play_chanegd = true;
-                    robbie_controll->stoped       = false;
+                    robbie_controll->running = true;
                 }
             } else {
-                if (!robbie_controll->pause) {
-                    if (ImGui::Button("Pause")) {
-                        robbie_controll->pause = true;
-                    }
-                } else {
-                    if (ImGui::Button("Continue")) {
-                        robbie_controll->running = true;
-                        robbie_controll->pause   = false;
-                    }
-                }
-                ImGui::SameLine();
-                if (ImGui::Button("Stop")) {
+                if (ImGui::Button("Pause")) {
                     robbie_controll->running = false;
-                    robbie_controll->stoped  = true;
                 }
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Stop")) {
+                robbie_controll->running = false;
+                robbie_controll->stoped  = true;
             }
 
             ImGui::SameLine();
@@ -78,7 +71,6 @@ void RobbieControlWindow::Show() {
         }
         ImGui::End();
     }
-    robbie_controll->UpdateInFrame();
 }
 
 void RobbieControlWindow::UpdateData() {

@@ -18,6 +18,7 @@ class SimpleMap : public MapBase {
     int**  target;
     int    rubbish_cnt;
     int    gem_cnt;
+    bool   only_show_round;
     string map_name;
     string path_name;
     string version;

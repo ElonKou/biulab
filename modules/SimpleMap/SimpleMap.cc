@@ -15,14 +15,15 @@
 using namespace std;
 
 SimpleMap::SimpleMap() {
-    size        = {MAP_WIDTH, MAP_HEIGHT};
-    rubbish_cnt = RUBBISH_CNT;
-    gem_cnt     = GEM_CNT;
-    map         = nullptr;
-    target      = nullptr;
-    map_name    = "base.map";
-    version     = "0.1";
-    path_name   = BIULAB_APPLICATION_PATH "/genetic";
+    size            = {MAP_WIDTH, MAP_HEIGHT};
+    rubbish_cnt     = RUBBISH_CNT;
+    gem_cnt         = GEM_CNT;
+    only_show_round = false;
+    map             = nullptr;
+    target          = nullptr;
+    map_name        = "base.map";
+    version         = "0.1";
+    path_name       = BIULAB_APPLICATION_PATH "/genetic";
 }
 
 SimpleMap::SimpleMap(vec_2i map_size) {

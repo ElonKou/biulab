@@ -18,6 +18,7 @@
 - [ ] controller
 
 # CHANGELOG
+- [x] [v1.2.2] Module   2010.02.23: Add life game module frame.
 - [x] [v1.2.1] Frame    2010.02.19: build Window/Map/Controller/Core/base class.
 - [x] [v1.2.1] Frame    2010.02.19: create all the windows base class.
 - [x] [v1.2.1] Frame    2010.02.19: create the simplest module.

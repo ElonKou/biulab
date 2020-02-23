@@ -53,9 +53,7 @@ class RobbieController : public CoreBase {
     // char                  map_name[256];
     bool                  save_run;
     bool                  running;
-    bool                  pause;
     bool                  stoped;
-    bool                  play_chanegd;
     bool                  run_step;
     RobbieControllerData* data;
 
@@ -66,6 +64,8 @@ class RobbieController : public CoreBase {
     void Print_str();
 
     void Play();
+
+    void Stop();
 
     void UpdateInFrame();
 
