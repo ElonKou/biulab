@@ -2,9 +2,12 @@
 #ifndef LIFE_GAME_H_
 #define LIFE_GAME_H_
 
-class LifeGame {
+#include "CoreBase.hh"
+
+class LifeGame : public CoreBase {
   public:
     LifeGame();
+
     ~LifeGame();
 };
 

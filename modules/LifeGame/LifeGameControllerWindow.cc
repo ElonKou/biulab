@@ -13,3 +13,17 @@ LifeGameControllerWindow::LifeGameControllerWindow() {
 
 LifeGameControllerWindow::~LifeGameControllerWindow() {
 }
+
+void LifeGameControllerWindow::Show() {
+    if (ImGui::Begin("LifeGameControllerWindow", &show_control_window, 0)) {
+        if (ImGui::Button("dasda")) {
+            cout << "control" << endl;
+        }
+    }
+    ImGui::End();
+}
+
+void LifeGameControllerWindow::UpdateData() {
+    con      = GetData<LifeGameController>("LifeGameController", "LifeGameControllerWindow");
+    map_base = GetData<LifeGameMapBase>("LifeGameMapBase", "LifeGameControlWindow");
+}

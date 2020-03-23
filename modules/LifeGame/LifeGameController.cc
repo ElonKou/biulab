@@ -8,6 +8,7 @@
 
 #include "LifeGameController.hh"
 
+
 LifeGameController::LifeGameController() {
 }
 

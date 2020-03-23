@@ -1,15 +1,15 @@
 /*================================================================
 *  Copyright (C)2020 All rights reserved.
-*  FileName : LifeGameWindow.cc
+*  FileName : LifeGameRuleTwo.cc
 *  Author   : elonkou
 *  Email    : elonkou@ktime.cc
-*  Date     : 2020年02月23日 星期日 17时43分26秒
+*  Date     : 2020年03月07日 星期六 00时47分19秒
 ================================================================*/
 
-#include "LifeGameWindow.hh"
+#include "LifeGameRuleTwo.hh"
 
-LifeGameWindow::LifeGameWindow() {
+LifeGameRuleTwo::LifeGameRuleTwo() {
 }
 
-LifeGameWindow::~LifeGameWindow() {
+LifeGameRuleTwo::~LifeGameRuleTwo() {
 }

@@ -9,6 +9,12 @@ aux_source_directory(../../lib/tools MODULES_SOURCE_DIR)
 
 add_library(lifewidget SHARED ${MODULES_SOURCE_DIR})
 
+# include_directories(
+#     include
+#     .
+#     ../biulabwidget
+# )
+
 # [install]
 install(TARGETS lifewidget
     RUNTIME DESTINATION bin
