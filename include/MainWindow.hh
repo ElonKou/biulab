@@ -18,7 +18,7 @@ class MainWindow {
 
     Menu menu;
 
-    ProgramWindow pro_window;
+    ProgramWindow *pro_window;
 
     ModulesManager modules_manager;
 

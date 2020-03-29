@@ -14,14 +14,15 @@ MainWindow::MainWindow() {
     main_window_info.font_size        = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
 
-    window             = InitWindow();
-    menu.manager       = &modules_manager;
-    pro_window.manager = &modules_manager;
-    modules_manager.GetAllModules();
-
+    window = InitWindow();
     LoadFont();
     SetGL(window);
     SetDarkTheme();
+
+    pro_window          = new ProgramWindow();
+    menu.manager        = &modules_manager;
+    pro_window->manager = &modules_manager;
+    modules_manager.GetAllModules();
 }
 
 MainWindow::~MainWindow() {}
@@ -54,7 +55,7 @@ void MainWindow::DrawWindow() {
         menu.Show();
     }
     if (show_program_window) {
-        pro_window.Show();
+        pro_window->Show();
     }
     modules_manager.UpdateModule();
 }

@@ -55,7 +55,7 @@ void ProgramWindow::Show() {
         ImGuiIO& io = ImGui::GetIO();
         for (size_t i = 0; i < data.size(); i++) {
             ImVec2ih uv = ImVec2ih(2, 4);
-            ImGui::ThumbNail((void*)(intptr_t)data[i].tex_id, ImVec2(160, 90), data[i].program_name, uv, i);
+            ImGui::ThumbNail((void*)(intptr_t)data[i].tex_id, ImVec2(160, 160), data[i].program_name, uv, i);
             ImVec2 pos = ImGui::GetCursorScreenPos();
             if (ImGui::IsItemHovered()) {
                 if (ImGui::IsMouseDoubleClicked(0)) {
@@ -68,7 +68,7 @@ void ProgramWindow::Show() {
                 if (region_x < 0.0f)
                     region_x = 0.0f;
                 else if (region_x > 160 - region_sz)
-                    region_x = 160 - region_sz;
+                    region_x   = 160 - region_sz;
                 float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
                 if (region_y < 0.0f)
                     region_y = 0.0f;
