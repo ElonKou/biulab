@@ -49,22 +49,21 @@ LifeGameModule::~LifeGameModule() {
 void LifeGameModule::UpdateModule() {
     if (data->target["LifeGameMapBase"] && show_mapeditor_window) {
         data->map_base->Show();
-    } else {
-        data->map_base = GetData<LifeGameMapOne>("LifeGameMapBase", "LifeGameModule");
     }
-
     if (data->target["LifeGameControllerWindow"]) {
         data->con_window->Show();
-    } else {
-        data->con_window = GetData<LifeGameControllerWindow>("LifeGameControllerWindow", "LifeGameModule");
     }
 }
 
 void LifeGameModule::UpdateData() {
     if (data->target["LifeGameMapBase"]) {
         data->map_base->UpdateData();
+    } else {
+        data->map_base = GetData<LifeGameMapOne>("LifeGameMapBase", "LifeGameModule");
     }
     if (data->target["LifeGameControllerWindow"]) {
         data->con_window->UpdateData();
+    } else {
+        data->con_window = GetData<LifeGameControllerWindow>("LifeGameControllerWindow", "LifeGameModule");
     }
 }

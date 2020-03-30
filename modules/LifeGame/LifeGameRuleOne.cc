@@ -18,8 +18,8 @@ LifeGameRuleOne::~LifeGameRuleOne() {
 LifeGameElem LifeGameRuleOne::GetAction(int rule_id, vector<LifeGameElem> values) {
     vector<LifeGameElem> rules = GetRule(rule_id);
     size_t               index = 0;
-    for (size_t i = 0; i < values.size(); ++i) {
-        index += (2 << i) * int(values[values.size() - 1 - i]);
+    for (size_t i = 0; i < values.size(); i++) {
+        index += (1 << i) * int(values[i]);
     }
     return rules[index];
 }
@@ -28,7 +28,7 @@ vector<LifeGameElem> LifeGameRuleOne::GetRule(int rule_id) {
     vector<LifeGameElem> rules(size);
     for (size_t i = 0; i < size; i++) {
         if (rule_id & (1 << i)) {
-            rules[size - 1 - i] = ElemAlive;
+            rules[i] = ElemAlive;
         }
     }
     return rules;

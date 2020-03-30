@@ -10,7 +10,6 @@
 class LifeGameControllerWindow : public WindowBase {
   public:
     LifeGameController* con;
-    LifeGameMapBase*    map_base;
 
     LifeGameControllerWindow();
 

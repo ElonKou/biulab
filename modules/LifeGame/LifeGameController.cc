@@ -8,6 +8,17 @@
 
 #include "LifeGameController.hh"
 
+void LifeGameController::UpdateSize(int width, int history) {
+    map_base->UpdateSize(width, history);
+}
+
+void LifeGameController::UpdateRule(int rule_id) {
+    map_base->UpdateMap(*rule_base, rule_id);
+}
+
+void LifeGameController::RandomElems(int rate) {
+    map_base->RandomElems(rate);
+}
 
 LifeGameController::LifeGameController() {
 }
