@@ -18,6 +18,7 @@
 - [ ] controller
 
 # CHANGELOG
+- [x] [v1.3.1] Frame    2010.04.12: Fixed cpp cmpile warning & add screen capture tool.
 - [x] [v1.3.0] Module   2010.03.31: Complete the LifeGame(2d) module.
 - [x] [v1.2.3] Frame    2010.03.30: Fixed image load error & update imgui.ini path.
 - [x] [v1.2.3] Module   2010.03.23: Update life game module.

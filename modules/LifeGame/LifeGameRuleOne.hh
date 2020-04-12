@@ -20,6 +20,8 @@ class LifeGameRuleOne : public LifeGameRuleBase {
     virtual LifeGameElem GetAction(int rule_id, vector<LifeGameElem> values);
 
     virtual vector<LifeGameElem> GetRule(int rule_id);
+
+    virtual vector<vector<LifeGameElem>> GetRuleList(int rule_id);
 };
 
 #endif

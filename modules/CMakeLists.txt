@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 2.8.1)
 add_definitions(-std=c++11)
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../install)
 
+# [config]
+# SET(CMAKE_BUILD_TYPE "Debug")
+# SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+SET(CMAKE_BUILD_TYPE "Release")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 # [build]
 include_directories(
     ./

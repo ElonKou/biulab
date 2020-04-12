@@ -147,8 +147,8 @@ void SimpleMap::UpdateSize(vec_2i new_size) {
     }
     int min_x = size.x < new_size.x ? size.x : new_size.x;
     int min_y = size.y < new_size.y ? size.y : new_size.y;
-    int max_x = size.x > new_size.x ? size.x : new_size.x;
-    int max_y = size.y > new_size.y ? size.y : new_size.y;
+    // int max_x = size.x > new_size.x ? size.x : new_size.x;
+    // int max_y = size.y > new_size.y ? size.y : new_size.y;
     for (int i = 0; i < new_size.y; i++) {
         for (int j = 0; j < new_size.x; j++) {
             if (i < min_y && j < min_x) {
@@ -172,8 +172,8 @@ void SimpleMap::LoadMap(const string& load_path) {
         std::string str;
         size_t      found = line.find("version:");
         if (found != string::npos) {
-            str               = line.substr(found + 8, line.size());
-            float map_version = StringToNum<float>(str);
+            str = line.substr(found + 8, line.size());
+            // float map_version = StringToNum<float>(str);
         }
         found = line.find("name:");
         if (found != string::npos) {
@@ -296,13 +296,13 @@ int SimpleMap::DoAction(vec_2i start, vec_2i offset) {
     // MAP_EDGE : -1(failed)
     // pick : 0(empty)
     // move : 1(succeed)
-    vec_2i now    = vec_2i(start.x + offset.x, start.y + offset.y);
-    int    nowVal = GetValue(start);
+    int nowVal = GetValue(start);
     if (nowVal == MAP_EDGE) {
         return -1;
     } else if (nowVal == MAP_RUBBISH) {
     } else {
     }
+    return 0;
 }
 
 int SimpleMap::GetValue4Hash(vec_2i pos) {
@@ -324,6 +324,7 @@ int SimpleMap::GetValue4Hash(vec_2i pos) {
         return 1;
         break;
     default:
+        return 0;
         break;
     }
 }

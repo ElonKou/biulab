@@ -23,7 +23,6 @@ void MazeMapWindow::Show() {
     }
     if (ImGui::Begin("Maze Map", &show_simplemap_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
-        static int    last_cnt    = 0;
         static vec_2i last_pos    = vec_2i(-1, -1);
         auto          start_pos   = ImGui::GetCursorScreenPos();
         auto          drawList    = ImGui::GetWindowDrawList();

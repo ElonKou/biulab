@@ -13,9 +13,9 @@
 using namespace std;
 
 MapEditor::MapEditor()
-    : width(MAP_WIDTH)
-    , height(MAP_HEIGHT)
-    , selectPosCnt(0) {
+    : selectPosCnt(0)
+    , width(MAP_WIDTH)
+    , height(MAP_HEIGHT) {
     infos.insert({int(T_NONE), {"None", map_color["None"]}});
     infos.insert({int(T_EDGE), {"Edge", map_color["Edge"]}});
     infos.insert({int(T_RUBBISH), {"Rubbish", map_color["Rubbish"]}});

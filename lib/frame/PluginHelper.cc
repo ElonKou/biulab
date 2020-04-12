@@ -50,8 +50,7 @@ std::vector<std::string> CPluginHelper::GetFileNameByPattern(
 void CPluginHelper::Load(const std::string& dir, const std::string& pattern) {
     std::vector<std::string> soNameList = GetFileNameByPattern(dir, pattern);
 
-    int i;
-    for (i = 0; i < soNameList.size(); i++) {
+    for (size_t i = 0; i < soNameList.size(); i++) {
         std::map<std::string, void*>::iterator itrSoName = m_SoNameTable.find(soNameList[i]);
 
         /* so-library has already loaded */
@@ -77,7 +76,7 @@ void CPluginHelper::Load(const std::string& dir, const std::string& pattern) {
 void CPluginHelper::Unload(const std::string& dir, const std::string& pattern) {
     std::vector<std::string> soNameList = GetFileNameByPattern(dir, pattern);
 
-    int i;
+    size_t i;
     for (i = 0; i < soNameList.size(); i++) {
         std::map<std::string, void*>::iterator itrSoName = m_SoNameTable.find(soNameList[i]);
 

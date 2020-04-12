@@ -59,7 +59,7 @@ void InspectWindow::Show() {
             ImGui::SetNextItemOpen(!it->second.collapsed, ImGuiCond_Once);
             InspectItem& item = it->second;
             if (ImGui::TreeNode(item.title.c_str())) {
-                for (int j = 0; j < item.data.size(); j++) {
+                for (size_t j = 0; j < item.data.size(); j++) {
                     string list_name = item.data[j];
                     if (ImGui::Selectable(list_name.c_str(), item.data[j] == item.selected, ImGuiSelectableFlags_AllowDoubleClick)) {
                         if (ImGui::IsMouseDoubleClicked(0)) {

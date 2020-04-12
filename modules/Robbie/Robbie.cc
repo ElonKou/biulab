@@ -51,7 +51,7 @@ Robbie Robbie::Clip(Robbie mother, int pos) {
     rob.mother     = mother.id;
     rob.generation = MAX(generation, mother.generation) + 1;
     if (pos == -1) {
-        int pos = RandomInt(gene_len);
+        pos = RandomInt(gene_len);
     }
     for (int i = 0; i < pos; i++) {
         rob.genes.push_back(genes[i]);
@@ -72,9 +72,9 @@ void Robbie::Mutate() {
 }
 
 RobbieActionResult Robbie::NextStep(SimpleMap& map) {
-    RobbieActionResult result;
-    int                hash = map.GetHash(pos);
-    RobbieAction       act  = RobbieAction(genes[hash]);
+    RobbieActionResult result = AC_RES_PUNISHMENT_EDGE;
+    int                hash   = map.GetHash(pos);
+    RobbieAction       act    = RobbieAction(genes[hash]);
     while (act == ACTION_RANDOM) {
         act = RobbieAction(RandomInt(str_len));
     }
@@ -95,7 +95,10 @@ void Robbie::PlaySingleMap(SimpleMap& map) {
     score      = 0;
     aver_score = 0.0;
     for (int i = 0; i < loop_cnt; i++) {
-        int result = NextStep(map);
+        RobbieActionResult result = NextStep(map);
+        if (int(result) < 0) {
+            std::cout << "ERROR result" << std::endl;
+        }
     }
 }
 
@@ -185,7 +188,7 @@ void Robbie::Load(string load_path) {
     while (getline(fp, ss)) {
         data += ss;
     }
-    for (int i = 0; i < data.size(); i++) {
+    for (size_t i = 0; i < data.size(); i++) {
         genes[i] = int(data[i] - '0');
     }
     fp.close();

@@ -94,7 +94,7 @@ void RobbieController::Train() {
         data->robbies[top_id].Compare(data->robbies[0]);
 
         float sum = 0.0;
-        for (size_t i = 0; i = data->robbie_scores_tf.size(); i++) {
+        for (size_t i = 0; i < data->robbie_scores_tf.size(); i++) {
             sum += data->robbie_scores_tf[i].aver_score;
         }
         for (int i = 0; i < data->robbie_cnt; i++) {
@@ -194,7 +194,7 @@ Robbie RobbieController::LoadRobbie(string robbie_path) {
     while (getline(fp, ss)) {
         data += ss;
     }
-    for (int i = 0; i < data.size(); i++) {
+    for (size_t i = 0; i < data.size(); i++) {
         rob.genes[i] = int(data[i] - '0');
     }
     fp.close();
@@ -226,7 +226,7 @@ int RobbieController::GetIndex(float random_index) {
 }
 
 int RobbieController::ShowHisgram(int num) {
-    int   minIndex = 0;
+    // int   minIndex = 0;
     int   maxIndex = 0;
     float minData  = 1000;
     float maxData  = -1000;
@@ -242,8 +242,8 @@ int RobbieController::ShowHisgram(int num) {
             maxData  = data->robbie_scores[i].aver_score;
         }
         if (data->robbie_scores[i].aver_score < minData) {
-            minIndex = i;
-            minData  = data->robbie_scores[i].aver_score;
+            // minIndex = i;
+            minData = data->robbie_scores[i].aver_score;
         }
     }
     int   clipCnt        = 20;

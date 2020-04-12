@@ -14,6 +14,11 @@ include_directories(
 )
 
 # [config]
+# SET(CMAKE_BUILD_TYPE "Debug")
+# SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+SET(CMAKE_BUILD_TYPE "Release")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 set(BIULAB_INSTALL_PATH ${PROJECT_SOURCE_DIR}/install)
 configure_file(
     "${PROJECT_SOURCE_DIR}/BiuLabConfig.hh.in"

@@ -117,7 +117,6 @@ bool ImGui::ThumbNail(ImTextureID user_texture_id, const ImVec2& size, std::stri
     int           offset        = 16;
     const ImVec4& bg_col        = ImVec4(0, 0, 0, 0);
     const ImVec4& tint_col      = ImVec4(1, 1, 1, 1);
-    bool          one_line      = false;
     ImVec2ih      idx           = ImVec2ih(index % uv.y, index / uv.y);
 
     ImGuiWindow* window = GetCurrentWindow();

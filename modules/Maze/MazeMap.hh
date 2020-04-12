@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #ifndef _MAZE_MAP_H_
 #define _MAZE_MAP_H_
 

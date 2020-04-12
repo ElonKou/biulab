@@ -31,7 +31,7 @@ typedef enum RobbieActionResult {
     AC_RES_OK,
     AC_RES_PUNISHMENT_EDGE,
     AC_RES_PUNISHMENT_PICK,
-    AC_RES_REWARD_RUBBISH,
+    AC_RES_REWARD_RUBBISH
 } RobbieActionResult;
 
 typedef struct RobbieActionHistory {

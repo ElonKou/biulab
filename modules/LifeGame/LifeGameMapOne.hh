@@ -10,13 +10,12 @@ class LifeGameMapOne : public LifeGameMapBase {
     float          bsize;
     float          padding;
     size_t         size;
-    size_t         history;
     size_t         index;
     LifeGameElem** map;
 
     LifeGameMapOne();
 
-    LifeGameMapOne(size_t size_, size_t his_);
+    LifeGameMapOne(size_t size_);
 
     ~LifeGameMapOne();
 
@@ -24,11 +23,13 @@ class LifeGameMapOne : public LifeGameMapBase {
 
     virtual void UpdateData();
 
-    virtual void UpdateSize(int width, int history);
+    virtual void UpdateSize(int width, int height);
 
-    virtual void RandomElems(int rate = 50);
+    virtual void RandomElems(int rate = 500);
 
     virtual void UpdateMap(LifeGameRuleBase& rule, int rule_id);
+
+    virtual vec_2i GetSize();
 };
 
 #endif

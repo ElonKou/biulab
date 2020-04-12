@@ -3,10 +3,10 @@
 using namespace std;
 
 MazePerson::MazePerson()
-    : cur_pos({1, 4})
+    : step_count(0)
     , algorithm_name("RightFirst")
-    , forward(DIR_UP)
-    , step_count(0) {
+    , cur_pos({1, 4})
+    , forward(DIR_UP) {
 }
 
 MazePerson::~MazePerson() {

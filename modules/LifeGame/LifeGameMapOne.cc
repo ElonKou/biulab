@@ -12,20 +12,17 @@ LifeGameMapOne::LifeGameMapOne()
     : index(0) {
     bsize   = 8.0f;
     padding = 1.0f;
-    history = LIFE_GAME_DIM_HEIGT;
     size    = LIFE_GAME_DIM_WIDTH;
-    map     = new LifeGameElem*[size];
+    map     = new LifeGameElem*[LIFE_GAME_DIM_MAX];
     RandomElems();
-    // cout << "LifeGameMapOne" << endl;
 }
 
-LifeGameMapOne::LifeGameMapOne(size_t size_, size_t his_)
+LifeGameMapOne::LifeGameMapOne(size_t size_)
     : size(size_)
-    , history(his_)
     , index(0) {
     bsize   = 8.0f;
     padding = 1.0f;
-    map     = new LifeGameElem*[size];
+    map     = new LifeGameElem*[LIFE_GAME_DIM_MAX];
     RandomElems();
 }
 
@@ -38,8 +35,7 @@ void LifeGameMapOne::Show() {
         auto   start_pos   = ImGui::GetCursorScreenPos();
         auto   drawList    = ImGui::GetWindowDrawList();
         ImVec2 window_size = ImGui::GetCurrentWindow()->Size;
-        ImVec2 map_size    = ImVec2(size * bsize, history * bsize);
-        ImVec2 end_pos     = ImVec2(start_pos.x + window_size.x, start_pos.y + window_size.y);
+        ImVec2 map_size    = ImVec2(size * bsize, index * bsize);
         ImVec2 offset      = ImVec2((window_size.x - map_size.x) / 2 + start_pos.x, (window_size.y - map_size.y) / 2 + start_pos.y);
         for (size_t j = 0; j < index; j++) {
             for (size_t i = 0; i < size; i++) {
@@ -51,21 +47,34 @@ void LifeGameMapOne::Show() {
                 } else {
                     color = ImVec4(0.0, 0.0, 0.0, 1.0);
                 }
+                // TODO:hover event
                 drawList->AddRectFilled(p0, p1, ImGui::ColorConvertFloat4ToU32(color));
             }
         }
         ImGui::EndChild();
+        if (ImGui::IsMouseHoveringRect(start_pos, start_pos + window_size)) {
+            ImGuiIO& io = ImGui::GetIO();
+            if (io.MouseWheel != 0.0) {
+                bsize += io.MouseWheel;
+                bsize = MAX(bsize, 1.0);
+                bsize = MIN(bsize, 64);
+                if (bsize < 5.0f) {
+                    padding = 0.0f;
+                } else {
+                    padding = 1.0f;
+                }
+            }
+        }
     }
     ImGui::End();
 }
 
 void LifeGameMapOne::UpdateData() {}
 
-void LifeGameMapOne::UpdateSize(int width, int history_) {
-    size    = width;
-    history = history_;
-    index   = 0;
-    map     = new LifeGameElem*[size];
+void LifeGameMapOne::UpdateSize(int width, int height) {
+    size  = width;
+    index = 0;
+    map   = new LifeGameElem*[LIFE_GAME_DIM_MAX];
     RandomElems();
 }
 
@@ -73,8 +82,8 @@ void LifeGameMapOne::RandomElems(int rate) {
     map[0] = new LifeGameElem[size];
     index  = 1;
     for (size_t i = 0; i < size; i++) {
-        int rand = RandomInt(100);
-        if (rand <= rate) {
+        int rand = RandomInt(1000);
+        if (rand < rate) {
             map[0][i] = ElemAlive;
         } else {
             map[0][i] = ElemDead;
@@ -83,10 +92,16 @@ void LifeGameMapOne::RandomElems(int rate) {
 }
 
 void LifeGameMapOne::UpdateMap(LifeGameRuleBase& rule, int rule_id) {
-    map[index] = new LifeGameElem[size];
-    for (size_t i = 0; i < size; i++) {
-        vector<LifeGameElem> elems = {map[index - 1][(i - 1 + size) % size], map[index - 1][i], map[index - 1][(i + 1) % size]};
-        map[index][i]              = rule.GetAction(rule_id, elems);
+    if (index < LIFE_GAME_DIM_MAX) {
+        map[index] = new LifeGameElem[size];
+        for (size_t i = 0; i < size; i++) {
+            vector<LifeGameElem> elems = {map[index - 1][(i - 1 + size) % size], map[index - 1][i], map[index - 1][(i + 1) % size]};
+            map[index][i]              = rule.GetAction(rule_id, elems);
+        }
+        index++;
     }
-    index++;
+}
+
+vec_2i LifeGameMapOne::GetSize() {
+    return vec_2i(size, index);
 }

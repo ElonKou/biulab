@@ -6,6 +6,7 @@
 #include "BiuLabTypes.hh"
 #include "Lib.hh"
 #include "imgui.h"
+#include "imgui_biulab_extension.h"
 #include "imgui_biulab_tools.h"
 #include "imgui_biulab_widgets.h"
 #include "imgui_impl_glfw.h"

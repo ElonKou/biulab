@@ -18,6 +18,8 @@ class LifeGameRuleBase : public CoreBase {
     virtual LifeGameElem GetAction(int rule_id, vector<LifeGameElem> values) = 0;
 
     virtual vector<LifeGameElem> GetRule(int rule_id) = 0;
+
+    virtual vector<vector<LifeGameElem>> GetRuleList(int rule_id) = 0;
 };
 
 #endif

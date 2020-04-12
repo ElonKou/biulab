@@ -26,10 +26,28 @@ LifeGameElem LifeGameRuleOne::GetAction(int rule_id, vector<LifeGameElem> values
 
 vector<LifeGameElem> LifeGameRuleOne::GetRule(int rule_id) {
     vector<LifeGameElem> rules(size);
-    for (size_t i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++) {
         if (rule_id & (1 << i)) {
             rules[i] = ElemAlive;
         }
     }
     return rules;
+}
+
+vector<vector<LifeGameElem>> LifeGameRuleOne::GetRuleList(int rule_id) {
+    vector<LifeGameElem>         rules = GetRule(rule_id);
+    vector<vector<LifeGameElem>> res;
+    for (int i = 0; i < size; i++) {
+        vector<LifeGameElem> item;
+        for (size_t j = 0; j < ELEM_ONE_RANGE; j++) {
+            if (i & (1 << j)) {
+                item.insert(item.begin(), ElemAlive);
+            } else {
+                item.insert(item.begin(), ElemDead);
+            }
+        }
+        item.insert(item.end(), rules[i]);
+        res.push_back(item);
+    }
+    return res;
 }

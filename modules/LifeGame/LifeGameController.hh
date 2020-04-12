@@ -12,9 +12,11 @@ class LifeGameController : public CoreBase {
 
     LifeGameRuleBase* rule_base;
 
-    void UpdateSize(int width, int history);
+    void UpdateSize(int width, int height);
 
     void UpdateRule(int rule_id);
+
+    void UpdateRuleMax(int rule_id, int max_height);
 
     void RandomElems(int rate);
 

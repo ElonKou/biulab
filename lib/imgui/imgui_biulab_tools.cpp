@@ -9,6 +9,10 @@
 #include "imgui_biulab_tools.h"
 #include "stb_image.h"
 
+vec_2i ImGuiVec2vec_2i(ImVec2& v) {
+    return vec_2i(int(v.x), int(v.y));
+}
+
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height) {
     // Load from file
     int            image_width  = 0;

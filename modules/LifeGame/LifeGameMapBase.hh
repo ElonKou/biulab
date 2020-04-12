@@ -18,11 +18,13 @@ class LifeGameMapBase : public WindowBase {
 
     virtual void UpdateData() = 0;
 
-    virtual void UpdateSize(int width, int history) = 0;
+    virtual void UpdateSize(int width, int height) = 0;
 
-    virtual void RandomElems(int rate = 50) = 0;
+    virtual void RandomElems(int rate = 500) = 0;
 
     virtual void UpdateMap(LifeGameRuleBase& rule, int rule_id) = 0;
+
+    virtual vec_2i GetSize() = 0;
 };
 
 #endif

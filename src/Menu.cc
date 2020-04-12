@@ -17,7 +17,6 @@ Menu::Menu() {
 Menu::~Menu() {}
 
 void Menu::ShowMenuFile() {
-    static bool first_load = false;
     if (ImGui::BeginMenu("Open Modules", "Ctrl+O")) {
         for (auto it = manager->modules_info.begin(); it != manager->modules_info.end(); it++) {
             if (ImGui::MenuItem(it->first.c_str(), NULL, it->second)) {
@@ -85,8 +84,6 @@ void Menu::Show() {
     }
 
     if (ImGui::BeginMenu("View")) {
-        static bool tab_menu_button;
-        static bool tab_close_button;
         if (ImGui::MenuItem("Program")) {
             show_program_window = !show_program_window;
         }

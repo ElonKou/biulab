@@ -15,7 +15,7 @@ void* Create(const char* class_name) {
 
     for (; cur; cur = cur->m_next) {
         /* if class_name matched, object will then be created and returned */
-        if (new_object = cur->m_item->Create(class_name)) {
+        if (new_object == cur->m_item->Create(class_name)) {
             break;
         }
     }

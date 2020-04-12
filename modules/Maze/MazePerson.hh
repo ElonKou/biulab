@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #ifndef _MAZE_PERSON_H_
 #define _MAZE_PERSON_H_
 

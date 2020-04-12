@@ -23,7 +23,7 @@ ProgramWindow::ProgramWindow() {
             getline(fp, line);
             elem.program_icon = Split(line, ":")[1];
             int limit         = 20;
-            for (int i = 1; i <= elem.program_info.size() / limit; i++) {
+            for (size_t i = 1; i <= elem.program_info.size() / limit; i++) {
                 int offset = 0;
                 while (offset < limit && elem.program_info[i * limit - offset] != ' ') {
                     offset++;
@@ -38,7 +38,13 @@ ProgramWindow::ProgramWindow() {
             int    height    = 0;
             string icon_path = BIULAB_INSTALL_PATH + string("/resources/icons/") + elem.program_icon;
             bool   ret       = LoadTextureFromFile(icon_path.c_str(), &elem.tex_id, &width, &height);
-            elem.size        = ImVec2(width, height);
+            if (ret) {
+                elem.size = ImVec2(width, height);
+            } else {
+                elem.size = ImVec2(width, height);
+                std::cout << "Load icon failed" << std::endl;
+            }
+
             data.push_back(elem);
         }
     }

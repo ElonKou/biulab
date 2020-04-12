@@ -18,8 +18,8 @@
 using namespace std;
 
 char* GetChar(string str) {
-    char* dst = new char[255];
-    int   i   = 0;
+    char*  dst = new char[255];
+    size_t i   = 0;
     for (; i < str.length(); i++) {
         dst[i] = str[i];
     }
