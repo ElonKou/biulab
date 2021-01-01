@@ -1,10 +1,10 @@
 #pragma once
-#ifndef WINDOW_BASE_H_
-#define WINDOW_BASE_H_
+#ifndef WINDOW_BASE_HH_
+#define WINDOW_BASE_HH_
 
-#include "WidgetBase.hh"
+#include "Base.hh"
 
-class WindowBase : public WidgetBase {
+class WindowBase : public Base {
   public:
     WindowBase() {}
 
@@ -12,7 +12,16 @@ class WindowBase : public WidgetBase {
 
     virtual void Show() = 0;
 
-    virtual void UpdateData() = 0;
+    void showHelpMarker(const string dsec) {
+        ImGui::TextDisabled("(?)");
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+            ImGui::TextUnformatted(dsec.c_str());
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
+    }
 };
 
 #endif

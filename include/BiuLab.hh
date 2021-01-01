@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BIU_LAB_H_
-#define BIU_LAB_H_
+#ifndef BIU_LAB_HH_
+#define BIU_LAB_HH_
 
 #include "BiuLabConfig.hh"
 #include "BiuLabTypes.hh"
@@ -16,11 +16,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-// modules
-extern bool   module_changed;       // whether select the load module panel.
-extern bool   module_selected;      // flag for load/close module.
-extern string module_selected_name; // the name of module.
-
 // windows
 extern bool show_dock_sapce;
 extern bool show_main_window;
@@ -32,7 +27,7 @@ extern bool show_graph_window;
 extern bool show_node_window;
 extern bool show_inspector_window;
 extern bool show_mapeditor_window;
-extern bool show_simplemap_window;
+extern bool show_map_window;
 extern bool show_program_window;
 
 // Controller

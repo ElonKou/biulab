@@ -121,9 +121,3 @@ void MapEditorWindow::Show() {
     }
     ImGui::End();
 }
-
-void MapEditorWindow::UpdateData() {
-    simple_map = GetData<SimpleMap>("SimpleMap", "MapEditorWindow");
-    map_editor = GetData<MapEditor>("MapEditor", "MapEditorWindow");
-    strcpy(temp_name, simple_map->map_name.c_str());
-}

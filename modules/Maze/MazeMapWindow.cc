@@ -21,7 +21,7 @@ void MazeMapWindow::Show() {
     if (!maze_map) {
         return;
     }
-    if (ImGui::Begin("Maze Map", &show_simplemap_window, 0)) {
+    if (ImGui::Begin("Maze Map", &show_map_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         static vec_2i last_pos    = vec_2i(-1, -1);
         auto          start_pos   = ImGui::GetCursorScreenPos();
@@ -110,9 +110,4 @@ void MazeMapWindow::Show() {
         ImGui::EndChild();
     }
     ImGui::End();
-}
-
-void MazeMapWindow::UpdateData() {
-    maze_map = GetData<MazeMap>("MazeMap", "MazeMapWindow");
-    per      = GetData<MazePerson>("MazePerson", "MazeMapWindow");
 }

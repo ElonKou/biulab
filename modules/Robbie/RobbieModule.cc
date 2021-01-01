@@ -35,7 +35,6 @@ RobbieModule::RobbieModule() {
         data->dis_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
         data_manager->CreateDataBase("Robbie", "SimpleMap", data->dis_map);
     }
-    UpdateData();
 }
 
 RobbieModule::~RobbieModule() {}
@@ -45,12 +44,4 @@ void RobbieModule::UpdateModule() {
         data->robbie_controll_window->Show();
     }
     data->controller->UpdateInFrame();
-}
-
-void RobbieModule::UpdateData() {
-    if (data->target["SimpleMap"]) {
-        data->dis_map = GetData<SimpleMap>("SimpleMap", "Robbie");
-    }
-    data->controller->UpdateData();
-    data->robbie_controll_window->UpdateData();
 }

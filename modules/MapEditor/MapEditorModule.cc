@@ -66,7 +66,6 @@ MapEditorModule::MapEditorModule() {
         data->target["OverviewInfo"] = true;
         data_manager->CreateDataBase("MapEditorModule", "OverviewInfo", data->overview_info);
     }
-    UpdateData();
 }
 
 MapEditorModule::~MapEditorModule() {}
@@ -75,7 +74,7 @@ void MapEditorModule::UpdateModule() {
     if (data->target["MapEditorWindow"] && show_mapeditor_window) {
         data->map_editor_window->Show();
     }
-    if (data->target["SimpleMapWindow"] && show_simplemap_window) {
+    if (data->target["SimpleMapWindow"] && show_map_window) {
         data->simple_map_window->Show();
     }
     if (data->target["InspectWindow"] && show_inspector_window) {
@@ -85,44 +84,6 @@ void MapEditorModule::UpdateModule() {
         data->overview_window->Show();
     }
     Check();
-}
-
-void MapEditorModule::UpdateData() {
-    if (data->target["MapEditorWindow"]) {
-        data->map_editor_window->UpdateData();
-    } else {
-        data->map_editor_window = GetData<MapEditorWindow>("MapEditorWindow", "MapEditorModule");
-    }
-    if (data->target["SimpleMapWindow"]) {
-        data->simple_map_window->UpdateData();
-    } else {
-        data->simple_map_window = GetData<SimpleMapWindow>("SimpleMapWindow", "MapEditorModule");
-    }
-    if (data->target["InspectWindow"]) {
-        data->insepect_window->UpdateData();
-    } else {
-        data->insepect_window = GetData<InspectWindow>("InspectWindow", "MapEditorModule");
-    }
-    if (data->target["OverviewWindow"]) {
-        data->overview_window->UpdateData();
-    } else {
-        data->overview_window = GetData<OverviewWindow>("OverviewWindow", "MapEditorModule");
-    }
-    if (data->target["SimpleMap"]) {
-    } else {
-        data->simple_map = GetData<SimpleMap>("SimpleMap", "MapEditorModule");
-    }
-    if (data->target["InspectInfo"]) {
-        data->inspect_info->UpdateData();
-    } else {
-        data->inspect_info = GetData<InspectInfo>("InspectInfo", "MapEditorModule");
-    }
-    if (data->target["OverviewInfo"]) {
-        data->overview_info->UpdateData();
-    } else {
-        data->overview_info = GetData<OverviewInfo>("OverviewInfo", "MapEditorModule");
-    }
-    data->inspect_info->UpdateData();
 }
 
 void MapEditorModule::Check() {

@@ -9,20 +9,12 @@
 #include "LifeGameMapOne.hh"
 
 LifeGameMapOne::LifeGameMapOne()
-    : index(0) {
+    : row(0) {
     bsize   = 8.0f;
     padding = 1.0f;
-    size    = LIFE_GAME_DIM_WIDTH;
-    map     = new LifeGameElem*[LIFE_GAME_DIM_MAX];
-    RandomElems();
-}
-
-LifeGameMapOne::LifeGameMapOne(size_t size_)
-    : size(size_)
-    , index(0) {
-    bsize   = 8.0f;
-    padding = 1.0f;
-    map     = new LifeGameElem*[LIFE_GAME_DIM_MAX];
+    width   = LIFE_GAME_DIM_WIDTH;
+    heigth  = LIFE_GAME_DIM_HEIGHT;
+    map     = new LifeGameElem*[heigth];
     RandomElems();
 }
 
@@ -30,15 +22,15 @@ LifeGameMapOne::~LifeGameMapOne() {
 }
 
 void LifeGameMapOne::Show() {
-    if (ImGui::Begin("LifeGameMapOne", &show_mapeditor_window, 0)) {
+    if (ImGui::Begin("LifeGameMapOne", &show_map_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         auto   start_pos   = ImGui::GetCursorScreenPos();
         auto   drawList    = ImGui::GetWindowDrawList();
         ImVec2 window_size = ImGui::GetCurrentWindow()->Size;
-        ImVec2 map_size    = ImVec2(size * bsize, index * bsize);
+        ImVec2 map_size    = ImVec2(width * bsize, row * bsize);
         ImVec2 offset      = ImVec2((window_size.x - map_size.x) / 2 + start_pos.x, (window_size.y - map_size.y) / 2 + start_pos.y);
-        for (size_t j = 0; j < index; j++) {
-            for (size_t i = 0; i < size; i++) {
+        for (size_t j = 0; j < row; j++) {
+            for (size_t i = 0; i < width; i++) {
                 ImVec2 p0 = {offset.x + i * bsize, offset.y + j * bsize};
                 ImVec2 p1 = {offset.x + (i + 1) * bsize - padding, offset.y + (j + 1) * bsize - padding};
                 ImVec4 color;
@@ -69,19 +61,18 @@ void LifeGameMapOne::Show() {
     ImGui::End();
 }
 
-void LifeGameMapOne::UpdateData() {}
-
-void LifeGameMapOne::UpdateSize(int width, int height) {
-    size  = width;
-    index = 0;
-    map   = new LifeGameElem*[LIFE_GAME_DIM_MAX];
+void LifeGameMapOne::UpdateSize(int _width, int _height) {
+    width  = MIN(_width, LIFE_GAME_DIM_MAX);
+    heigth = MIN(_height, LIFE_GAME_DIM_MAX);
+    row    = 0;
+    map    = new LifeGameElem*[heigth];
     RandomElems();
 }
 
 void LifeGameMapOne::RandomElems(int rate) {
-    map[0] = new LifeGameElem[size];
-    index  = 1;
-    for (size_t i = 0; i < size; i++) {
+    map[0] = new LifeGameElem[width];
+    row    = 1;
+    for (size_t i = 0; i < width; i++) {
         int rand = RandomInt(1000);
         if (rand < rate) {
             map[0][i] = ElemAlive;
@@ -92,16 +83,16 @@ void LifeGameMapOne::RandomElems(int rate) {
 }
 
 void LifeGameMapOne::UpdateMap(LifeGameRuleBase& rule, int rule_id) {
-    if (index < LIFE_GAME_DIM_MAX) {
-        map[index] = new LifeGameElem[size];
-        for (size_t i = 0; i < size; i++) {
-            vector<LifeGameElem> elems = {map[index - 1][(i - 1 + size) % size], map[index - 1][i], map[index - 1][(i + 1) % size]};
-            map[index][i]              = rule.GetAction(rule_id, elems);
+    if (row < heigth) {
+        map[row] = new LifeGameElem[width];
+        for (size_t i = 0; i < width; i++) {
+            vector<LifeGameElem> elems = {map[row - 1][(i - 1 + width) % width], map[row - 1][i], map[row - 1][(i + 1) % width]};
+            map[row][i]                = rule.GetAction(rule_id, elems);
         }
-        index++;
+        row++;
     }
 }
 
 vec_2i LifeGameMapOne::GetSize() {
-    return vec_2i(size, index);
+    return vec_2i(width, row);
 }

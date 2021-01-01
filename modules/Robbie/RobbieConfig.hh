@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ROBBIE_CONFIG_H_
-#define ROBBIE_CONFIG_H_
+#ifndef ROBBIE_CONFIG_HH_
+#define ROBBIE_CONFIG_HH_
 
 #include <vector>
 

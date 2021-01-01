@@ -1,8 +1,8 @@
 #pragma once
-#ifndef LAB_H_
-#define LBB_H_
+#ifndef LAB_HH_
+#define LBB_HH_
 
-#include "MainWindow.hh"
+#include "MainViewport.hh"
 #include "ModulesManager.hh"
 
 class Lab {
@@ -11,9 +11,9 @@ class Lab {
     int    version;
 
   public:
-    MainWindow window;
+    ModulesManager* manager;
 
-    ModulesManager manager;
+    MainViewport* viewport;
 
     Lab();
 

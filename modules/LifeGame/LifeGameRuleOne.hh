@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GMAE_RULE_RULE_H_
-#define LIFE_GMAE_RULE_RULE_H_
+#ifndef LIFE_GMAE_RULE_RULE_HH_
+#define LIFE_GMAE_RULE_RULE_HH_
 
 #include "LifeGameRuleBase.hh"
 #include <cmath>

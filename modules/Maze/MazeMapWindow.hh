@@ -1,8 +1,7 @@
 #pragma once
-#ifndef MAZE_MAP_WINDOW_H_
-#define MAZE_MAP_WINDOW_H_
+#ifndef MAZE_MAP_WINDOW_HH_
+#define MAZE_MAP_WINDOW_HH_
 
-#include "DataManager.hh"
 #include "MazeMap.hh"
 #include "MazePerson.hh"
 #include "WindowBase.hh"
@@ -19,8 +18,6 @@ class MazeMapWindow : public WindowBase {
     ~MazeMapWindow();
 
     void Show();
-
-    virtual void UpdateData();
 };
 
 #endif

@@ -11,57 +11,40 @@
 DYN_DECLARE(MazeModule);
 
 MazeModule::MazeModule() {
-    module_name = "MazeModule";
-    data        = new MazeModuleData();
+    module_name      = "MazeModule";
+    data             = new MazeModuleData();
+    data->per        = new MazePerson();
+    data->con        = new MazeController();
+    data->con_window = new MazeControllerWindow();
+    data->map        = new MazeMap();
+    data->map_window = new MazeMapWindow();
 
-    data->target.insert({"MazePerson", false});
-    data->target.insert({"MazeController", false});
-    data->target.insert({"MazeControllerWindow", false});
-    data->target.insert({"MazeMap", false});
-    data->target.insert({"MazeMapWindow", false});
-    if (!data_manager->HasDataBase("MazePerson")) {
-        data->per                  = new MazePerson();
-        data->target["MazePerson"] = true;
-        data_manager->CreateDataBase("MazeModule", "MazePerson", data->per);
-    }
-    if (!data_manager->HasDataBase("MazeController")) {
-        data->con                      = new MazeController();
-        data->target["MazeController"] = true;
-        data_manager->CreateDataBase("MazeModule", "MazeController", data->con);
-    }
-    if (!data_manager->HasDataBase("MazeControllerWindow")) {
-        data->con_window                     = new MazeControllerWindow();
-        data->target["MazeControllerWindow"] = true;
-        data_manager->CreateDataBase("MazeModule", "MazeControllerWindow", data->con_window);
-    }
-    if (!data_manager->HasDataBase("MazeMap")) {
-        data->map               = new MazeMap();
-        data->target["MazeMap"] = true;
-        data_manager->CreateDataBase("MazeModule", "MazeMap", data->map);
-    }
-    if (!data_manager->HasDataBase("MazeMapWindow")) {
-        data->map_window              = new MazeMapWindow();
-        data->target["MazeMapWindow"] = true;
-        data_manager->CreateDataBase("MazeModule", "MazeMapWindow", data->map_window);
-    }
+    vec_2i start_pos   = vec_2i(6, 3);
+    vec_2i end_pos     = vec_2i(11, 7);
+    data->per->cur_pos = start_pos;
+    data->map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/high.map");
+    data->map->UpdateMazeMap();
+    data->map->SetStartPos(start_pos);
+    data->map->SetEndPos(end_pos);
+
+    data->con->per             = data->per;
+    data->con->map             = data->map;
+    data->con_window->con      = data->con;
+    data->map_window->maze_map = data->map;
+    data->map_window->per      = data->per;
+    data->per->map             = data->map;
 }
 
 MazeModule::~MazeModule() {}
 
-void MazeModule::UpdateData() {
-    data->con_window->UpdateData();
-    data->map_window->UpdateData();
-    data->con->UpdateData();
-}
-
 void MazeModule::UpdateModule() {
-    if (data->target["MazeMapWindow"] && show_simplemap_window) {
+    if (data->map_window) {
         data->map_window->Show();
     }
-    if (data->target["MazeControllerWindow"] && show_control_window) {
+    if (data->con_window) {
         data->con_window->Show();
     }
-    if (data->target["MazeController"]) {
+    if (data->con) {
         data->con->NextStep();
     }
 }

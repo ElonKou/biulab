@@ -45,7 +45,3 @@ void MazeControllerWindow::Show() {
         ImGui::End();
     }
 }
-
-void MazeControllerWindow::UpdateData() {
-    con = GetData<MazeController>("MazeController", "MazeControllerWindow");
-}

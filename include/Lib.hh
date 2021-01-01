@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIB_H_
-#define LIB_H_
+#ifndef LIB_HH_
+#define LIB_HH_
 
 #define ABS(x) (x > 0 ? x : -x)
 #define MAX(x, y) (x > y ? x : y)

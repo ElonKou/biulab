@@ -1,6 +1,6 @@
 #pragma once
-#ifndef MAP_EDITOR_WINDOW_H_
-#define MAP_EDITOR_WINDOW_H_
+#ifndef MAP_EDITOR_WINDOW_HH_
+#define MAP_EDITOR_WINDOW_HH_
 
 #include "MapEditor.hh"
 #include "SimpleMap.hh"
@@ -19,8 +19,6 @@ class MapEditorWindow : public WindowBase {
     ~MapEditorWindow();
 
     virtual void Show();
-
-    void UpdateData();
 };
 
 #endif

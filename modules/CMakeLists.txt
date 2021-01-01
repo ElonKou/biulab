@@ -12,25 +12,23 @@ SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 include_directories(
     ./
     ../include
-    ../lib/imgui
-    ../lib/tools
-    ../lib/frame
+    ../utils/imgui
+    ../utils/tools
+    ../utils/frame
 )
 
-add_subdirectory(BiulabWidget)
+# add_subdirectory(Robbie)
 
-add_subdirectory(SimpleMap)
-
-add_subdirectory(MapEditor)
-
-add_subdirectory(Robbie)
-
-add_subdirectory(Maze)
+# add_subdirectory(MapEditor)
 
 add_subdirectory(LifeGame)
 
+# add_subdirectory(Maze)
+
+add_subdirectory(Some)
+
 # [install]
-install(FILES ModulesConfig.ini ProgramConfig.ini 
+install(FILES ModulesConfig.ini 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/
     PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ GROUP_WRITE WORLD_READ
 )

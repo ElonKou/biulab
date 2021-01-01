@@ -1,8 +1,7 @@
 #pragma once
-#ifndef MODULES_MANAGER_H_
-#define MODULES_MANAGER_H_
+#ifndef MODULES_MANAGER_HH_
+#define MODULES_MANAGER_HH_
 
-#include "DataManager.hh"
 #include "Lib.hh"
 #include "ModuleBase.hh"
 #include "PluginHelper.hh"
@@ -10,14 +9,25 @@
 
 using namespace std;
 
+typedef struct ModuleInfoData {
+    string module_info;
+    string module_name;
+    string module_icon;
+    string module_share;
+    GLuint icon_id;
+    ImVec2 icon_size;
+    bool   loaded;
+    bool   running;
+} ModuleInfoData;
+
 class ModulesManager {
   private:
     CPluginHelper pluginhelper;
 
-    vector<ModuleBase*> modules;
+    ModuleBase* module; // running module.
 
   public:
-    unordered_map<string, bool> modules_info;
+    vector<ModuleInfoData> modules_info;
 
     ModulesManager();
 
@@ -27,11 +37,9 @@ class ModulesManager {
 
     bool UnloadModule(string module_name);
 
+    bool QuitModule();
+
     void UpdateModule();
-
-    void LoadProgram(vector<string> &program_modules);
-
-    void UpdateData();
 
     void GetAllModules();
 };

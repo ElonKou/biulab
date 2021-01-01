@@ -17,10 +17,6 @@
 #include <iostream>
 using namespace std;
 
-void RobbieControllerData::UpdateData() {
-    dis_map = GetData<SimpleMap>("SimpleMap", "RobbieController");
-}
-
 RobbieController::RobbieController()
     : save_run(false)
     , running(false)
@@ -267,8 +263,4 @@ int RobbieController::ShowHisgram(int num) {
         cout << endl;
     }
     return maxIndex;
-}
-
-void RobbieController::UpdateData() {
-    data->UpdateData();
 }

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GAME_MAP_ONE_H_
-#define LIFE_GAME_MAP_ONE_H_
+#ifndef LIFE_GAME_MAP_ONE_HH_
+#define LIFE_GAME_MAP_ONE_HH_
 
 #include "LifeGameMapBase.hh"
 #include "LifeGameRuleBase.hh"
@@ -9,21 +9,18 @@ class LifeGameMapOne : public LifeGameMapBase {
   public:
     float          bsize;
     float          padding;
-    size_t         size;
-    size_t         index;
+    size_t         width;
+    size_t         heigth;
+    size_t         row; // row number
     LifeGameElem** map;
 
     LifeGameMapOne();
-
-    LifeGameMapOne(size_t size_);
 
     ~LifeGameMapOne();
 
     virtual void Show();
 
-    virtual void UpdateData();
-
-    virtual void UpdateSize(int width, int height);
+    virtual void UpdateSize(int _width, int _height);
 
     virtual void RandomElems(int rate = 500);
 

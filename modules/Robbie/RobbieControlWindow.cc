@@ -72,7 +72,3 @@ void RobbieControlWindow::Show() {
         ImGui::End();
     }
 }
-
-void RobbieControlWindow::UpdateData() {
-    robbie_controll = GetData<RobbieController>("RobbieControl", "RobbieControlWindow");
-}

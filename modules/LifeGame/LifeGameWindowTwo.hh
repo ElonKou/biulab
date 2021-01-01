@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GAME_WINDOW_TWO_H_
-#define LIFE_GAME_WINDOW_TWO_H_
+#ifndef LIFE_GAME_WINDOW_TWO_HH_
+#define LIFE_GAME_WINDOW_TWO_HH_
 
 #include "WindowBase.hh"
 
@@ -11,8 +11,6 @@ class LifeGameWindowTwo : public WindowBase {
     ~LifeGameWindowTwo();
 
     virtual void show();
-
-    virtual void UpdateData();
 };
 
 #endif

@@ -1,22 +1,13 @@
 # [build]
 aux_source_directory(. MODULES_SOURCE_DIR)
 
-aux_source_directory(../../lib/frame MODULES_SOURCE_DIR)
+aux_source_directory(../../utils/frame MODULES_SOURCE_DIR)
 
-aux_source_directory(../../lib/imgui MODULES_SOURCE_DIR)
+aux_source_directory(../../utils/imgui MODULES_SOURCE_DIR)
 
-aux_source_directory(../../lib/tools MODULES_SOURCE_DIR)
-
-link_libraries(simplemap biulabwidget)
+aux_source_directory(../../utils/tools MODULES_SOURCE_DIR)
 
 add_library(maze SHARED ${MODULES_SOURCE_DIR})
-
-include_directories(
-    include
-    .
-    ../SimpleMap
-    ../BiulabWidget
-)
 
 # [install]
 install(TARGETS maze

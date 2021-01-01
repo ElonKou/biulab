@@ -12,7 +12,7 @@
 #define BUF_SIZE 1024
 
 typedef void* CreateOBJ_T(const char* strClassName);
-typedef void  DeleteOBJ_T(void* p);
+typedef void DeleteOBJ_T(void* p);
 
 class CPluginHelper {
   public:

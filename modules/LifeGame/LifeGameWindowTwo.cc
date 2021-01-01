@@ -15,5 +15,3 @@ LifeGameWindowTwo::~LifeGameWindowTwo() {
 }
 
 void LifeGameWindowTwo::show() {}
-
-void LifeGameWindowTwo::UpdateData() {}

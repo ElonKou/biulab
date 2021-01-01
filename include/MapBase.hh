@@ -1,6 +1,6 @@
 #pragma once
-#ifndef MAP_BASE_H_
-#define MAP_BASE_H_
+#ifndef MAP_BASE_HH_
+#define MAP_BASE_HH_
 
 #include "CoreBase.hh"
 #include <string>
@@ -53,11 +53,11 @@ static unordered_map<string, ImVec4> map_color = {
 
 class MapBase : public CoreBase {
   public:
-    vec_2i                          size;
+    vec_2i size;
     unordered_map<int, MapElemInfo> infos;
     unordered_map<int, MapElemInfo> info_target;
     unordered_map<string, MapType>  elems;
-    vector<TargetElem>              render_target;
+    vector<TargetElem> render_target;
 
     MapBase() {
         infos.insert({int(MAP_EDGE), {"Edge", "#", map_color["Edge"]}});
@@ -96,7 +96,7 @@ class MapBase : public CoreBase {
 
     virtual void SaveMap(const string& save_path) = 0;
 
-    void SetRenderTargets(vector<TargetElem> targets) { render_target = targets; }
+    void SetRenderTargets(vector<TargetElem>& targets) { render_target = targets; }
 };
 
 #endif

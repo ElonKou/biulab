@@ -5,7 +5,7 @@ using namespace std;
 MazePerson::MazePerson()
     : step_count(0)
     , algorithm_name("RightFirst")
-    , cur_pos({1, 4})
+    , cur_pos({2, 6})
     , forward(DIR_UP) {
 }
 
@@ -41,13 +41,13 @@ void MazePerson::GoAhead() {
 }
 
 void MazePerson::Start() {
-    while (!maze_map->CheckExit(cur_pos)) {
+    while (!map->CheckExit(cur_pos)) {
         NextStep();
     }
 }
 
 void MazePerson::NextStep() {
-    if (!(maze_map->CheckExit(cur_pos))) {
+    if (!(map->CheckExit(cur_pos))) {
         vec_2i this_forward = vec_2i(0, 0);
         vec_2i this_right   = vec_2i(0, 0);
         vec_2i this_left    = vec_2i(0, 0);
@@ -76,8 +76,8 @@ void MazePerson::NextStep() {
             break;
         }
         if (algorithm_name == "RightFirst") {
-            if (maze_map->CheckWallOrNot(this_right)) {
-                if (maze_map->CheckWallOrNot(this_forward)) {
+            if (map->CheckWallOrNot(this_right)) {
+                if (map->CheckWallOrNot(this_forward)) {
                     TurnLeft();
                 } else {
                     GoAhead();
@@ -87,8 +87,8 @@ void MazePerson::NextStep() {
                 GoAhead();
             }
         } else {
-            if (maze_map->CheckWallOrNot(this_left)) {
-                if (maze_map->CheckWallOrNot(this_forward)) {
+            if (map->CheckWallOrNot(this_left)) {
+                if (map->CheckWallOrNot(this_forward)) {
                     TurnRight();
                 } else {
                     GoAhead();

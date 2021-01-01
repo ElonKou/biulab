@@ -25,10 +25,6 @@ void LifeGameControllerWindow::Show() {
             lf_rate = 50;
         }
         ImGui::SameLine();
-        // if (ImGui::InputInt("Rate", &lf_rate, 1, 100)) {
-        //     lf_rate = min(lf_rate, 1000);
-        //     lf_rate = max(lf_rate, 0);
-        // }
         ImGui::SliderFloat("Rate", &lf_rate, 0.0f, 100.0f, "%.2f");
         // rule id
         if (ImGui::Button("Ret")) {
@@ -90,7 +86,7 @@ void LifeGameControllerWindow::Show() {
         }
         // TODO: show rules
         vector<vector<LifeGameElem>> res      = con->rule_base->GetRuleList(lf_rule);
-        float                        bsize    = 32.0f;
+        float                        bsize    = 24.0f;
         float                        padding  = 2.0f;
         float                        margin   = 8.0f;
         auto                         offset   = ImGui::GetCursorScreenPos() + ImVec2(10.0, 10.0);
@@ -118,10 +114,4 @@ void LifeGameControllerWindow::Show() {
         ImGui::EndChild();
     }
     ImGui::End();
-}
-
-void LifeGameControllerWindow::UpdateData() {
-    con            = GetData<LifeGameController>("LifeGameController", "LifeGameControllerWindow");
-    con->map_base  = GetData<LifeGameMapBase>("LifeGameMapBase", "LifeGameControlWindow");
-    con->rule_base = GetData<LifeGameRuleBase>("LifeGameRuleBase", "LifeGameControlWindow");
 }

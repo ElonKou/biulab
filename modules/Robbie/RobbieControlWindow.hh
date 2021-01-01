@@ -1,8 +1,7 @@
 #pragma once
-#ifndef ROBBIE_WINDOW_H_
-#define ROBBIE_WINDOW_H_
+#ifndef ROBBIE_WINDOW_HH_
+#define ROBBIE_WINDOW_HH_
 
-#include "DataManager.hh"
 #include "RobbieController.hh"
 #include "WindowBase.hh"
 
@@ -16,8 +15,6 @@ class RobbieControlWindow : public WindowBase {
     ~RobbieControlWindow() {}
 
     virtual void Show();
-
-    virtual void UpdateData();
 };
 
 #endif

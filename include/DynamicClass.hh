@@ -6,6 +6,7 @@
 #include <string>
 #include <typeinfo>
 
+
 #if !defined(DYN_DECLARE)
 #define DYN_DECLARE(class_name) DYN_CLASS::CFactory<class_name> class_name
 #endif

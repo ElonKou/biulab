@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GMAE_MAP_TWO_H_
-#define LIFE_GMAE_MAP_TWO_H_
+#ifndef LIFE_GMAE_MAP_TWO_HH_
+#define LIFE_GMAE_MAP_TWO_HH_
 
 class LifeGameMapTwo {
   public:
@@ -10,7 +10,6 @@ class LifeGameMapTwo {
 
     virtual void Show();
 
-    virtual void UpdateData();
 };
 
 #endif

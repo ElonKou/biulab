@@ -1,5 +1,5 @@
 #pragma once
-#ifndef LIFE_GAME_WINDOW_ONE_H_
+#ifndef LIFE_GAME_WINDOW_ONE_HH_
 
 #include "WindowBase.hh"
 
@@ -10,9 +10,7 @@ class LifeGameWindowOne : public WindowBase {
     ~LifeGameWindowOne();
 
     virtual void show();
-
-    virtual void UpdateData();
 };
 
-#define LIFE_GAME_WINDOW_ONE_H_
+#define LIFE_GAME_WINDOW_ONE_HH_
 #endif

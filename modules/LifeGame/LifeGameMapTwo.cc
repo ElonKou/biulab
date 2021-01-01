@@ -15,5 +15,3 @@ LifeGameMapTwo::~LifeGameMapTwo() {
 }
 
 void LifeGameMapTwo::Show(){}
-
-void LifeGameMapTwo::UpdateData(){}

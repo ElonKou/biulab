@@ -1,11 +1,10 @@
 #pragma once
-#ifndef EDITOR_MAP_H_
-#define EDITOR_MAP_H_
+#ifndef EDITOR_MAP_HH_
+#define EDITOR_MAP_HH_
 
 #include "Lib.hh"
 #include "MapEditorBase.hh"
 #include "MapBase.hh"
-#include "SimpleMapConfig.hh"
 
 class MapEditor : public MapEditorBase {
   private:

@@ -1,8 +1,7 @@
 #pragma once
-#ifndef MAZE_MODULE_H_
-#define MAZE_MODULE_H_
+#ifndef MAZE_MODULE_HH_
+#define MAZE_MODULE_HH_
 
-#include "DataManager.hh"
 #include "DynamicClass.hh"
 #include "MazeController.hh"
 #include "MazeControllerWindow.hh"
@@ -12,12 +11,11 @@
 #include "ModuleBase.hh"
 
 typedef struct MazeModuleData {
-    MazePerson*                 per;
-    MazeController*             con;
-    MazeControllerWindow*       con_window;
-    MazeMap*                    map;
-    MazeMapWindow*              map_window;
-    unordered_map<string, bool> target;
+    MazePerson*           per;
+    MazeController*       con;
+    MazeControllerWindow* con_window;
+    MazeMap*              map;
+    MazeMapWindow*        map_window;
 } MazeModuleData;
 
 class MazeModule : public ModuleBase {
@@ -27,8 +25,6 @@ class MazeModule : public ModuleBase {
     MazeModule();
 
     ~MazeModule();
-
-    virtual void UpdateData();
 
     virtual void UpdateModule();
 };

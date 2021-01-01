@@ -8,8 +8,11 @@
 
 #include "Lab.hh"
 
-int main() {
+int main(int argc, char* argv[]) {
     Lab lab;
+    lab.InitLab();
+    cout << "biulab is running." << endl;
     lab.Start();
+    cout << "biulab is terminated." << endl;
     return 0;
 }

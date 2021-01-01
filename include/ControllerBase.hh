@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CONTROLLER_BASE_H_
-#define CONTROLLER_BASE_H_
+#ifndef CONTROLLER_BASE_HH_
+#define CONTROLLER_BASE_HH_
 
 #include "CoreBase.hh"
 

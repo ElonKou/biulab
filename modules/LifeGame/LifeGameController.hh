@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GAME_CONTROLLER_H_
-#define LIFE_GAME_CONTROLLER_H_
+#ifndef LIFE_GAME_CONTROLLER_HH_
+#define LIFE_GAME_CONTROLLER_HH_
 
 #include "CoreBase.hh"
 #include "LifeGameMapBase.hh"

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ROBBIE_H_
-#define ROBBIE_H_
+#ifndef ROBBIE_HH_
+#define ROBBIE_HH_
 
 #include "CoreBase.hh"
 #include "RobbieConfig.hh"

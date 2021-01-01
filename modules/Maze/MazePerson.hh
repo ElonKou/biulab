@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _MAZE_PERSON_H_
-#define _MAZE_PERSON_H_
+#ifndef _MAZE_PERSON_HH_
+#define _MAZE_PERSON_HH_
 
 #include "BiuLabTypes.hh"
 #include "MazeMap.hh"
@@ -21,7 +21,7 @@ class MazePerson : public CoreBase {
     vec_2i           cur_pos;
     ForwardDirection forward;
     ForwardDirection start_forward;
-    MazeMap*         maze_map;
+    MazeMap*         map;
 
     MazePerson();
     ~MazePerson();

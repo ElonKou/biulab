@@ -1,12 +1,12 @@
 #pragma once
-#ifndef LIFE_GAME_CONFIG_H_
-#define LIFE_GAME_CONFIG_H_
+#ifndef LIFE_GAME_CONFIG_HH_
+#define LIFE_GAME_CONFIG_HH_
 
 #include <iostream>
 
-#define LIFE_GAME_DIM_MAX 512    // max of DIM
-#define LIFE_GAME_DIM_WIDTH 256  // DIM width
-#define LIFE_GAME_DIM_HEIGHT 256 // DIM width
+#define LIFE_GAME_DIM_MAX 1024   // max of DIM
+#define LIFE_GAME_DIM_WIDTH 160  // DIM width
+#define LIFE_GAME_DIM_HEIGHT 160 // DIM width
 #define ELEM_ONE_SIZE 2
 #define ELEM_ONE_RANGE 3
 #define ELEM_TWO_SIZE 2

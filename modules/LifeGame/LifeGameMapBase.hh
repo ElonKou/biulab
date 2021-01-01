@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GAME_MAP_BASE_H_
-#define LIFE_GAME_MAP_BASE_H_
+#ifndef LIFE_GAME_MAP_BASE_HH_
+#define LIFE_GAME_MAP_BASE_HH_
 
 #include "BiuLabTypes.hh"
 #include "Lib.hh"
@@ -15,8 +15,6 @@ class LifeGameMapBase : public WindowBase {
     ~LifeGameMapBase() {}
 
     virtual void Show() = 0;
-
-    virtual void UpdateData() = 0;
 
     virtual void UpdateSize(int width, int height) = 0;
 

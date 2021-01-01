@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _MAZE_MAP_H_
-#define _MAZE_MAP_H_
+#ifndef _MAZE_MAP_HH_
+#define _MAZE_MAP_HH_
 
 #include "SimpleMap.hh"
 

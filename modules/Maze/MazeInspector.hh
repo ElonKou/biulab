@@ -1,6 +1,6 @@
 #pragma once
-#ifndef MAZE_INSPECTOR_H_
-#define MAZE_INSPECTOR_H_
+#ifndef MAZE_INSPECTOR_HH_
+#define MAZE_INSPECTOR_HH_
 
 #include "InspectWindow.hh"
 

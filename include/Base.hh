@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BASE_H_
-#define BASE_H_
+#ifndef BASE_HH_
+#define BASE_HH_
 
 #include "BiuLab.hh"
 

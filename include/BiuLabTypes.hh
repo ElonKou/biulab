@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BIU_TYPES_H_
-#define BIU_TYPES_H_
+#ifndef BIU_TYPES_HH_
+#define BIU_TYPES_HH_
 
 #include <ostream>
 using namespace std;

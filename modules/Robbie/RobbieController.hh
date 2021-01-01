@@ -1,10 +1,9 @@
 #pragma once
-#ifndef ROBBIE_CONTROLLER_H_
-#define ROBBIE_CONTROLLER_H_
+#ifndef ROBBIE_CONTROLLER_HH_
+#define ROBBIE_CONTROLLER_HH_
 
 #include "BiuLabConfig.hh"
 #include "CoreBase.hh"
-#include "DataManager.hh"
 #include "Robbie.hh"
 #include "RobbieConfig.hh"
 #include "SimpleMap.hh"
@@ -18,7 +17,7 @@ typedef struct RobbieResult {
     // int map_id;
 } RobbieResult;
 
-typedef struct RobbieControllerData : public DataBase {
+typedef struct RobbieControllerData : public CoreBase {
     int                  loop_controller;
     int                  loop_map;
     int                  robbie_cnt;
@@ -40,7 +39,6 @@ typedef struct RobbieControllerData : public DataBase {
 
     ~RobbieControllerData() {}
 
-    virtual void UpdateData();
 } RobbieControllerData;
 
 class RobbieController : public CoreBase {
@@ -74,8 +72,6 @@ class RobbieController : public CoreBase {
     void SaveRobbie(Robbie& rob, string robbie_path);
 
     void SetMap(SimpleMap* map);
-
-    void UpdateData();
 
     int ShowHisgram(int num);
 

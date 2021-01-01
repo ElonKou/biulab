@@ -11,16 +11,21 @@
 
 using namespace std;
 
-Lab::Lab() { InitLab(); }
+Lab::Lab() {}
 
 Lab::~Lab() {}
 
 void Lab::InitLab() {
-    root    = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
-    version = 0;
+    root                             = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
+    version                          = 0;
+    manager                          = new ModulesManager();
+    viewport                         = new MainViewport();
+    viewport->modules_window.manager = manager;
+    viewport->manager                = manager;
+    viewport->menu.manager           = manager;
+    manager->GetAllModules();
 }
 
 void Lab::Start() {
-    cout << "biulab is running." << endl;
-    window.StartWindow();
+    viewport->StartWindow();
 }

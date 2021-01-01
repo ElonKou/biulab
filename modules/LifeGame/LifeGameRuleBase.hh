@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LIFE_GAME_RULE_BASE_H_
-#define LIFE_GAME_RULE_BASE_H_
+#ifndef LIFE_GAME_RULE_BASE_HH_
+#define LIFE_GAME_RULE_BASE_HH_
 
 #include "CoreBase.hh"
 #include "Lib.hh"
