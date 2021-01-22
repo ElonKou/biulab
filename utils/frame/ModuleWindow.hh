@@ -7,10 +7,13 @@
 #include "ModulesManager.hh"
 #include "WindowBase.hh"
 #include "fstream"
+#include "MainViewport.hh"
 
 class ModuleWindow : public WindowBase {
   public:
     ModulesManager* manager;
+
+    MainViewport *viewport;
 
     ModuleWindow();
 

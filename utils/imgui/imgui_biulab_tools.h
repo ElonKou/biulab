@@ -2,7 +2,7 @@
 #ifndef IMGUI_BIULAB_TOOLS_H_
 #define IMGUI_BIULAB_TOOLS_H_
 
-#include "BiuLab.hh"
+#include "Base.hh"
 #include "imgui.h"
 #include <GL/glew.h>
 #include <iostream>

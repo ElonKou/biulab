@@ -3,6 +3,7 @@
 #define INSPECT_WINDOW_HH_
 
 #include "Lib.hh"
+#include "MainViewport.hh"
 #include "MapBase.hh"
 #include "OverviewWindow.hh"
 #include "WindowBase.hh"
@@ -29,7 +30,11 @@ class InspectWindow : public WindowBase {
   public:
     InspectInfo* info;
 
+    MainViewport* viewport;
+
     InspectWindow();
+
+    InspectWindow(MainViewport* viewport_);
 
     ~InspectWindow();
 

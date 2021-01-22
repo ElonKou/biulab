@@ -45,13 +45,13 @@ GLFWwindow* MainViewport::InitWindow() {
 }
 
 void MainViewport::DrawWindow() {
-    if (show_dock_sapce) {
+    if (menu.options.show_dock_sapce) {
         ShowDcokSpace();
     }
-    if (show_main_menu_bar) {
+    if (menu.options.show_main_menu_bar) {
         menu.Show();
     }
-    if (show_program_window) {
+    if (menu.options.show_program_window) {
         modules_window.Show();
     }
     manager->UpdateModule();
@@ -205,7 +205,7 @@ void MainViewport::ShowDcokSpace() {
         window_flags |= ImGuiWindowFlags_NoBackground;
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace Geneteic", &show_dock_sapce, window_flags);
+    ImGui::Begin("DockSpace Geneteic", &menu.options.show_dock_sapce, window_flags);
     ImGui::PopStyleVar();
 
     if (opt_fullscreen)

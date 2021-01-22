@@ -10,6 +10,18 @@
 #include "DynamicClass.hh"
 
 Menu::Menu() {
+    options.show_dock_sapce       = true;
+    options.show_main_window      = true;
+    options.show_demo_window      = false;
+    options.show_main_menu_bar    = true;
+    options.show_overlay_window   = true;
+    options.show_control_window   = true;
+    options.show_graph_window     = true;
+    options.show_node_window      = false;
+    options.show_inspector_window = true;
+    options.show_mapeditor_window = true;
+    options.show_map_window       = true;
+    options.show_program_window   = true;
 }
 
 Menu::~Menu() {}
@@ -18,7 +30,7 @@ void Menu::ShowMenuFile() {
     if (ImGui::BeginMenu("Open Modules", "Ctrl+O")) {
         for (size_t i = 0; i < manager->modules_info.size(); i++) {
             if (ImGui::MenuItem(manager->modules_info[i].module_name.c_str(), NULL, manager->modules_info[i].running)) {
-                show_program_window = false;
+                options.show_program_window = false;
                 manager->LoadModule(manager->modules_info[i].module_name);
             }
         }
@@ -50,7 +62,7 @@ void Menu::ShowMenuFile() {
     }
     if (ImGui::MenuItem("Quit", "Alt+F4")) {
         manager->QuitModule();
-        show_program_window = true;
+        options.show_program_window = true;
     }
 }
 
@@ -78,28 +90,28 @@ void Menu::Show() {
 
     if (ImGui::BeginMenu("View")) {
         if (ImGui::MenuItem("Control")) {
-            show_control_window = !show_control_window;
+            options.show_control_window = !options.show_control_window;
         }
         if (ImGui::MenuItem("Display")) {
-            show_map_window = !show_map_window;
+            options.show_map_window = !options.show_map_window;
         }
         if (ImGui::MenuItem("Overview")) {
-            show_overlay_window = !show_overlay_window;
+            options.show_overlay_window = !options.show_overlay_window;
         }
         if (ImGui::MenuItem("Node view")) {
-            show_node_window = !show_node_window;
+            options.show_node_window = !options.show_node_window;
         }
         if (ImGui::MenuItem("Inspector")) {
-            show_inspector_window = !show_inspector_window;
+            options.show_inspector_window = !options.show_inspector_window;
         }
         if (ImGui::MenuItem("Graph")) {
-            show_graph_window = !show_graph_window;
+            options.show_graph_window = !options.show_graph_window;
         }
         if (ImGui::MenuItem("Editor")) {
-            show_mapeditor_window = !show_mapeditor_window;
+            options.show_mapeditor_window = !options.show_mapeditor_window;
         }
         if (ImGui::MenuItem("Demo")) {
-            show_demo_window = !show_demo_window;
+            options.show_demo_window = !options.show_demo_window;
         }
         ImGui::EndMenu();
     }
