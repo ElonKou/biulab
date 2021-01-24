@@ -19,7 +19,7 @@ void LifeGameControllerWindow::Show() {
     static int   lf_rule   = 30;
     static int   lf_width  = LIFE_GAME_DIM_WIDTH;
     static int   lf_height = LIFE_GAME_DIM_HEIGHT;
-    if (ImGui::Begin("LifeGameControllerWindow", &show_control_window, 0)) {
+    if (ImGui::Begin("LifeGameControllerWindow", &manager->options.show_control_window, 0)) {
         // rate
         if (ImGui::Button("Ret")) {
             lf_rate = 50;

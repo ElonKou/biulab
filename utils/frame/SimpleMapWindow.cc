@@ -27,7 +27,7 @@ void SimpleMapWindow::Show() {
     if (!simple_map) {
         return;
     }
-    if (ImGui::Begin("Simple Map", &show_map_window, 0)) {
+    if (ImGui::Begin("Simple Map", &manager->options.show_map_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         ImGuiIO&      io          = ImGui::GetIO();
         static ImVec2 last_pos    = ImVec2(-1, -1);

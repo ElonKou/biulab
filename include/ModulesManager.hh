@@ -9,6 +9,21 @@
 
 using namespace std;
 
+typedef struct MenuOptions {
+    bool show_dock_space;
+    bool show_main_window;
+    bool show_demo_window;
+    bool show_menu_bar;
+    bool show_overlay_window;
+    bool show_control_window;
+    bool show_graph_window;
+    bool show_node_window;
+    bool show_inspector_window;
+    bool show_mapeditor_window;
+    bool show_map_window;
+    bool show_program_window;
+} MenuOptions;
+
 typedef struct ModuleInfoData {
     string module_info;
     string module_name;
@@ -28,6 +43,8 @@ class ModulesManager {
 
   public:
     vector<ModuleInfoData> modules_info;
+
+    MenuOptions options;
 
     ModulesManager();
 

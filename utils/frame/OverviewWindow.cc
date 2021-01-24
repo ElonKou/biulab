@@ -21,7 +21,7 @@ OverviewWindow::~OverviewWindow() {}
 
 void OverviewWindow::Show() {
     ImGui::SetNextWindowBgAlpha(0.3f);
-    if (ImGui::Begin("Overlay", &show_overlay_window, 0)) {
+    if (ImGui::Begin("Overlay", &manager->options.show_overlay_window, 0)) {
         ImGui::Text("C : Open control panel.");
         ImGui::Text("D : Open display panel.");
         // ImGui::Separator();

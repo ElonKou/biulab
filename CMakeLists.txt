@@ -42,8 +42,8 @@ install(TARGETS ${PROJECT_NAME}
 
 install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(DIRECTORY include/ utils/imgui/ utils/frame/ utils/tools/
-    DESTINATION include
-    FILES_MATCHING PATTERN "*.h" PATTERN "*.hh"
-    PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ GROUP_WRITE WORLD_READ
-)
+# install(DIRECTORY include/ utils/imgui/ utils/frame/ utils/tools/
+#     DESTINATION include
+#     FILES_MATCHING PATTERN "*.h" PATTERN "*.hh"
+#     PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ GROUP_WRITE WORLD_READ
+# )

@@ -9,19 +9,11 @@
 #include "Menu.hh"
 #include "DynamicClass.hh"
 
-Menu::Menu() {
-    options.show_dock_sapce       = true;
-    options.show_main_window      = true;
-    options.show_demo_window      = false;
-    options.show_main_menu_bar    = true;
-    options.show_overlay_window   = true;
-    options.show_control_window   = true;
-    options.show_graph_window     = true;
-    options.show_node_window      = false;
-    options.show_inspector_window = true;
-    options.show_mapeditor_window = true;
-    options.show_map_window       = true;
-    options.show_program_window   = true;
+Menu::Menu() {}
+
+Menu::Menu(ModulesManager* man) {
+    manager = man;
+    cout << "xx" << endl;
 }
 
 Menu::~Menu() {}
@@ -30,7 +22,7 @@ void Menu::ShowMenuFile() {
     if (ImGui::BeginMenu("Open Modules", "Ctrl+O")) {
         for (size_t i = 0; i < manager->modules_info.size(); i++) {
             if (ImGui::MenuItem(manager->modules_info[i].module_name.c_str(), NULL, manager->modules_info[i].running)) {
-                options.show_program_window = false;
+                manager->options.show_program_window = false;
                 manager->LoadModule(manager->modules_info[i].module_name);
             }
         }
@@ -62,7 +54,7 @@ void Menu::ShowMenuFile() {
     }
     if (ImGui::MenuItem("Quit", "Alt+F4")) {
         manager->QuitModule();
-        options.show_program_window = true;
+        manager->options.show_program_window = true;
     }
 }
 
@@ -90,28 +82,28 @@ void Menu::Show() {
 
     if (ImGui::BeginMenu("View")) {
         if (ImGui::MenuItem("Control")) {
-            options.show_control_window = !options.show_control_window;
+            manager->options.show_control_window = !manager->options.show_control_window;
         }
         if (ImGui::MenuItem("Display")) {
-            options.show_map_window = !options.show_map_window;
+            manager->options.show_map_window = !manager->options.show_map_window;
         }
         if (ImGui::MenuItem("Overview")) {
-            options.show_overlay_window = !options.show_overlay_window;
+            manager->options.show_overlay_window = !manager->options.show_overlay_window;
         }
         if (ImGui::MenuItem("Node view")) {
-            options.show_node_window = !options.show_node_window;
+            manager->options.show_node_window = !manager->options.show_node_window;
         }
         if (ImGui::MenuItem("Inspector")) {
-            options.show_inspector_window = !options.show_inspector_window;
+            manager->options.show_inspector_window = !manager->options.show_inspector_window;
         }
         if (ImGui::MenuItem("Graph")) {
-            options.show_graph_window = !options.show_graph_window;
+            manager->options.show_graph_window = !manager->options.show_graph_window;
         }
         if (ImGui::MenuItem("Editor")) {
-            options.show_mapeditor_window = !options.show_mapeditor_window;
+            manager->options.show_mapeditor_window = !manager->options.show_mapeditor_window;
         }
         if (ImGui::MenuItem("Demo")) {
-            options.show_demo_window = !options.show_demo_window;
+            manager->options.show_demo_window = !manager->options.show_demo_window;
         }
         ImGui::EndMenu();
     }

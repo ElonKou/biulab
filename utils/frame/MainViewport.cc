@@ -10,6 +10,9 @@
 #include "imgui_biulab_tools.h"
 
 MainViewport::MainViewport() {
+}
+
+MainViewport::MainViewport(ModulesManager* man) {
     main_window_info.fonts_path       = BIULAB_INSTALL_PATH "/../resources/fonts/YaHei.Consolas.1.12.ttf";
     main_window_info.font_size        = 18.0f;
     main_window_info.background_color = ImVec4(0.12, 0.12, 0.12, 1.0);
@@ -18,8 +21,9 @@ MainViewport::MainViewport() {
     LoadFont();
     SetGL(window);
     SetDarkTheme();
-
-    modules_window.manager = manager;
+    manager        = man;
+    menu           = new Menu(man);
+    modules_window = new ModuleWindow(man);
 }
 
 MainViewport::~MainViewport() {}
@@ -44,15 +48,13 @@ GLFWwindow* MainViewport::InitWindow() {
     return window;
 }
 
-void MainViewport::DrawWindow() {
-    if (menu.options.show_dock_sapce) {
-        ShowDcokSpace();
+void MainViewport::Show() {
+    ShowDcokSpace();
+    if (manager->options.show_menu_bar) {
+        menu->Show();
     }
-    if (menu.options.show_main_menu_bar) {
-        menu.Show();
-    }
-    if (menu.options.show_program_window) {
-        modules_window.Show();
+    if (manager->options.show_program_window) {
+        modules_window->Show();
     }
     manager->UpdateModule();
 }
@@ -64,7 +66,7 @@ void MainViewport::StartWindow() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        DrawWindow();
+        Show();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
@@ -205,7 +207,7 @@ void MainViewport::ShowDcokSpace() {
         window_flags |= ImGuiWindowFlags_NoBackground;
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace Geneteic", &menu.options.show_dock_sapce, window_flags);
+    ImGui::Begin("Biulab DockSpace", &manager->options.show_dock_space, window_flags);
     ImGui::PopStyleVar();
 
     if (opt_fullscreen)

@@ -3,9 +3,12 @@
 #define WINDOW_BASE_HH_
 
 #include "Base.hh"
+#include "ModulesManager.hh"
 
 class WindowBase : public Base {
   public:
+    ModulesManager* manager;
+
     WindowBase() {}
 
     ~WindowBase() {}

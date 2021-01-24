@@ -2,20 +2,16 @@
 #ifndef PROGRAMM_WINDOW_HH_
 #define PROGRAMM_WINDOW_HH_
 
-#include "BiuLab.hh"
 #include "BiuLabConfig.hh"
 #include "ModulesManager.hh"
 #include "WindowBase.hh"
 #include "fstream"
-#include "MainViewport.hh"
 
 class ModuleWindow : public WindowBase {
   public:
-    ModulesManager* manager;
-
-    MainViewport *viewport;
-
     ModuleWindow();
+
+    ModuleWindow(ModulesManager* man);
 
     ~ModuleWindow();
 

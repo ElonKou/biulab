@@ -37,14 +37,10 @@ void InspectInfo::UpdateFunc(string maps_path) {
 
 InspectWindow::InspectWindow() {}
 
-InspectWindow::InspectWindow(MainViewport* viewport_) {
-    viewport = viewport_;
-}
-
 InspectWindow::~InspectWindow() {}
 
 void InspectWindow::Show() {
-    if (ImGui::Begin("Inspector", &viewport->menu.options.show_inspector_window, 0)) {
+    if (ImGui::Begin("Inspector", &manager->options.show_inspector_window, 0)) {
         if (!info) {
             return;
         }

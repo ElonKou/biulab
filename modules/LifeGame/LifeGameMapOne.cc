@@ -22,7 +22,7 @@ LifeGameMapOne::~LifeGameMapOne() {
 }
 
 void LifeGameMapOne::Show() {
-    if (ImGui::Begin("LifeGameMapOne", &show_map_window, 0)) {
+    if (ImGui::Begin("LifeGameMapOne", &manager->options.show_map_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         auto   start_pos   = ImGui::GetCursorScreenPos();
         auto   drawList    = ImGui::GetWindowDrawList();

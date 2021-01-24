@@ -21,7 +21,7 @@ class Lab {
 
     void InitLab();
 
-    void Start();
+    void Run();
 };
 
 #endif

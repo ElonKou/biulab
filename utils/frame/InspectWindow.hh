@@ -30,11 +30,7 @@ class InspectWindow : public WindowBase {
   public:
     InspectInfo* info;
 
-    MainViewport* viewport;
-
     InspectWindow();
-
-    InspectWindow(MainViewport* viewport_);
 
     ~InspectWindow();
 

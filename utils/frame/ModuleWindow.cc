@@ -11,13 +11,17 @@
 ModuleWindow::ModuleWindow() {
 }
 
+ModuleWindow::ModuleWindow(ModulesManager* man) {
+    manager = man;
+}
+
 ModuleWindow::~ModuleWindow() {
 }
 
 void ModuleWindow::Show() {
     // int flag = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking ;
     int flag = ImGuiWindowFlags_NoTitleBar;
-    if (ImGui::Begin("Program", &viewport->menu.options.show_program_window, flag)) {
+    if (ImGui::Begin("Program", &manager->options.show_program_window, flag)) {
         // ImGuiIO& io = ImGui::GetIO();
         for (size_t i = 0; i < manager->modules_info.size(); i++) {
             ImVec2ih uv = ImVec2ih(2, 4);
@@ -25,7 +29,7 @@ void ModuleWindow::Show() {
             // ImVec2 pos = ImGui::GetCursorScreenPos();
             if (ImGui::IsItemHovered()) {
                 if (ImGui::IsMouseDoubleClicked(0)) {
-                    viewport->menu.options.show_program_window = false;
+                    manager->options.show_program_window = false;
                     manager->LoadModule(manager->modules_info[i].module_name);
                 }
                 // ImGui::BeginTooltip();

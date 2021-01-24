@@ -13,15 +13,28 @@
 ModulesManager::ModulesManager() {
     module = NULL;
     pluginhelper.Load(BIULAB_MODULES_PATH, "*.so");
+    // for all modules
+    options.show_dock_space       = true;
+    options.show_main_window      = true;
+    options.show_demo_window      = false;
+    options.show_menu_bar         = true;
+    options.show_overlay_window   = true;
+    options.show_control_window   = true;
+    options.show_graph_window     = true;
+    options.show_node_window      = false;
+    options.show_inspector_window = true;
+    options.show_mapeditor_window = true;
+    options.show_map_window       = true;
+    options.show_program_window   = true;
 }
 
 ModulesManager::~ModulesManager() {
 }
 
 bool ModulesManager::LoadModule(string module_name) {
-    std::cout << module_name;
     module = (ModuleBase*)pluginhelper.Create(module_name);
-    std::cout << ":" << module << std::endl;
+    std::cout << module_name << ":" << module << std::endl;
+
     if (module) {
         PrintSucceed(module->module_name + " load succeed\n");
     } else {

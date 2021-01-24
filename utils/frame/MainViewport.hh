@@ -2,23 +2,19 @@
 #ifndef MAIN_WINDOW_HH_
 #define MAIN_WINDOW_HH_
 
-#include "Base.hh"
-#include "MainViewport.hh"
 #include "Menu.hh"
 #include "ModuleWindow.hh"
-#include "ModulesManager.hh"
-#include "PluginHelper.hh"
 #include "WindowBase.hh"
 
 using namespace std;
 
-class MainViewport {
+class MainViewport : public WindowBase {
   public:
     GLFWwindow* window;
 
-    Menu menu;
+    Menu* menu;
 
-    ModuleWindow modules_window;
+    ModuleWindow* modules_window;
 
     ModulesManager* manager;
 
@@ -38,11 +34,13 @@ class MainViewport {
 
     MainViewport();
 
+    MainViewport(ModulesManager* man);
+
     ~MainViewport();
 
     GLFWwindow* InitWindow();
 
-    void DrawWindow();
+    virtual void Show();
 
     void StartWindow();
 
