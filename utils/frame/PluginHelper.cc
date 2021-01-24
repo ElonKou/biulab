@@ -52,6 +52,7 @@ void CPluginHelper::Load(const std::string& dir, const std::string& pattern) {
 
     size_t i;
     for (i = 0; i < soNameList.size(); i++) {
+        std::cout << soNameList[i] << std::endl;
         std::map<std::string, void*>::iterator itrSoName = m_SoNameTable.find(soNameList[i]);
 
         /* so-library has already loaded */

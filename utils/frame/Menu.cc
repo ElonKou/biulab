@@ -13,7 +13,6 @@ Menu::Menu() {}
 
 Menu::Menu(ModulesManager* man) {
     manager = man;
-    cout << "xx" << endl;
 }
 
 Menu::~Menu() {}

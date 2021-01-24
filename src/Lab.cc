@@ -20,7 +20,7 @@ void Lab::InitLab() {
     version  = 0;
     manager  = new ModulesManager();
     viewport = new MainViewport(manager);
-    manager->GetAllModules();
+    manager->GetConfigs();
 }
 
 void Lab::Run() {

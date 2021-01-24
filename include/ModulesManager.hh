@@ -58,7 +58,7 @@ class ModulesManager {
 
     void UpdateModule();
 
-    void GetAllModules();
+    void GetConfigs();
 };
 
 #endif

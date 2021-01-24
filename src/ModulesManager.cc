@@ -32,6 +32,7 @@ ModulesManager::~ModulesManager() {
 }
 
 bool ModulesManager::LoadModule(string module_name) {
+    std::cout << module_name << ":" << module << std::endl;
     module = (ModuleBase*)pluginhelper.Create(module_name);
     std::cout << module_name << ":" << module << std::endl;
 
@@ -70,7 +71,7 @@ void ModulesManager::UpdateModule() {
     }
 }
 
-void ModulesManager::GetAllModules() {
+void ModulesManager::GetConfigs() {
     fstream fp;
     string  line;
     fp.open(BIULAB_MODULES_PATH "/ModulesConfig.ini", ios::in);
