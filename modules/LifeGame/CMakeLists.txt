@@ -1,7 +1,7 @@
 # [build]
 aux_source_directory(. MODULES_SOURCE_DIR)
 
-aux_source_directory(../../utils/frame MODULES_SOURCE_DIR)
+# aux_source_directory(../../utils/frame MODULES_SOURCE_DIR)
 
 aux_source_directory(../../utils/imgui MODULES_SOURCE_DIR)
 

@@ -32,9 +32,7 @@ ModulesManager::~ModulesManager() {
 }
 
 bool ModulesManager::LoadModule(string module_name) {
-    std::cout << module_name << ":" << module << std::endl;
     module = (ModuleBase*)pluginhelper.Create(module_name);
-    std::cout << module_name << ":" << module << std::endl;
 
     if (module) {
         PrintSucceed(module->module_name + " load succeed\n");

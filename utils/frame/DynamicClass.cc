@@ -15,11 +15,9 @@ void* Create(const char* class_name) {
 
     // printf("11 %s\n", class_name);
     for (; cur; cur = cur->m_next) {
-        // printf("hello\n");
         /* if class_name matched, object will then be created and returned */
-        if (new_object = cur->m_item->Create(class_name)) {
-            // printf("ok %s\n", class_name);
-            printf("new:%x \n", new_object);
+        new_object = cur->m_item->Create(class_name);
+        if (new_object) {
             break;
         }
     }

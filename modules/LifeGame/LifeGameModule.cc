@@ -11,28 +11,26 @@
 DYN_DECLARE(LifeGameModule);
 
 LifeGameModule::LifeGameModule() {
-    // module_name = "LifeGameModule";
-    // std::cout << "C=inti" << endl;
-    // data             = new LifeGameModuleData();
-    // data->map_base   = new LifeGameMapOne();
-    // data->rule_base  = new LifeGameRuleOne();
-    // data->con        = new LifeGameController();
-    // data->con_window = new LifeGameControllerWindow();
+    module_name = "LifeGameModule";
+    data             = new LifeGameModuleData();
+    data->map_base   = new LifeGameMapOne();
+    data->rule_base  = new LifeGameRuleOne();
+    data->con        = new LifeGameController();
+    data->con_window = new LifeGameControllerWindow();
 
-    // data->con->map_base   = data->map_base;
-    // data->con->rule_base  = data->rule_base;
-    // data->con_window->con = data->con;
+    data->con->map_base   = data->map_base;
+    data->con->rule_base  = data->rule_base;
+    data->con_window->con = data->con;
 }
 
 LifeGameModule::~LifeGameModule() {
 }
 
 void LifeGameModule::UpdateModule() {
-    std::cout << "cd" << std::endl;
-    // if (data->map_base && show_map_window) {
-    //     data->map_base->Show();
-    // }
-    // if (data->con_window && show_control_window) {
-    //     data->con_window->Show();
-    // }
+    if (data->map_base && data->con_window->manager->options.show_map_window) {
+        data->map_base->Show();
+    }
+    if (data->con_window && data->con_window->manager->options.show_control_window) {
+        data->con_window->Show();
+    }
 }
