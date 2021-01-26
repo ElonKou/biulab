@@ -33,6 +33,7 @@ ModulesManager::~ModulesManager() {
 
 bool ModulesManager::LoadModule(string module_name) {
     module = (ModuleBase*)pluginhelper.Create(module_name);
+    cout << "this: " << this << endl;
 
     if (module) {
         PrintSucceed(module->module_name + " load succeed\n");

@@ -11,7 +11,7 @@
 DYN_DECLARE(LifeGameModule);
 
 LifeGameModule::LifeGameModule() {
-    module_name = "LifeGameModule";
+    module_name      = "LifeGameModule";
     data             = new LifeGameModuleData();
     data->map_base   = new LifeGameMapOne();
     data->rule_base  = new LifeGameRuleOne();
@@ -27,6 +27,8 @@ LifeGameModule::~LifeGameModule() {
 }
 
 void LifeGameModule::UpdateModule() {
+    // cout << data->con_window->manager->options.show_map_window << endl;
+    cout << "module: " << data->con_window->manager << endl;
     if (data->map_base && data->con_window->manager->options.show_map_window) {
         data->map_base->Show();
     }

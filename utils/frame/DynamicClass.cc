@@ -13,7 +13,6 @@ void* Create(const char* class_name) {
     void*               new_object = 0;
     const CFactoryList* cur        = CFactoryList::_head;
 
-    // printf("11 %s\n", class_name);
     for (; cur; cur = cur->m_next) {
         /* if class_name matched, object will then be created and returned */
         new_object = cur->m_item->Create(class_name);
