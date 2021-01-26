@@ -7,15 +7,14 @@
 #include "RobbieControlWindow.hh"
 #include "RobbieController.hh"
 #include "SimpleMap.hh"
+#include "SimpleMapWindow.hh"
 
-typedef struct RobbieModuleData : public CoreBase {
+typedef struct RobbieModuleData {
     vector<SimpleMap*>   maps;
     SimpleMap*           dis_map;
     RobbieController*    controller;
-    RobbieControlWindow* robbie_controll_window;
-    unordered_map<string, bool> target;
-    RobbieModuleData() {}
-    ~RobbieModuleData() {}
+    RobbieControlWindow* rc_window;
+    SimpleMapWindow*     map_window;
 } RobbieModuleData;
 
 class RobbieModule : public ModuleBase {
@@ -25,6 +24,8 @@ class RobbieModule : public ModuleBase {
     RobbieModule();
 
     ~RobbieModule();
+
+    virtual void InitModule();
 
     virtual void UpdateModule();
 };

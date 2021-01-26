@@ -17,13 +17,13 @@ include_directories(
     ../utils/frame
 )
 
-# add_subdirectory(Robbie)
+add_subdirectory(Robbie)
 
 # add_subdirectory(MapEditor)
 
 add_subdirectory(LifeGame)
 
-# add_subdirectory(Maze)
+add_subdirectory(Maze)
 
 add_subdirectory(Some)
 

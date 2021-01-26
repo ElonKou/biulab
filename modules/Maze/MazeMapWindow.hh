@@ -15,6 +15,8 @@ class MazeMapWindow : public WindowBase {
 
     MazeMapWindow();
 
+    MazeMapWindow(ModulesManager *man);
+
     ~MazeMapWindow();
 
     void Show();

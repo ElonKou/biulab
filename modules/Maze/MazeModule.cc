@@ -11,13 +11,19 @@
 DYN_DECLARE(MazeModule);
 
 MazeModule::MazeModule() {
-    module_name      = "MazeModule";
+    module_name = "MazeModule";
+}
+
+MazeModule::~MazeModule() {
+}
+
+void MazeModule::InitModule() {
     data             = new MazeModuleData();
     data->per        = new MazePerson();
-    data->con        = new MazeController();
-    data->con_window = new MazeControllerWindow();
+    data->con        = new MazeController(data->per);
+    data->con_window = new MazeControllerWindow(manager);
     data->map        = new MazeMap();
-    data->map_window = new MazeMapWindow();
+    data->map_window = new MazeMapWindow(manager);
 
     vec_2i start_pos   = vec_2i(6, 3);
     vec_2i end_pos     = vec_2i(11, 7);
@@ -27,15 +33,12 @@ MazeModule::MazeModule() {
     data->map->SetStartPos(start_pos);
     data->map->SetEndPos(end_pos);
 
-    data->con->per             = data->per;
     data->con->map             = data->map;
     data->con_window->con      = data->con;
     data->map_window->maze_map = data->map;
     data->map_window->per      = data->per;
     data->per->map             = data->map;
 }
-
-MazeModule::~MazeModule() {}
 
 void MazeModule::UpdateModule() {
     if (data->map_window) {

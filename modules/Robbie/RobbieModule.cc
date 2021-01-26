@@ -14,34 +14,49 @@ DYN_DECLARE(RobbieModule);
 
 RobbieModule::RobbieModule() {
     module_name = "Robbie";
-    data        = new RobbieModuleData();
 
-    data->target.insert({"RobbieControl", false});
-    data->target.insert({"RobbieControlWindow", false});
-    data->target.insert({"SimpleMap", false});
-    if (!data_manager->HasDataBase("RobbieControl")) {
-        data->controller              = new RobbieController();
-        data->target["RobbieControl"] = true;
-        data_manager->CreateDataBase("Robbie", "RobbieControl", data->controller);
-    }
-    if (!data_manager->HasDataBase("RobbieControlWindow")) {
-        data->robbie_controll_window        = new RobbieControlWindow();
-        data->target["RobbieControlWindow"] = true;
-        data_manager->CreateDataBase("Robbie", "RobbieControlWindow", data->robbie_controll_window);
-    }
-    if (!data_manager->HasDataBase("SimpleMap")) {
-        data->dis_map             = new SimpleMap();
-        data->target["SimpleMap"] = true;
-        data->dis_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
-        data_manager->CreateDataBase("Robbie", "SimpleMap", data->dis_map);
-    }
+    // data->target.insert({"RobbieControl", false});
+    // data->target.insert({"RobbieControlWindow", false});
+    // data->target.insert({"SimpleMap", false});
+    // if (!data_manager->HasDataBase("RobbieControl")) {
+    //     data->controller              = new RobbieController();
+    //     data->target["RobbieControl"] = true;
+    //     data_manager->CreateDataBase("Robbie", "RobbieControl", data->controller);
+    // }
+    // if (!data_manager->HasDataBase("RobbieControlWindow")) {
+    //     data->robbie_controll_window        = new RobbieControlWindow();
+    //     data->target["RobbieControlWindow"] = true;
+    //     data_manager->CreateDataBase("Robbie", "RobbieControlWindow", data->robbie_controll_window);
+    // }
+    // if (!data_manager->HasDataBase("SimpleMap")) {
+    //     data->dis_map             = new SimpleMap();
+    //     data->target["SimpleMap"] = true;
+    //     data->dis_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
+    //     data_manager->CreateDataBase("Robbie", "SimpleMap", data->dis_map);
+    // }
 }
 
 RobbieModule::~RobbieModule() {}
 
+void RobbieModule::InitModule() {
+    data                             = new RobbieModuleData();
+    data->controller                 = new RobbieController();
+    data->rc_window                  = new RobbieControlWindow(manager);
+    data->dis_map                    = new SimpleMap();
+    data->map_window                 = new SimpleMapWindow(manager);
+    data->dis_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
+    data->rc_window->robbie_controll = data->controller;
+    data->controller->data->dis_map  = data->dis_map;
+    data->map_window->simple_map     = data->dis_map;
+}
+
 void RobbieModule::UpdateModule() {
-    if (data->robbie_controll_window && data->target["RobbieControlWindow"]) {
-        data->robbie_controll_window->Show();
+    if (data->rc_window && manager->options.show_control_window) {
+        data->rc_window->Show();
     }
+    if (data->dis_map && manager->options.show_map_window) {
+        data->map_window->Show();
+    }
+
     data->controller->UpdateInFrame();
 }

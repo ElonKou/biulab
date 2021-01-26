@@ -15,10 +15,13 @@ using namespace std;
 DYN_DECLARE(SimpleMapWindow);
 
 SimpleMapWindow::SimpleMapWindow() {
+}
+SimpleMapWindow::SimpleMapWindow(ModulesManager* man) {
     bsize      = 16.0f;
     padding    = 1.0f;
     simple_map = nullptr;
-    map_editor = nullptr;
+    // map_editor = nullptr;
+    manager = man;
 }
 
 SimpleMapWindow::~SimpleMapWindow() {}
@@ -30,8 +33,8 @@ void SimpleMapWindow::Show() {
     if (ImGui::Begin("Simple Map", &manager->options.show_map_window, 0)) {
         ImGui::BeginChild("Canvas", ImVec2(0, 0), 1, 0);
         ImGuiIO&      io          = ImGui::GetIO();
-        static ImVec2 last_pos    = ImVec2(-1, -1);
-        static int    last_cnt    = 0;
+        // static ImVec2 last_pos    = ImVec2(-1, -1);
+        // static int    last_cnt    = 0;
         auto          start_pos   = ImGui::GetCursorScreenPos();
         auto          drawList    = ImGui::GetWindowDrawList();
         ImVec2        window_size = ImGui::GetCurrentWindow()->Size;
@@ -46,16 +49,16 @@ void SimpleMapWindow::Show() {
                 // Hover& click event
                 if (ImGui::IsMouseHoveringRect(p0, p1)) {
                     color.w = color.w < 1.0 ? color.w + 0.1 : color.w - 0.1;
-                    if (ImGui::IsMouseClicked(0) && map_editor) {
-                        map_editor->ModifiedMap(*simple_map, vec_2i(j, i));
-                        if ((map_editor->selections == S_LINE || map_editor->selections == S_RECT) && last_cnt == 0) {
-                            last_cnt++;
-                            last_pos = ImVec2(i, j);
-                        } else if (last_cnt == 1) {
-                            last_pos = ImVec2(-1, -1);
-                            last_cnt = 0;
-                        }
-                    }
+                    // if (ImGui::IsMouseClicked(0) && map_editor) {
+                    //     map_editor->ModifiedMap(*simple_map, vec_2i(j, i));
+                    //     if ((map_editor->selections == S_LINE || map_editor->selections == S_RECT) && last_cnt == 0) {
+                    //         last_cnt++;
+                    //         last_pos = ImVec2(i, j);
+                    //     } else if (last_cnt == 1) {
+                    //         last_pos = ImVec2(-1, -1);
+                    //         last_cnt = 0;
+                    //     }
+                    // }
                     {
                         // show position in tools tip.
                         ImVec2 pos = ImGui::GetCursorScreenPos();
@@ -75,9 +78,9 @@ void SimpleMapWindow::Show() {
                         ImGui::EndTooltip();
                     }
                 }
-                if (last_pos.x == i && last_pos.y == j) {
-                    color.w = color.w < 1.0 ? color.w + 0.1 : color.w - 0.1;
-                }
+                // if (last_pos.x == i && last_pos.y == j) {
+                //     color.w = color.w < 1.0 ? color.w + 0.1 : color.w - 0.1;
+                // }
                 if (simple_map->only_show_round && simple_map->render_target.size() > 0) {
                     vec_2i act = vec_2i(-10, -10);
                     for (size_t k = 0; k < simple_map->render_target.size(); k++) {

@@ -11,6 +11,8 @@ class MazeControllerWindow : public WindowBase {
 
     MazeControllerWindow();
 
+    MazeControllerWindow(ModulesManager *man);
+
     ~MazeControllerWindow();
 
     void Show();

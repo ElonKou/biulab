@@ -12,9 +12,11 @@ class SimpleMapWindow : public WindowBase {
     float          bsize;
     float          padding;
     SimpleMap*     simple_map;
-    MapEditorBase* map_editor;
+    // MapEditorBase* map_editor;
 
     SimpleMapWindow();
+
+    SimpleMapWindow(ModulesManager *man);
 
     ~SimpleMapWindow();
 

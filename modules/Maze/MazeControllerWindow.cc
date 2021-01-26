@@ -11,6 +11,10 @@
 MazeControllerWindow::MazeControllerWindow() {
 }
 
+MazeControllerWindow::MazeControllerWindow(ModulesManager* man) {
+    manager = man;
+}
+
 MazeControllerWindow::~MazeControllerWindow() {
 }
 
@@ -18,7 +22,7 @@ void MazeControllerWindow::Show() {
     if (!con) {
         return;
     }
-    if (ImGui::Begin("MazeController")) {
+    if (ImGui::Begin("MazeController", &manager->options.show_control_window, 0)) {
         ImGui::SliderInt("speed", &con->speed, 1, 120, "%d");
         static int selection_algorithm = 0;
         if (ImGui::SmallRadioButton("RightFirst##A", &selection_algorithm, 0)) {

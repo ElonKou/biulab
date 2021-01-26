@@ -9,14 +9,16 @@
 class MazeController : public CoreBase {
 
   public:
-    bool running;
-    bool stop;
-    int  speed;
+    bool               running;
+    bool               stop;
+    int                speed;
     MazePerson*        per;
     MazeMap*           map;
     vector<TargetElem> render_target;
 
     MazeController();
+
+    MazeController(MazePerson *p);
 
     ~MazeController();
 

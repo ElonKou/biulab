@@ -8,8 +8,16 @@
 
 #include "RobbieControlWindow.hh"
 
+RobbieControlWindow::RobbieControlWindow() {}
+
+RobbieControlWindow::RobbieControlWindow(ModulesManager* man) {
+    manager = man;
+}
+
+RobbieControlWindow::~RobbieControlWindow() {}
+
 void RobbieControlWindow::Show() {
-    if (ImGui::Begin("Robbie")) {
+    if (ImGui::Begin("Robbie", &manager->options.show_control_window, 0)) {
         {
             // variablesif
             ImGui::Checkbox("Stop check", &robbie_controll->data->train_stop_check);

@@ -26,6 +26,8 @@ class MazeModule : public ModuleBase {
 
     ~MazeModule();
 
+    virtual void InitModule();
+
     virtual void UpdateModule();
 };
 

@@ -6,13 +6,14 @@
 #include "WindowBase.hh"
 
 class RobbieControlWindow : public WindowBase {
-  private:
+  public:
     RobbieController* robbie_controll;
 
-  public:
-    RobbieControlWindow() {}
+    RobbieControlWindow();
 
-    ~RobbieControlWindow() {}
+    RobbieControlWindow(ModulesManager* man);
+
+    ~RobbieControlWindow();
 
     virtual void Show();
 };

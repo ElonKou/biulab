@@ -9,9 +9,13 @@
 #include "MazeController.hh"
 
 MazeController::MazeController() {
+}
+
+MazeController::MazeController(MazePerson* p) {
     speed   = 6;
     running = false;
     stop    = false;
+    per     = p;
     // 0:for path.
     // 1:for maze object.
     render_target.resize(2);
