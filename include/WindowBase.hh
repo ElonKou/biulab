@@ -3,7 +3,7 @@
 #define WINDOW_BASE_HH_
 
 #include "Base.hh"
-#include "ModulesManager.hh"
+#include "ModuleBase.hh"
 
 class WindowBase : public Base {
   public:

@@ -11,6 +11,8 @@ class SomeModule : public ModuleBase {
 
     ~SomeModule();
 
+    virtual void InitModule();
+
     virtual void UpdateModule();
 };
 

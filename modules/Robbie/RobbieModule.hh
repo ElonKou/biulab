@@ -4,7 +4,6 @@
 
 #include "DynamicClass.hh"
 #include "ModuleBase.hh"
-#include "ModulesManager.hh"
 #include "RobbieControlWindow.hh"
 #include "RobbieController.hh"
 #include "SimpleMap.hh"

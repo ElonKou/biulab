@@ -26,6 +26,8 @@ class LifeGameModule : public ModuleBase {
 
     ~LifeGameModule();
 
+    virtual void InitModule();
+
     virtual void UpdateModule();
 };
 

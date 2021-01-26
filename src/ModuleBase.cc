@@ -1,12 +1,12 @@
 /*================================================================
-*  Copyright (C)2019 All rights reserved.
-*  FileName : ModulesManager.cc
+*  Copyright (C)2020 All rights reserved.
+*  FileName : ModuleBase.cc
 *  Author   : elonkou
 *  Email    : elonkou@ktime.cc
-*  Date     : 2019年10月05日 星期六 16时16分46秒
+*  Date     : Tue 26 Jan 2021 05:47:28 PM CST
 ================================================================*/
 
-#include "ModulesManager.hh"
+#include "ModuleBase.hh"
 #include <fstream>
 #include <iostream>
 
@@ -33,10 +33,11 @@ ModulesManager::~ModulesManager() {
 
 bool ModulesManager::LoadModule(string module_name) {
     module = (ModuleBase*)pluginhelper.Create(module_name);
-    cout << "this: " << this << endl;
 
     if (module) {
         PrintSucceed(module->module_name + " load succeed\n");
+        module->manager = this;
+        module->InitModule();
     } else {
         PrintError(module->module_name + " load Failed\n");
     }

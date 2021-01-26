@@ -16,10 +16,9 @@ Lab::Lab() {}
 Lab::~Lab() {}
 
 void Lab::InitLab() {
-    root    = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
-    version = 0;
-    manager = new ModulesManager();
-    cout << "create: " << manager << endl;
+    root     = "/home/elonkou/ELONKOU/03.GENETIC/genetic";
+    version  = 0;
+    manager  = new ModulesManager();
     viewport = new MainViewport(manager);
     manager->GetConfigs();
 }

@@ -3,7 +3,7 @@
 #define PROGRAMM_WINDOW_HH_
 
 #include "BiuLabConfig.hh"
-#include "ModulesManager.hh"
+#include "ModuleBase.hh"
 #include "WindowBase.hh"
 #include "fstream"
 

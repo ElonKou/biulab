@@ -3,7 +3,7 @@
 #define LBB_HH_
 
 #include "MainViewport.hh"
-#include "ModulesManager.hh"
+#include "ModuleBase.hh"
 
 class Lab {
   private:

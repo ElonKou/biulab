@@ -3,7 +3,7 @@
 #define COREBASE_HH_
 
 #include "Base.hh"
-#include "ModulesManager.hh"
+#include "ModuleBase.hh"
 
 class CoreBase : public Base {
   public:

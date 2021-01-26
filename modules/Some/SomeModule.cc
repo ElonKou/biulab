@@ -16,6 +16,10 @@ SomeModule::SomeModule() {
 SomeModule::~SomeModule() {
 }
 
+void SomeModule::InitModule() {
+    std::cout << "Init Some module." << std::endl;
+}
+
 void SomeModule::UpdateModule() {
     std::cout << "Some Module is running..." << std::endl;
 }

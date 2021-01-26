@@ -2,7 +2,7 @@
 #ifndef MENU_HH_
 #define MENU_HH_
 
-#include "ModulesManager.hh"
+#include "ModuleBase.hh"
 #include "WindowBase.hh"
 
 class Menu : public WindowBase {
