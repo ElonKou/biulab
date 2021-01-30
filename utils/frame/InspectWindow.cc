@@ -23,19 +23,23 @@ void InspectInfo::AddInfo(string path, string pattern, bool target) {
 }
 
 void InspectInfo::UpdateFunc(string maps_path) {
-    unordered_map<string, string> xx = {{"maps", ""}};
-    overview_info->items.insert({"simplemap", xx});
-    overview_info->items["simplemap"]["maps"] = items["maps"].selected;
     if (items.size() > 0 && items["maps"].changed) {
         string map_name_ = items["maps"].selected;
         if (map_name_.size() > 0) {
             items["maps"].changed = false;
-            simple_map->LoadMap(maps_path + "/" + map_name_);
+            if (simple_map) {
+                simple_map->LoadMap(maps_path + "/" + map_name_);
+            }
+            cout << map_name_ << endl;
         }
     }
 }
 
 InspectWindow::InspectWindow() {}
+
+InspectWindow::InspectWindow(ModulesManager* man) {
+    manager = man;
+}
 
 InspectWindow::~InspectWindow() {}
 
@@ -51,7 +55,7 @@ void InspectWindow::Show() {
                 for (size_t j = 0; j < item.data.size(); j++) {
                     string list_name = item.data[j];
                     if (ImGui::Selectable(list_name.c_str(), item.data[j] == item.selected, ImGuiSelectableFlags_AllowDoubleClick)) {
-                        if (ImGui::IsMouseDoubleClicked(0)) {
+                        if (ImGui::IsMouseDoubleClicked(0) && manager) {
                             item.selected = list_name;
                             item.changed  = true;
                         }

@@ -39,15 +39,20 @@ RobbieModule::RobbieModule() {
 RobbieModule::~RobbieModule() {}
 
 void RobbieModule::InitModule() {
-    data                             = new RobbieModuleData();
-    data->controller                 = new RobbieController();
-    data->rc_window                  = new RobbieControlWindow(manager);
-    data->dis_map                    = new SimpleMap();
-    data->map_window                 = new SimpleMapWindow(manager);
+    data             = new RobbieModuleData();
+    data->controller = new RobbieController();
+    data->rc_window  = new RobbieControlWindow(manager);
+    data->dis_map    = new SimpleMap();
+    data->map_window = new SimpleMapWindow(manager);
+    data->isp_window = new InspectWindow(manager);
+    data->isp_info   = new InspectInfo();
+
     data->dis_map->LoadMap(BIULAB_APPLICATION_PATH "/genetic/maps/std.map");
-    data->rc_window->robbie_controll = data->controller;
-    data->controller->data->dis_map  = data->dis_map;
-    data->map_window->simple_map     = data->dis_map;
+    data->rc_window->robbie_controll   = data->controller;
+    data->controller->data->dis_map    = data->dis_map;
+    data->map_window->simple_map       = data->dis_map;
+    data->isp_window->info             = data->isp_info;
+    data->isp_window->info->simple_map = data->dis_map;
 }
 
 void RobbieModule::UpdateModule() {
@@ -57,6 +62,13 @@ void RobbieModule::UpdateModule() {
     if (data->dis_map && manager->options.show_map_window) {
         data->map_window->Show();
     }
-
+    if (data->isp_window && manager->options.show_inspector_window) {
+        data->isp_window->Show();
+    }
     data->controller->UpdateInFrame();
+    string maps_path    = BIULAB_APPLICATION_PATH "/genetic/maps";
+    string robbies_path = BIULAB_APPLICATION_PATH "/genetic/robbies";
+    data->isp_info->AddInfo(robbies_path, "robbies", true);
+    data->isp_info->AddInfo(maps_path, "maps", false);
+    data->isp_info->UpdateFunc(maps_path);
 }

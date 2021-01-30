@@ -2,7 +2,6 @@
 #ifndef INSPECT_WINDOW_HH_
 #define INSPECT_WINDOW_HH_
 
-#include "Lib.hh"
 #include "MainViewport.hh"
 #include "MapBase.hh"
 #include "OverviewWindow.hh"
@@ -17,11 +16,10 @@ typedef struct InspectInfoItem {
     vector<string> data;
 } InspectItem;
 
-typedef struct InspectInfo : public CoreBase {
+typedef struct InspectInfo {
     unordered_map<string, InspectItem> items;
-    MapBase*      simple_map;
-    OverviewInfo* overview_info;
-    WindowBase*   map_editor_window;
+    MapBase*    simple_map;
+    WindowBase* map_editor_window;
     void AddInfo(string path, string pattern, bool target);
     void UpdateFunc(string maps_path);
 } InspectInfo;
@@ -31,6 +29,8 @@ class InspectWindow : public WindowBase {
     InspectInfo* info;
 
     InspectWindow();
+
+    InspectWindow(ModulesManager* man);
 
     ~InspectWindow();
 
