@@ -7,10 +7,10 @@ aux_source_directory(../../utils/imgui MODULES_SOURCE_DIR)
 
 aux_source_directory(../../utils/tools MODULES_SOURCE_DIR)
 
-add_library(lifegame SHARED ${MODULES_SOURCE_DIR})
+add_library(life2d SHARED ${MODULES_SOURCE_DIR})
 
 # [install]
-install(TARGETS lifegame
+install(TARGETS life2d
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION bin
     PERMISSIONS OWNER_WRITE OWNER_EXECUTE OWNER_READ GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE

@@ -3,3 +3,4 @@ install/
 build/
 *.o
 .vscode
+example

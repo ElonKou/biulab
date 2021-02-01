@@ -27,6 +27,8 @@ add_subdirectory(Maze)
 
 add_subdirectory(Some)
 
+add_subdirectory(Life)
+
 # [install]
 install(FILES ModulesConfig.ini 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/
