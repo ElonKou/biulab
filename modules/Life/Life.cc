@@ -11,6 +11,8 @@
 #include <iostream>
 
 Life::Life() {
+    run    = false;
+    fps    = 10;
     width  = 128;
     height = 64;
     map    = new int*[height];
@@ -56,9 +58,12 @@ int Life::Role23(int i, int j) {
 
 void Life::UpdateFrame() {
     // role 1
+    if (!run) {
+        return;
+    }
     static int f = 0;
     f++;
-    if (f < 8) {
+    if (f < fps) {
         return;
     }
     f = 0;

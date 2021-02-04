@@ -3,14 +3,15 @@
 #define LIFE_GAME_2D_HH_
 
 #include "DynamicClass.hh"
-#include "Life.hh"
+#include "LifeController.hh"
 #include "LifeWindow.hh"
 #include "ModuleBase.hh"
 
 class LifeModule : public ModuleBase {
   public:
-    Life*       life;
-    LifeWindow* window;
+    Life*           life;
+    LifeWindow*     window;
+    LifeController* con;
 
     LifeModule();
 

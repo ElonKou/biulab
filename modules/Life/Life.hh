@@ -4,6 +4,8 @@
 
 class Life {
   public:
+    bool  run; // default false
+    int   fps; // 1/fps
     int** map;
     int** temp;
     int   width;
